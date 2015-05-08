@@ -1,0 +1,25 @@
+.font {
+	color: #616161;
+}
+
+.code {
+	border-color: #d58512;
+}
+
+.onError {
+	color: red;
+}
+
+.onSuccess {
+	color: green;
+}
+
+/* 居中加粗 */
+.bold-center {
+	text-align: center;
+	font-weight: bold;
+}
+
+/* 固定 */
+.fixed-div {
+}

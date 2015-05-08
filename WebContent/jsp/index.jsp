@@ -52,7 +52,7 @@
 		BUI.use('common/main', function() {
 			var config = [ {
 				id : '1',
-				homePage : '12',
+				homePage : '11',
 				menu : [ {
 					text : '会员基础',
 					items : [ {
@@ -98,7 +98,7 @@
 						href : 'jsp/staff/index.jsp'
 					}, {
 						id : '32',
-						text : '科室管理',
+						text : '课室管理',
 						href : 'jsp/classrooms/index.jsp'
 					} ]
 				} ]
