@@ -121,9 +121,8 @@
 			            		  +"<td >"+item.classroomsName+"</td> "
 			            		  +"<td >"+showinfo(item.classroomsState)+"</td> "
 			            		  +"<td >"+"<div class='visible-md visible-lg hidden-sm hidden-xs action-buttons' id='buttontools'>"
-			            		  				+"<a class='blue' href='javascript:showProvider(\""+item.classroomsId+"\")'> <i class='icon-zoom-in bigger-130'></i>"
-			            		  				+"<a class='green' href='javascript:editProvider(\""+item.classroomsId+"\")' > <i class='icon-pencil bigger-130'></i> </a>"
-			            		  				+"<a class='red' href='javascript:deleteProvider(\""+item.classroomsId+"\")' > <i class='icon-trash bigger-130'></i> </a>"
+			            		  				+"<a class='green' href='classrooms/showOne.html?id="+item.classroomsId+"' > <i class='icon-pencil bigger-130'></i> </a>"
+			            		  				+"<a class='red' href='classrooms/delete?id="+item.classroomsId+"&name="+item.classroomsName+"&state="+item.classroomsState+"' > <i class='icon-trash bigger-130'></i> </a>"
 			            		  				+"</td> "+"</tr>");
 			            });
 						var begin = Math.max(1, msg.page.currentPage - pagerRange/2 );
@@ -168,6 +167,9 @@
 		}else{
 			return "占用";
 		}
+	}
+	function edit(id){
+		
 	}
 </script>
 </body>

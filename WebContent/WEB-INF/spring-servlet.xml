@@ -17,9 +17,6 @@
 	<!-- 启用spring mvc 注解 -->
 	<context:annotation-config />
 
-	<!-- 启动事务 -->
-	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
-	
 	<!-- 设置使用注解的类所在的jar包 -->
 	<context:component-scan base-package="com.yoga">
 		<context:include-filter type="regex" expression=".controller.*" />

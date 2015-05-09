@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.hibernate.LockOptions;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.yoga.entity.TbClassrooms;
 import com.yoga.util.Page;
@@ -20,26 +22,58 @@ public class TbClassroomsDAO extends BaseHibernateDAO implements BaseDao<TbClass
 
 	public void save(TbClassrooms transientInstance) {
 		log.debug("saving TbClassrooms instance");
-//		Transaction beginTransaction = getSession().beginTransaction();
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
 		try {
 //			beginTransaction.begin();
 			getSession().save(transientInstance);
+			beginTransaction.commit();
 			log.debug("save successful");
 		} catch (RuntimeException re) {
-//			beginTransaction.rollback();
+			re.printStackTrace();
+			beginTransaction.rollback();
 			log.error("save failed", re);
 			throw re;
+		}finally{
+			getSession().close();
 		}
 	}
 
+	public void update(TbClassrooms transientInstance) {
+		log.debug("updating TbClassrooms instance");
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
+		try {
+//			beginTransaction.begin();
+			//http://www.blogjava.net/hrcdg/articles/157724.html
+			getSession().merge(transientInstance);
+			beginTransaction.commit();
+			log.debug("update successful");
+		} catch (RuntimeException re) {
+			re.printStackTrace();
+			beginTransaction.rollback();
+			log.error("update failed", re);
+			throw re;
+		}finally{
+			getSession().close();
+		}
+	}
+	
 	public void delete(TbClassrooms persistentInstance) {
 		log.debug("deleting TbClassrooms instance");
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
 		try {
+//			beginTransaction.begin();
 			getSession().delete(persistentInstance);
+			beginTransaction.commit();
 			log.debug("delete successful");
 		} catch (RuntimeException re) {
+			beginTransaction.rollback();
 			log.error("delete failed", re);
 			throw re;
+		}finally{
+			getSession().close();
 		}
 	}
 
