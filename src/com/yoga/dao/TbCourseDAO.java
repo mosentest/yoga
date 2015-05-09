@@ -2,15 +2,16 @@ package com.yoga.dao;
 
 import java.util.List;
 
-import org.hibernate.LockOptions;
 import org.hibernate.Query;
 import org.hibernate.criterion.Example;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.yoga.entity.TbConsume;
 import com.yoga.entity.TbCourse;
+import com.yoga.util.Page;
 
-public class TbCourseDAO extends BaseHibernateDAO {
+public class TbCourseDAO extends BaseHibernateDAO implements BaseDao<TbCourse>{
 	private static final Logger log = LoggerFactory
 			.getLogger(TbCourseDAO.class);
 	// property constants
@@ -89,49 +90,76 @@ public class TbCourseDAO extends BaseHibernateDAO {
 		return findByProperty(COURSE_PRICE, coursePrice);
 	}
 
-	public List findAll() {
+	public List findAll(String... params) {
 		log.debug("finding all TbCourse instances");
 		try {
-			String queryString = "from TbCourse";
-			Query queryObject = getSession().createQuery(queryString);
+			Query queryObject = repeatCode(params);
 			return queryObject.list();
 		} catch (RuntimeException re) {
 			log.error("find all failed", re);
 			throw re;
 		}
 	}
-
-	public TbCourse merge(TbCourse detachedInstance) {
-		log.debug("merging TbCourse instance");
+	
+	/**
+	 * 2015-5-8 约定param只能传3个参数，对应表的字段<br>
+	 * <b> 传参数的时候params必须为数组并且对应字段</b>
+	 */
+	@Override
+	public Page<TbCourse> findAll(int page, int size, String... params) {
+		Page<TbCourse> pageList = new Page<TbCourse>();
+		pageList.setPageSize(size);
+		pageList.setCurrentPage(page);
+		log.debug("finding all TbConsume instances");
 		try {
-			TbCourse result = (TbCourse) getSession().merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
+			Query queryObject = repeatCode(params);
+			queryObject.setFirstResult((page - 1) * size);// 显示第几页，当前页
+			queryObject.setMaxResults(size);// 每页做多显示的记录数
+			List list = queryObject.list();
+			pageList.setTotalElement(findAll(params).size(),size);
+			pageList.setContent(list);
+			return pageList;
 		} catch (RuntimeException re) {
-			log.error("merge failed", re);
+			log.error("find all failed", re);
 			throw re;
 		}
 	}
-
-	public void attachDirty(TbCourse instance) {
-		log.debug("attaching dirty TbCourse instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
+	private Query repeatCode(String... params) {
+		String queryString = "from TbCourse";
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(queryString);
+		if (params != null && params.length > 0) {
+			buffer.append(" as tb where ");
+			if (params[0] != null && !"".equals(params[0].trim())) {
+				buffer.append(" tb.consumeId=:cid and ");
+			}
+			if (params[1] != null && !"".equals(params[1].trim())) {
+				buffer.append(" tb.couresName=:cname and ");
+			}
+			if (params[2] != null && !"".equals(params[2].trim())) {
+				buffer.append(" tb.courseDate=:ctime and ");
+			}
+			if (params[3] != null && !"".equals(params[3].trim())) {
+				buffer.append(" tb.coursePrice=:cprice and ");
+			}
+			buffer.append(" 1=1 ");
 		}
-	}
-
-	public void attachClean(TbCourse instance) {
-		log.debug("attaching clean TbCourse instance");
-		try {
-			getSession().buildLockRequest(LockOptions.NONE).lock(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
+		Query queryObject = getSession().createQuery(buffer.toString());
+		// 分页显示的操作
+		if (params != null && params.length > 0) {
+			if (params[0] != null && !"".equals(params[0].trim())) {
+				queryObject.setString("cid", params[0]);
+			}
+			if (params[1] != null && !"".equals(params[1].trim())) {
+				queryObject.setString("cname", params[1]);
+			}
+			if (params[2] != null && !"".equals(params[2].trim())) {
+				queryObject.setString("ctime", params[2]);
+			}
+			if (params[2] != null && !"".equals(params[3].trim())) {
+				queryObject.setString("cprice", params[3]);
+			}
 		}
+		return queryObject;
 	}
 }

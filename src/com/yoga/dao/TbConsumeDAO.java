@@ -8,9 +8,11 @@ import org.hibernate.criterion.Example;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.yoga.entity.TbClassrooms;
 import com.yoga.entity.TbConsume;
+import com.yoga.util.Page;
 
-public class TbConsumeDAO extends BaseHibernateDAO {
+public class TbConsumeDAO extends BaseHibernateDAO implements BaseDao<TbConsume>{
 	private static final Logger log = LoggerFactory.getLogger(TbConsumeDAO.class);
 	// property constants
 	public static final String CONSUME_NAME = "consumeName";
@@ -82,11 +84,10 @@ public class TbConsumeDAO extends BaseHibernateDAO {
 		return findByProperty(CONSUME_PRICE, consumePrice);
 	}
 
-	public List findAll() {
+	public List findAll(String... params) {
 		log.debug("finding all TbConsume instances");
 		try {
-			String queryString = "from TbConsume";
-			Query queryObject = getSession().createQuery(queryString);
+			Query queryObject = repeatCode(params);
 			return queryObject.list();
 		} catch (RuntimeException re) {
 			log.error("find all failed", re);
@@ -94,37 +95,60 @@ public class TbConsumeDAO extends BaseHibernateDAO {
 		}
 	}
 
-	public TbConsume merge(TbConsume detachedInstance) {
-		log.debug("merging TbConsume instance");
+	/**
+	 * 2015-5-8 约定param只能传3个参数，对应表的字段<br>
+	 * <b> 传参数的时候params必须为数组并且对应字段</b>
+	 */
+	@Override
+	public Page<TbConsume> findAll(int page, int size, String... params) {
+		Page<TbConsume> pageList = new Page<TbConsume>();
+		pageList.setPageSize(size);
+		pageList.setCurrentPage(page);
+		log.debug("finding all TbConsume instances");
 		try {
-			TbConsume result = (TbConsume) getSession().merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
+			Query queryObject = repeatCode(params);
+			queryObject.setFirstResult((page - 1) * size);// 显示第几页，当前页
+			queryObject.setMaxResults(size);// 每页做多显示的记录数
+			List list = queryObject.list();
+			pageList.setTotalElement(findAll(params).size(),size);
+			pageList.setContent(list);
+			return pageList;
 		} catch (RuntimeException re) {
-			log.error("merge failed", re);
+			log.error("find all failed", re);
 			throw re;
 		}
 	}
 
-	public void attachDirty(TbConsume instance) {
-		log.debug("attaching dirty TbConsume instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
+	private Query repeatCode(String... params) {
+		String queryString = "from TbConsume";
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(queryString);
+		if (params != null && params.length > 0) {
+			buffer.append(" as tb where ");
+			if (params[0] != null && !"".equals(params[0].trim())) {
+				buffer.append(" tb.consumeId=:cid and ");
+			}
+			if (params[1] != null && !"".equals(params[1].trim())) {
+				buffer.append(" tb.consumeName=:cname and ");
+			}
+			if (params[2] != null && !"".equals(params[2].trim())) {
+				buffer.append(" tb.consumePrice=:cstate and ");
+			}
+			buffer.append(" 1=1 ");
 		}
-	}
-
-	public void attachClean(TbConsume instance) {
-		log.debug("attaching clean TbConsume instance");
-		try {
-			getSession().buildLockRequest(LockOptions.NONE).lock(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
+		Query queryObject = getSession().createQuery(buffer.toString());
+		// 分页显示的操作
+		if (params != null && params.length > 0) {
+			if (params[0] != null && !"".equals(params[0].trim())) {
+				queryObject.setString("cid", params[0]);
+			}
+			if (params[1] != null && !"".equals(params[1].trim())) {
+				queryObject.setString("cname", params[1]);
+			}
+			if (params[2] != null && !"".equals(params[2].trim())) {
+				queryObject.setString("cstate", params[2]);
+			}
 		}
+		return queryObject;
 	}
 }

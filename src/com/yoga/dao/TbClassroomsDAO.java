@@ -8,7 +8,6 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
 
 import com.yoga.entity.TbClassrooms;
 import com.yoga.util.Page;
@@ -21,13 +20,13 @@ public class TbClassroomsDAO extends BaseHibernateDAO implements BaseDao<TbClass
 
 	public void save(TbClassrooms transientInstance) {
 		log.debug("saving TbClassrooms instance");
-		Transaction beginTransaction = getSession().beginTransaction();
+//		Transaction beginTransaction = getSession().beginTransaction();
 		try {
-			beginTransaction.begin();
+//			beginTransaction.begin();
 			getSession().save(transientInstance);
 			log.debug("save successful");
 		} catch (RuntimeException re) {
-			beginTransaction.rollback();
+//			beginTransaction.rollback();
 			log.error("save failed", re);
 			throw re;
 		}
@@ -88,48 +87,45 @@ public class TbClassroomsDAO extends BaseHibernateDAO implements BaseDao<TbClass
 		return findByProperty(CLASSROOMS_STATE, classroomsState);
 	}
 
-	public List findAll() {
+	public List findAll(String... params) {
 		log.debug("finding all TbClassrooms instances");
 		try {
 			String queryString = "from TbClassrooms";
-			Query queryObject = getSession().createQuery(queryString);
+			StringBuffer buffer = new StringBuffer();
+			buffer.append(queryString);
+			if (params != null && params.length > 0) {
+				buffer.append(" as tb where ");
+				if (params[0] != null && !"".equals(params[0].trim())) {
+					buffer.append(" tb.classroomsId=:cid and ");
+				}
+				if (params[1] != null && !"".equals(params[1].trim())) {
+					buffer.append(" tb.classroomsName=:cname and ");
+				}
+				if (params[2] != null && !"".equals(params[2].trim())) {
+					buffer.append(" tb.classroomsState=:cstate and ");
+				}
+				buffer.append(" 1=1 ");
+			}
+			Query queryObject = getSession().createQuery(buffer.toString());
+			// 分页显示的操作
+			if (params != null && params.length > 0) {
+				if (params[0] != null && !"".equals(params[0].trim())) {
+					queryObject.setString("cid", params[0]);
+				}
+				if (params[1] != null && !"".equals(params[1].trim())) {
+					queryObject.setString("cname", params[1]);
+				}
+				if (params[2] != null && !"".equals(params[2].trim())) {
+					if("1".equals(params[2])){
+						params[2] ="True";
+					}
+					boolean parseBoolean = Boolean.parseBoolean(params[2]);
+					queryObject.setBoolean("cstate", parseBoolean);
+				}
+			}
 			return queryObject.list();
 		} catch (RuntimeException re) {
 			log.error("find all failed", re);
-			throw re;
-		}
-	}
-
-	public TbClassrooms merge(TbClassrooms detachedInstance) {
-		log.debug("merging TbClassrooms instance");
-		try {
-			TbClassrooms result = (TbClassrooms) getSession().merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(TbClassrooms instance) {
-		log.debug("attaching dirty TbClassrooms instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(TbClassrooms instance) {
-		log.debug("attaching clean TbClassrooms instance");
-		try {
-			getSession().buildLockRequest(LockOptions.NONE).lock(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
 			throw re;
 		}
 	}
@@ -150,13 +146,13 @@ public class TbClassroomsDAO extends BaseHibernateDAO implements BaseDao<TbClass
 			buffer.append(queryString);
 			if (params != null && params.length > 0) {
 				buffer.append(" as tb where ");
-				if (params[0] != null && "".equals(params[0].trim())) {
+				if (params[0] != null && !"".equals(params[0].trim())) {
 					buffer.append(" tb.classroomsId=:cid and ");
 				}
-				if (params[1] != null && "".equals(params[1].trim())) {
+				if (params[1] != null && !"".equals(params[1].trim())) {
 					buffer.append(" tb.classroomsName=:cname and ");
 				}
-				if (params[2] != null && "".equals(params[2].trim())) {
+				if (params[2] != null && !"".equals(params[2].trim())) {
 					buffer.append(" tb.classroomsState=:cstate and ");
 				}
 				buffer.append(" 1=1 ");
@@ -164,20 +160,24 @@ public class TbClassroomsDAO extends BaseHibernateDAO implements BaseDao<TbClass
 			Query queryObject = getSession().createQuery(buffer.toString());
 			// 分页显示的操作
 			if (params != null && params.length > 0) {
-				if (params[0] != null && "".equals(params[0].trim())) {
+				if (params[0] != null && !"".equals(params[0].trim())) {
 					queryObject.setString("cid", params[0]);
 				}
-				if (params[1] != null && "".equals(params[1].trim())) {
+				if (params[1] != null && !"".equals(params[1].trim())) {
 					queryObject.setString("cname", params[1]);
 				}
-				if (params[2] != null && "".equals(params[2].trim())) {
-					queryObject.setBoolean("cstate", Boolean.parseBoolean(params[2]));
+				if (params[2] != null && !"".equals(params[2].trim())) {
+					if("1".equals(params[2])){
+						params[2] ="True";
+					}
+					boolean parseBoolean = Boolean.parseBoolean(params[2]);
+					queryObject.setBoolean("cstate", parseBoolean);
 				}
 			}
-			queryObject.setFirstResult(page - 1);// 显示第几页，当前页
+			queryObject.setFirstResult((page - 1) * size);// 显示第几页，当前页
 			queryObject.setMaxResults(size);// 每页做多显示的记录数
 			List list = queryObject.list();
-			pageList.setTotalElement(list.size(), size);
+			pageList.setTotalElement(findAll(params).size(),size);
 			pageList.setContent(list);
 			return pageList;
 		} catch (RuntimeException re) {
