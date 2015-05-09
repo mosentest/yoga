@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.full.min.css" />
 <link rel="stylesheet" href="assets/css/chosen.css" />
 <link rel="stylesheet" href="assets/css/datepicker.css" />
+<link rel="stylesheet" href="assets/css/bootstrap-timepicker.css" />
 <link rel="stylesheet" href="assets/css/daterangepicker.css" /> 
 <link rel="stylesheet" href="assets/css/ace.min.css" />
 <link rel="stylesheet" href="assets/css/ace-rtl.min.css" />
@@ -43,6 +44,7 @@
 <script src="assets/js/jquery.lazyload.js"></script>
 <script src="assets/js/jquery.showLoading.min.js"></script>
 <script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
 <script src="assets/js/date-time/daterangepicker.min.js"></script>
 <script src="assets/js/date-time/moment.min.js"></script>
 <script src="assets/js/jquery.easy-pie-chart.min.js"></script>

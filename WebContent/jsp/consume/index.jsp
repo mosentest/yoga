@@ -5,6 +5,7 @@
         <p>
           <lable>消费品编号：</lable><input type="text" id="id"/>
           <lable>消费品名称：</lable><input type="text" id="name"/>
+          <lable>消费品价格：</lable><input type="text" id="price"/>
         </p>
         <p>
           <button class="btn btn-primary btn-sm" id="search"><i class="icon-search align-top bigger-125"></i>查询</button>
@@ -19,7 +20,7 @@
           <div class="table-responsive"> 
            <div id="sample-table-2_wrapper" class="dataTables_wrapper" role="grid">
               <div class="row" >
-              <div class="col-sm-6"><div id="pager"  ><label >显示 <select size="1" onchange="javascript:gotoPage(1,'name=&beginTime=&endTime=')" id="p_pageSizeSelect">
+              <div class="col-sm-6"><div id="pager"  ><label >显示 <select size="1" onchange="javascript:gotoPage(1,'id=&name=&price=')" id="p_pageSizeSelect">
                 <option value="10" selected="selected" >10</option>
                 <option value="25" >25</option>
                 <option value="50" >50</option>
@@ -36,7 +37,7 @@
                  <th  role="columnheader"  rowspan="1" colspan="1" style="width: 50px;" >序号</th>
                  <th  role="columnheader"  rowspan="1" colspan="1" style="width: 153px;" >消费品编号</th> 
                  <th role="columnheader"  rowspan="1" colspan="1" style="width: 133px;" >消费品名称</th> 
-                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 130px;" > <i class="icon-time bigger-110 hidden-480"></i>价格</th> 
+                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 130px;" >消费品价格</th> 
                  <th  role="columnheader" rowspan="1" colspan="1" style="width: 156px;" aria-label="">操作</th> 
                 </tr> 
                </thead> 
@@ -60,11 +61,12 @@
 	    $("#search").click(function () {
 	           var id=$("#id").val();
 	           var name=$("#name").val();
-	           gotoPage(1,"id="+id+"&name="+name);
+	           var state=$("#price").val();
+	           gotoPage(1,"id="+id+"&name="+name+"&price="+state);
 	    });
 	    
 		/* 获取数据 */
-		gotoPage(1,"id=&name=");
+		gotoPage(1,"id=&name=&price=");
 		
 		/* 复选框操作 */
 		$('table th input:checkbox').on('click' , function(){
@@ -114,9 +116,8 @@
 			            		  +"<td >"+item.consumeName+"</td> "
 			            		  +"<td >"+item.consumePrice+"元</td> "
 			            		  +"<td >"+"<div class='visible-md visible-lg hidden-sm hidden-xs action-buttons' id='buttontools'>"
-			            		  				+"<a class='blue' href='javascript:showProvider(\""+item.consumeId+"\")'> <i class='icon-zoom-in bigger-130'></i>"
-			            		  				+"<a class='green' href='javascript:editProvider(\""+item.consumeId+"\")' > <i class='icon-pencil bigger-130'></i> </a>"
-			            		  				+"<a class='red' href='javascript:deleteProvider(\""+item.consumeId+"\")' > <i class='icon-trash bigger-130'></i> </a>"
+			            		  				+"<a class='green' href='consume/showOne.html?id="+item.consumeId+"' > <i class='icon-pencil bigger-130'></i> </a>"
+			            		  				+"<a class='red' href='consume/delete?id="+item.consumeId+"&name="+item.consumeName+"&price="+item.consumePrice+"' > <i class='icon-trash bigger-130'></i> </a>"
 			            		  				+"</td> "+"</tr>");
 			            });
 						var begin = Math.max(1, msg.page.currentPage - pagerRange/2 );
@@ -154,13 +155,6 @@
 	              $("#table-result").hideLoading();
 	          }
 		});
-	}
-	function showinfo(flag){
-		if(flag == false){
-			return "空闲";
-		}else{
-			return "占用";
-		}
 	}
 </script>
 </body>

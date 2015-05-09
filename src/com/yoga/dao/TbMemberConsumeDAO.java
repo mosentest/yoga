@@ -2,38 +2,71 @@ package com.yoga.dao;
 
 import java.util.List;
 
-import org.hibernate.LockOptions;
 import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.yoga.entity.TbMemberConsume;
+import com.yoga.util.Page;
 
-public class TbMemberConsumeDAO extends BaseHibernateDAO {
+public class TbMemberConsumeDAO extends BaseHibernateDAO implements BaseDao<TbMemberConsume>{
 	private static final Logger log = LoggerFactory.getLogger(TbMemberConsumeDAO.class);
 	// property constants
 	public static final String COST = "cost";
 
 	public void save(TbMemberConsume transientInstance) {
 		log.debug("saving TbMemberConsume instance");
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
 		try {
 			getSession().save(transientInstance);
+			beginTransaction.commit();
 			log.debug("save successful");
 		} catch (RuntimeException re) {
+			beginTransaction.rollback();
 			log.error("save failed", re);
 			throw re;
+		}finally {
+			getSession().close();
 		}
 	}
 
+	public void update(TbMemberConsume transientInstance) {
+		log.debug("updating TbMemberConsume instance");
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
+		try {
+			// http://www.blogjava.net/hrcdg/articles/157724.html
+			getSession().merge(transientInstance);
+			beginTransaction.commit();
+			log.debug("update successful");
+		} catch (RuntimeException re) {
+			re.printStackTrace();
+			beginTransaction.rollback();
+			log.error("update failed", re);
+			throw re;
+		} finally {
+			getSession().close();
+		}
+	}
+	
 	public void delete(TbMemberConsume persistentInstance) {
 		log.debug("deleting TbMemberConsume instance");
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
 		try {
 			getSession().delete(persistentInstance);
+			beginTransaction.commit();
 			log.debug("delete successful");
 		} catch (RuntimeException re) {
+			beginTransaction.rollback();
 			log.error("delete failed", re);
 			throw re;
+		}finally {
+			getSession().close();
 		}
 	}
 
@@ -73,53 +106,62 @@ public class TbMemberConsumeDAO extends BaseHibernateDAO {
 		}
 	}
 
-	public List findByCost(Object cost) {
-		return findByProperty(COST, cost);
-	}
-
-	public List findAll() {
+	public List findAll(String... params) {
 		log.debug("finding all TbMemberConsume instances");
 		try {
-			String queryString = "from TbMemberConsume";
-			Query queryObject = getSession().createQuery(queryString);
+			Query queryObject = repeatCode(params);
 			return queryObject.list();
 		} catch (RuntimeException re) {
 			log.error("find all failed", re);
 			throw re;
 		}
 	}
-
-	public TbMemberConsume merge(TbMemberConsume detachedInstance) {
-		log.debug("merging TbMemberConsume instance");
+	
+	/**
+	 * 2015-5-8 约定param只能传1个参数，对应表的字段<br>
+	 * <b> 传参数的时候params必须为数组并且对应字段</b>
+	 */
+	@Override
+	public Page<TbMemberConsume> findAll(int page, int size, String... params) {
+		Page<TbMemberConsume> pageList = new Page<TbMemberConsume>();
+		pageList.setPageSize(size);
+		pageList.setCurrentPage(page);
+		log.debug("finding all TbMemberConsume instances");
 		try {
-			TbMemberConsume result = (TbMemberConsume) getSession().merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
+			Query queryObject = repeatCode(params);
+			queryObject.setFirstResult((page - 1) * size);// 显示第几页，当前页
+			queryObject.setMaxResults(size);// 每页做多显示的记录数
+			List list = queryObject.list();
+			pageList.setTotalElement(findAll(params).size(), size);
+			pageList.setContent(list);
+			return pageList;
 		} catch (RuntimeException re) {
-			log.error("merge failed", re);
+			log.error("find all failed", re);
 			throw re;
 		}
 	}
 
-	public void attachDirty(TbMemberConsume instance) {
-		log.debug("attaching dirty TbMemberConsume instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
+	private Query repeatCode(String... params) {
+		String queryString = "from TbMemberConsume";
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(queryString);
+		if (params != null && params.length > 0) {
+			buffer.append(" as tb where ");
+			if (params[0] != null && !"".equals(params[0].trim())) {
+				buffer.append(" tb.memberConsumeId=:id and ");
+			}
+			if (params[1] != null && !"".equals(params[2].trim())) {
+				buffer.append(" tb.tbMember.memberUsername=:name and ");
+			}
+			buffer.append(" 1=1 ");
 		}
-	}
-
-	public void attachClean(TbMemberConsume instance) {
-		log.debug("attaching clean TbMemberConsume instance");
-		try {
-			getSession().buildLockRequest(LockOptions.NONE).lock(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
+		Query queryObject = getSession().createQuery(buffer.toString());
+		// 分页显示的操作
+		if (params != null && params.length > 0) {
+			if (params[0] != null && !"".equals(params[0].trim())) {
+				queryObject.setString("id", params[0]);
+			}
 		}
+		return queryObject;
 	}
 }

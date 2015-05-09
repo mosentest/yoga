@@ -2,17 +2,17 @@ package com.yoga.dao;
 
 import java.util.List;
 
-import org.hibernate.LockOptions;
 import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.yoga.entity.TbClassrooms;
 import com.yoga.entity.TbConsume;
 import com.yoga.util.Page;
 
-public class TbConsumeDAO extends BaseHibernateDAO implements BaseDao<TbConsume>{
+public class TbConsumeDAO extends BaseHibernateDAO implements BaseDao<TbConsume> {
 	private static final Logger log = LoggerFactory.getLogger(TbConsumeDAO.class);
 	// property constants
 	public static final String CONSUME_NAME = "consumeName";
@@ -20,23 +20,54 @@ public class TbConsumeDAO extends BaseHibernateDAO implements BaseDao<TbConsume>
 
 	public void save(TbConsume transientInstance) {
 		log.debug("saving TbConsume instance");
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
 		try {
 			getSession().save(transientInstance);
+			beginTransaction.commit();
 			log.debug("save successful");
 		} catch (RuntimeException re) {
+			beginTransaction.rollback();
 			log.error("save failed", re);
 			throw re;
+		} finally {
+			getSession().close();
+		}
+	}
+
+	public void update(TbConsume transientInstance) {
+		log.debug("updating TbConsume instance");
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
+		try {
+			// http://www.blogjava.net/hrcdg/articles/157724.html
+			getSession().merge(transientInstance);
+			beginTransaction.commit();
+			log.debug("update successful");
+		} catch (RuntimeException re) {
+			re.printStackTrace();
+			beginTransaction.rollback();
+			log.error("update failed", re);
+			throw re;
+		} finally {
+			getSession().close();
 		}
 	}
 
 	public void delete(TbConsume persistentInstance) {
 		log.debug("deleting TbConsume instance");
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
 		try {
 			getSession().delete(persistentInstance);
+			beginTransaction.commit();
 			log.debug("delete successful");
 		} catch (RuntimeException re) {
+			beginTransaction.rollback();
 			log.error("delete failed", re);
 			throw re;
+		} finally {
+			getSession().close();
 		}
 	}
 
@@ -110,7 +141,7 @@ public class TbConsumeDAO extends BaseHibernateDAO implements BaseDao<TbConsume>
 			queryObject.setFirstResult((page - 1) * size);// 显示第几页，当前页
 			queryObject.setMaxResults(size);// 每页做多显示的记录数
 			List list = queryObject.list();
-			pageList.setTotalElement(findAll(params).size(),size);
+			pageList.setTotalElement(findAll(params).size(), size);
 			pageList.setContent(list);
 			return pageList;
 		} catch (RuntimeException re) {
@@ -126,10 +157,10 @@ public class TbConsumeDAO extends BaseHibernateDAO implements BaseDao<TbConsume>
 		if (params != null && params.length > 0) {
 			buffer.append(" as tb where ");
 			if (params[0] != null && !"".equals(params[0].trim())) {
-				buffer.append(" tb.consumeId=:cid and ");
+				buffer.append(" tb.consumeId like:cid and ");
 			}
 			if (params[1] != null && !"".equals(params[1].trim())) {
-				buffer.append(" tb.consumeName=:cname and ");
+				buffer.append(" tb.consumeName like:cname and ");
 			}
 			if (params[2] != null && !"".equals(params[2].trim())) {
 				buffer.append(" tb.consumePrice=:cstate and ");
@@ -140,10 +171,10 @@ public class TbConsumeDAO extends BaseHibernateDAO implements BaseDao<TbConsume>
 		// 分页显示的操作
 		if (params != null && params.length > 0) {
 			if (params[0] != null && !"".equals(params[0].trim())) {
-				queryObject.setString("cid", params[0]);
+				queryObject.setString("cid", "%"+params[0]+"%");
 			}
 			if (params[1] != null && !"".equals(params[1].trim())) {
-				queryObject.setString("cname", params[1]);
+				queryObject.setString("cname", "%"+params[1]+"%");
 			}
 			if (params[2] != null && !"".equals(params[2].trim())) {
 				queryObject.setString("cstate", params[2]);

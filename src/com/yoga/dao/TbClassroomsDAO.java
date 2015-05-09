@@ -2,14 +2,12 @@ package com.yoga.dao;
 
 import java.util.List;
 
-import org.hibernate.LockOptions;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.yoga.entity.TbClassrooms;
 import com.yoga.util.Page;
@@ -181,10 +179,10 @@ public class TbClassroomsDAO extends BaseHibernateDAO implements BaseDao<TbClass
 			if (params != null && params.length > 0) {
 				buffer.append(" as tb where ");
 				if (params[0] != null && !"".equals(params[0].trim())) {
-					buffer.append(" tb.classroomsId=:cid and ");
+					buffer.append(" tb.classroomsId like:cid and ");
 				}
 				if (params[1] != null && !"".equals(params[1].trim())) {
-					buffer.append(" tb.classroomsName=:cname and ");
+					buffer.append(" tb.classroomsName like:cname and ");
 				}
 				if (params[2] != null && !"".equals(params[2].trim())) {
 					buffer.append(" tb.classroomsState=:cstate and ");
@@ -195,10 +193,10 @@ public class TbClassroomsDAO extends BaseHibernateDAO implements BaseDao<TbClass
 			// 分页显示的操作
 			if (params != null && params.length > 0) {
 				if (params[0] != null && !"".equals(params[0].trim())) {
-					queryObject.setString("cid", params[0]);
+					queryObject.setString("cid", "%"+params[0]+"%");
 				}
 				if (params[1] != null && !"".equals(params[1].trim())) {
-					queryObject.setString("cname", params[1]);
+					queryObject.setString("cname", "%"+params[1]+"%");
 				}
 				if (params[2] != null && !"".equals(params[2].trim())) {
 					if("1".equals(params[2])){

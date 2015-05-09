@@ -1,5 +1,7 @@
 package com.yoga.util;
 
+import java.util.List;
+
 /**
  * Action类返回的格式
  * 
@@ -10,6 +12,7 @@ package com.yoga.util;
 public class JsonResponse<T> {
 	private boolean success;
 	private String msg;
+	private List<T> list= null;
 	private Page<T> page = null;
 	private T entity = null;
 
@@ -44,4 +47,13 @@ public class JsonResponse<T> {
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
+
+	public List<T> getList() {
+		return list;
+	}
+
+	public void setList(List<T> list) {
+		this.list = list;
+	}
+	
 }

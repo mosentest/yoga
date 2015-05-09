@@ -25,6 +25,17 @@ public class TbCourseTypeDAO extends BaseHibernateDAO {
 			throw re;
 		}
 	}
+	
+	public void update(TbCourseType transientInstance) {
+		log.debug("updating TbCourseType instance");
+		try {
+			getSession().merge(transientInstance);
+			log.debug("update successful");
+		} catch (RuntimeException re) {
+			log.error("update failed", re);
+			throw re;
+		}
+	}
 
 	public void delete(TbCourseType persistentInstance) {
 		log.debug("deleting TbCourseType instance");

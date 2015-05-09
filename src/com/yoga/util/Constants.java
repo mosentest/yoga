@@ -17,6 +17,7 @@ public class Constants {
 	public final static String DELETE = "删除";
 	public final static String CLASSROOM = "课室";
 	public final static String CONSUME = "消费品";
+	public final static String COURSE = "课程";
 	public final static String LIMIT = "权限";
 	public final static String MEMBER = "会员";
 	public final static String ORDER = "订单";

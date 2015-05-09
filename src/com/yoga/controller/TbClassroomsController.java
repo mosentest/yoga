@@ -46,7 +46,6 @@ public class TbClassroomsController  {
 	public JsonResponse<TbClassrooms> add(final String id,final String name,final String state) {
 		JsonResponse<TbClassrooms> jsonResponse = new JsonResponse<TbClassrooms>();
 		try {
-			TbClassrooms findById = dao.findById(id);
 			TbClassrooms entity = getBean(id, name, state);
 			dao.save(entity);
 			jsonResponse.setMsg(Constants.getTip(Constants.ADD, Constants.CLASSROOM, Constants.SUCCESS));
@@ -70,7 +69,6 @@ public class TbClassroomsController  {
 	public JsonResponse<TbClassrooms> edit(final String id,final String name,final String state) {
 		JsonResponse<TbClassrooms> jsonResponse = new JsonResponse<TbClassrooms>();
 		try {
-			TbClassrooms findById = dao.findById(id);
 			TbClassrooms entity = getBean(id, name, state);
 			dao.update(entity);
 			jsonResponse.setMsg(Constants.getTip(Constants.EDIT, Constants.CLASSROOM, Constants.SUCCESS));
@@ -91,7 +89,6 @@ public class TbClassroomsController  {
 	 */
 	@RequestMapping(value = "classrooms/delete", method = RequestMethod.GET)
 	public ModelAndView delete(final String id, final String name,final String state) {
-		JsonResponse<TbClassrooms> jsonResponse = new JsonResponse<TbClassrooms>();
 		try {
 			TbClassrooms entity = getBean(id, name, state);
 			dao.delete(entity);

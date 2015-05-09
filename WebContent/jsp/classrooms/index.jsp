@@ -25,7 +25,7 @@
           <div class="table-responsive"> 
            <div id="sample-table-2_wrapper" class="dataTables_wrapper" role="grid">
               <div class="row" >
-              <div class="col-sm-6"><div id="pager"  ><label >显示 <select size="1" onchange="javascript:gotoPage(1,'name=&beginTime=&endTime=')" id="p_pageSizeSelect">
+              <div class="col-sm-6"><div id="pager"><label >显示 <select size="1" onchange="javascript:gotoPage(1,'id=&name=&state=')" id="p_pageSizeSelect">
                 <option value="10" selected="selected" >10</option>
                 <option value="25" >25</option>
                 <option value="50" >50</option>
