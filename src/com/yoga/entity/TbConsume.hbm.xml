@@ -8,7 +8,7 @@
             <generator class="assigned" />
         </id>
         <property name="consumeName" type="java.lang.String">
-            <column name="consume_name" length="20">
+            <column name="consume_name" length="20" not-null="true">
                 <comment>消费品名称</comment>
             </column>
         </property>
@@ -17,13 +17,13 @@
                 <comment>消费品价格</comment>
             </column>
         </property>
-        <set name="tbMemberConsumeDetails" inverse="true">
-            <key>
-                <column name="consume_id" length="32">
-                    <comment>消费编号</comment>
-                </column>
-            </key>
-            <one-to-many class="com.yoga.entity.TbMemberConsumeDetail" />
-        </set>
+<!--         <set name="tbMemberConsumeDetails" inverse="true"> -->
+<!--             <key> -->
+<!--                 <column name="consume_id" length="32"> -->
+<!--                     <comment>消费编号</comment> -->
+<!--                 </column> -->
+<!--             </key> -->
+<!--             <one-to-many class="com.yoga.entity.TbMemberConsumeDetail" /> -->
+<!--         </set> -->
     </class>
 </hibernate-mapping>

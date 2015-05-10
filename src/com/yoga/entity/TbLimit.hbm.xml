@@ -8,7 +8,7 @@
             <generator class="native" />
         </id>
         <property name="name" type="java.lang.String">
-            <column name="name">
+            <column name="name" not-null="true">
                 <comment>权限名称</comment>
             </column>
         </property>

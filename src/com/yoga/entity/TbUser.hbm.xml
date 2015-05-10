@@ -13,7 +13,7 @@
             </column>
         </many-to-one>
         <property name="userUsername" type="java.lang.String">
-            <column name="user_username" length="20">
+            <column name="user_username" length="20" not-null="true">
                 <comment>帐号</comment>
             </column>
         </property>

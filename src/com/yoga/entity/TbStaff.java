@@ -17,7 +17,7 @@ public class TbStaff implements java.io.Serializable {
 	private Short staffAge;
 	private String staffPost;
 	private String staffPhone;
-	private Boolean idDelete;
+	// private Boolean idDelete;
 	private Set tbStaffDetails = new HashSet(0);
 	private Set tbUsers = new HashSet(0);
 	private Set tbStaffCourseClassroomses = new HashSet(0);
@@ -29,15 +29,14 @@ public class TbStaff implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TbStaff(String staffName, Boolean staffSex, Short staffAge,
-			String staffPost, String staffPhone, Boolean idDelete,
-			Set tbStaffDetails, Set tbUsers, Set tbStaffCourseClassroomses) {
+	public TbStaff(String staffName, Boolean staffSex, Short staffAge, String staffPost, String staffPhone, Set tbStaffDetails, Set tbUsers,
+			Set tbStaffCourseClassroomses) {
 		this.staffName = staffName;
 		this.staffSex = staffSex;
 		this.staffAge = staffAge;
 		this.staffPost = staffPost;
 		this.staffPhone = staffPhone;
-		this.idDelete = idDelete;
+		// this.idDelete = idDelete;
 		this.tbStaffDetails = tbStaffDetails;
 		this.tbUsers = tbUsers;
 		this.tbStaffCourseClassroomses = tbStaffCourseClassroomses;
@@ -91,14 +90,6 @@ public class TbStaff implements java.io.Serializable {
 
 	public void setStaffPhone(String staffPhone) {
 		this.staffPhone = staffPhone;
-	}
-
-	public Boolean getIdDelete() {
-		return this.idDelete;
-	}
-
-	public void setIdDelete(Boolean idDelete) {
-		this.idDelete = idDelete;
 	}
 
 	public Set getTbStaffDetails() {

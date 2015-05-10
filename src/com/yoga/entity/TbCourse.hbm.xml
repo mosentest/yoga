@@ -13,7 +13,7 @@
             </column>
         </many-to-one>
         <property name="couresName" type="java.lang.String">
-            <column name="coures_name" length="20">
+            <column name="coures_name" length="20" not-null="true">
                 <comment>课程名称</comment>
             </column>
         </property>

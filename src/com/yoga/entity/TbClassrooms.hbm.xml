@@ -8,7 +8,7 @@
             <generator class="assigned" />
         </id>
         <property name="classroomsName" type="java.lang.String">
-            <column name="classrooms_name" length="20">
+            <column name="classrooms_name" length="20" not-null="true">
                 <comment>课室名称</comment>
             </column>
         </property>
@@ -17,11 +17,11 @@
                 <comment>课室状态（0空闲，1占用）</comment>
             </column>
         </property>
-        <set name="tbStaffCourseClassroomses" inverse="true">
-            <key>
-                <column name="classrooms_id" length="32" />
-            </key>
-            <one-to-many class="com.yoga.entity.TbStaffCourseClassrooms" />
-        </set>
+<!--         <set name="tbStaffCourseClassroomses" inverse="true"> -->
+<!--             <key> -->
+<!--                 <column name="classrooms_id" length="32" /> -->
+<!--             </key> -->
+<!--             <one-to-many class="com.yoga.entity.TbStaffCourseClassrooms" /> -->
+<!--         </set> -->
     </class>
 </hibernate-mapping>
