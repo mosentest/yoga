@@ -13,6 +13,7 @@ public class TbLimit implements java.io.Serializable {
 
 	private Integer id;
 	private String name;
+	private String href;
 	private Set tbRoleLimits = new HashSet(0);
 
 	// Constructors
@@ -51,6 +52,14 @@ public class TbLimit implements java.io.Serializable {
 
 	public void setTbRoleLimits(Set tbRoleLimits) {
 		this.tbRoleLimits = tbRoleLimits;
+	}
+
+	public String getHref() {
+		return href;
+	}
+
+	public void setHref(String href) {
+		this.href = href;
 	}
 
 }

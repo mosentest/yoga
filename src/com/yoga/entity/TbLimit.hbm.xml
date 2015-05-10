@@ -12,6 +12,11 @@
                 <comment>权限名称</comment>
             </column>
         </property>
+        <property name="href" type="java.lang.String">
+            <column name="href">
+                <comment>权限访问链接</comment>
+            </column>
+        </property>
         <set name="tbRoleLimits" inverse="true">
             <key>
                 <column name="limit_id" />

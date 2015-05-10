@@ -54,11 +54,7 @@
        <div class="form-group">
         <label class="col-sm-3 control-label no-padding-right font" >课程类型： </label> 
         <div class="col-sm-9">
-          <select>
-            <option>--选择--</option>
-            <option>--选择--</option>
-            <option>--选择--</option>
-            <option>--选择--</option>
+          <select id="type" class="chosen-select" data-placeholder="请选择">
           </select>
         </div> 
        </div> 
@@ -77,9 +73,22 @@
 <script>
     $(function () {
 
+    	//类型select
+	    $.get("courseType/list.html",function(msg){
+       	var html = "";
+	    	$.each(msg.list, function(i, item) {
+	    		html +="<option value='&typeId="+item.id+"&type="+item.type+"'>&nbsp;&nbsp;&nbsp;&nbsp;"+item.type+"&nbsp;&nbsp;&nbsp;&nbsp;</option>";
+		    });
+	    	$("#type").append(html);
+	    	$("#type").chosen();
+			$("#type").css("width","860px");
+		});
+        
+    	//日期选择器
 	    $('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){   
 	    });
 
+    	//时间选择器
 		$('#time1').timepicker({
 			minuteStep: 1,
 			showSeconds: true,
@@ -87,7 +96,8 @@
 		}).next().on(ace.click_event, function(){
 			$(this).prev().focus();
 		});
-		
+
+		//时间选择器
 		$('#time2').timepicker({
 			minuteStep: 1,
 			showSeconds: true,
@@ -95,11 +105,13 @@
 		}).next().on(ace.click_event, function(){
 			$(this).prev().focus();
 		});
-		
+
+		//返回
 		$('#backid').click(function(){
 				window.location.href="jsp/course/index.jsp";
 		 });
-		 
+
+		 //访问的action
 		$url ="";
 		
 		if(${!empty update }){
@@ -111,7 +123,15 @@
 	        $.ajax({
 	            type: "get",
 	            url: $url,
-	            data: "id="+$("#id").val()+"&name="+$("#name").val()+"&price="+$("#price").val(),
+// 	            final String id, final String name,
+// 				final String price,final String date,final String time1,final String time2,int typeId, String type
+	            data: "id="+$("#id").val()+
+	            	  "&name="+$("#name").val()+
+	            	  "&price="+$("#price").val()+
+	            	  "&date="+$("#date").val()+
+	            	  "&time1="+$("#time1").val()+
+	            	  "&time2="+$("#time2").val()+
+	            	  $("#type").val(),
 	            success: function(data) {
 	            	if(data.success == true){
 			            $("#warning-block").html('<div class="alert alert-block alert-success">'+

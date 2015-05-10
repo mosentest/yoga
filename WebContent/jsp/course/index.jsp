@@ -68,7 +68,8 @@
 	           var id=$("#id").val();
 	           var name=$("#name").val();
 	           var state=$("#price").val();
-	           gotoPage(1,"id="+id+"&name="+name+"&price="+state);
+	           var date=$("#date").val();
+	           gotoPage(1,"id="+id+"&name="+name+"&date="+date+"&price="+state);
 	    });
 	    
 		/* 获取数据 */

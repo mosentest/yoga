@@ -143,7 +143,7 @@ public class TbCourseTypeController  {
 		}catch(Exception exception){
 			exception.printStackTrace();
 		}
-		return new ModelAndView("courseType/add");
+		return new ModelAndView("course/add");
 	}
 	
 	/**

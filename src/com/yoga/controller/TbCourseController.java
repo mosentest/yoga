@@ -46,10 +46,10 @@ public class TbCourseController  {
 	@RequestMapping(value = "course/add", method = RequestMethod.GET)
 	@ResponseBody
 	public JsonResponse<TbCourse> add(final String id, final String name,
-			final String price,final String date,final String time1,final String time2,int typeId, String type) {
+			final String price,final String date,final String time1,final String time2,String typeId, String type) {
 		JsonResponse<TbCourse> jsonResponse = new JsonResponse<TbCourse>();
 		try {
-			TbCourse entity = getBean(id, name, price,date,time1,time2,typeId,type);
+			TbCourse entity = getBean(id, name, price,date,time1,time2,Integer.parseInt(typeId),type);
 			dao.save(entity);
 			jsonResponse.setMsg(Constants.getTip(Constants.ADD, Constants.COURSE, Constants.SUCCESS));
 			jsonResponse.setSuccess(true);
@@ -71,10 +71,10 @@ public class TbCourseController  {
 	@RequestMapping(value = "course/edit", method = RequestMethod.GET)
 	@ResponseBody
 	public JsonResponse<TbCourse> edit(final String id, final String name,
-			final String price,final String date,final String time1,final String time2,int typeId, String type) {
+			final String price,final String date,final String time1,final String time2,String typeId, String type) {
 		JsonResponse<TbCourse> jsonResponse = new JsonResponse<TbCourse>();
 		try {
-			TbCourse entity = getBean(id, name, price,date,time1,time2,typeId,type);
+			TbCourse entity = getBean(id, name, price,date,time1,time2,Integer.parseInt(typeId),type);
 			dao.update(entity);
 			jsonResponse.setMsg(Constants.getTip(Constants.EDIT, Constants.COURSE, Constants.SUCCESS));
 			jsonResponse.setSuccess(true);
@@ -95,9 +95,9 @@ public class TbCourseController  {
 	 */
 	@RequestMapping(value = "course/delete", method = RequestMethod.GET)
 	public ModelAndView delete(final String id, final String name,
-			final String price,final String date,final String time1,final String time2,int typeId,String type) {
+			final String price,final String date,final String time1,final String time2,String typeId,String type) {
 		try {
-			TbCourse entity = getBean(id, name, price,date,time1,time2,typeId,type);
+			TbCourse entity = getBean(id, name, price,date,time1,time2,Integer.parseInt(typeId),type);
 			dao.update(entity);
 			dao.delete(entity);
 		} catch (Exception e) {
