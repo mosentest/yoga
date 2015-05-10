@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.hibernate.LockOptions;
 import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +27,7 @@ public class TbCourseTypeDAO extends BaseHibernateDAO {
 			throw re;
 		}
 	}
-	
+
 	public void update(TbCourseType transientInstance) {
 		log.debug("updating TbCourseType instance");
 		try {
@@ -90,13 +92,19 @@ public class TbCourseTypeDAO extends BaseHibernateDAO {
 
 	public List findAll() {
 		log.debug("finding all TbCourseType instances");
+		//TODO...好奇怪拿不到
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
 		try {
 			String queryString = "from TbCourseType";
-			Query queryObject = getSession().createQuery(queryString);
+			Query queryObject = session.createQuery(queryString);
+			beginTransaction.commit();
 			return queryObject.list();
 		} catch (RuntimeException re) {
 			log.error("find all failed", re);
 			throw re;
+		}finally{
+			session.close();
 		}
 	}
 

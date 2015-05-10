@@ -11,8 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.yoga.entity.TbMemberType;
 
 public class TbMemberTypeDAO extends BaseHibernateDAO {
-	private static final Logger log = LoggerFactory
-			.getLogger(TbMemberTypeDAO.class);
+	private static final Logger log = LoggerFactory.getLogger(TbMemberTypeDAO.class);
 	// property constants
 	public static final String TYPE = "type";
 
@@ -41,8 +40,7 @@ public class TbMemberTypeDAO extends BaseHibernateDAO {
 	public TbMemberType findById(java.lang.Integer id) {
 		log.debug("getting TbMemberType instance with id: " + id);
 		try {
-			TbMemberType instance = (TbMemberType) getSession().get(
-					"com.yoga.entity.TbMemberType", id);
+			TbMemberType instance = (TbMemberType) getSession().get("com.yoga.entity.TbMemberType", id);
 			return instance;
 		} catch (RuntimeException re) {
 			log.error("get failed", re);
@@ -53,11 +51,8 @@ public class TbMemberTypeDAO extends BaseHibernateDAO {
 	public List findByExample(TbMemberType instance) {
 		log.debug("finding TbMemberType instance by example");
 		try {
-			List results = getSession()
-					.createCriteria("com.yoga.entity.TbMemberType")
-					.add(Example.create(instance)).list();
-			log.debug("find by example successful, result size: "
-					+ results.size());
+			List results = getSession().createCriteria("com.yoga.entity.TbMemberType").add(Example.create(instance)).list();
+			log.debug("find by example successful, result size: " + results.size());
 			return results;
 		} catch (RuntimeException re) {
 			log.error("find by example failed", re);
@@ -66,11 +61,9 @@ public class TbMemberTypeDAO extends BaseHibernateDAO {
 	}
 
 	public List findByProperty(String propertyName, Object value) {
-		log.debug("finding TbMemberType instance with property: "
-				+ propertyName + ", value: " + value);
+		log.debug("finding TbMemberType instance with property: " + propertyName + ", value: " + value);
 		try {
-			String queryString = "from TbMemberType as model where model."
-					+ propertyName + "= ?";
+			String queryString = "from TbMemberType as model where model." + propertyName + "= ?";
 			Query queryObject = getSession().createQuery(queryString);
 			queryObject.setParameter(0, value);
 			return queryObject.list();
@@ -99,8 +92,7 @@ public class TbMemberTypeDAO extends BaseHibernateDAO {
 	public TbMemberType merge(TbMemberType detachedInstance) {
 		log.debug("merging TbMemberType instance");
 		try {
-			TbMemberType result = (TbMemberType) getSession().merge(
-					detachedInstance);
+			TbMemberType result = (TbMemberType) getSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {

@@ -2,11 +2,6 @@ package com.yoga.entity;
 
 import java.util.HashSet;
 import java.util.Set;
-
-/**
- * TbMemberType entity. @author MyEclipse Persistence Tools
- */
-
 public class TbMemberType implements java.io.Serializable {
 
 	// Fields

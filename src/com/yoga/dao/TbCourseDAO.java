@@ -158,10 +158,10 @@ public class TbCourseDAO extends BaseHibernateDAO implements BaseDao<TbCourse> {
 		if (params != null && params.length > 0) {
 			buffer.append(" as tb where ");
 			if (params[0] != null && !"".equals(params[0].trim())) {
-				buffer.append(" tb.consumeId=:cid and ");
+				buffer.append(" tb.consumeId like:cid and ");
 			}
 			if (params[1] != null && !"".equals(params[1].trim())) {
-				buffer.append(" tb.couresName=:cname and ");
+				buffer.append(" tb.couresName like:cname and ");
 			}
 			if (params[2] != null && !"".equals(params[2].trim())) {
 				buffer.append(" tb.courseDate=:ctime and ");
@@ -175,10 +175,10 @@ public class TbCourseDAO extends BaseHibernateDAO implements BaseDao<TbCourse> {
 		// 分页显示的操作
 		if (params != null && params.length > 0) {
 			if (params[0] != null && !"".equals(params[0].trim())) {
-				queryObject.setString("cid", params[0]);
+				queryObject.setString("cid", "%"+params[0]+ "%");
 			}
 			if (params[1] != null && !"".equals(params[1].trim())) {
-				queryObject.setString("cname", params[1]);
+				queryObject.setString("cname",  "%"+params[1]+ "%");
 			}
 			if (params[2] != null && !"".equals(params[2].trim())) {
 				queryObject.setDate("ctime", DateUtil.str2Date(params[2], "yyyy-MM-dd"));

@@ -12,13 +12,13 @@
                 <comment>课程类型</comment>
             </column>
         </property>
-        <set name="tbCourses" inverse="true">
-            <key>
-                <column name="coures_type_id">
-                    <comment>课程类型编号</comment>
-                </column>
-            </key>
-            <one-to-many class="com.yoga.entity.TbCourse" />
-        </set>
+<!--         <set name="tbCourses" inverse="true"> -->
+<!--             <key> -->
+<!--                 <column name="coures_type_id"> -->
+<!--                     <comment>课程类型编号</comment> -->
+<!--                 </column> -->
+<!--             </key> -->
+<!--             <one-to-many class="com.yoga.entity.TbCourse" /> -->
+<!--         </set> -->
     </class>
 </hibernate-mapping>

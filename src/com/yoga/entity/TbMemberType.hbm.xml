@@ -12,13 +12,13 @@
                 <comment>会员类型</comment>
             </column>
         </property>
-        <set name="tbMembers" inverse="true">
-            <key>
-                <column name="member_type_id">
-                    <comment>类别</comment>
-                </column>
-            </key>
-            <one-to-many class="com.yoga.entity.TbMember" />
-        </set>
+<!--         <set name="tbMembers" inverse="true"> -->
+<!--             <key> -->
+<!--                 <column name="member_type_id"> -->
+<!--                     <comment>类别</comment> -->
+<!--                 </column> -->
+<!--             </key> -->
+<!--             <one-to-many class="com.yoga.entity.TbMember" /> -->
+<!--         </set> -->
     </class>
 </hibernate-mapping>

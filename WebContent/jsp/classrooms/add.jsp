@@ -23,7 +23,7 @@
         <div class="col-sm-9"> 
           <select name="state" id="state">
             <option value="-1">--请选择--</option>
-            <option value='0' <c:if test="${!empty update }"><c:if test="${classrooms.classroomsState == false }">selected="selected"</c:if></c:if>>&nbsp;空闲</option>
+            <option value='0' <c:if test="${!empty update }"><c:if test="${classrooms.classroomsState == false }">selected="selected"</c:if></c:if> >&nbsp;空闲</option>
             <option value='1' <c:if test="${!empty update }"><c:if test="${classrooms.classroomsState == true }">selected="selected"</c:if></c:if>  >&nbsp;占用</option>
           </select>
         </div> 

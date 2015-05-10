@@ -3,14 +3,9 @@
 <div class="page-content">
       <div class="page-header fixed-div">
         <p>
-          <lable>课室编号：</lable><input type="text" id="id"/>
-          <lable>课室名称：</lable><input type="text" id="name"/>
-          <lable>课室状态：</lable>
-          <select id="state">
-            <option value="-1">--请选择--</option>
-            <option value="0">空闲</option>
-            <option value="1">占用</option>
-          </select>
+          <lable>会员编号：</lable><input type="text" id="id"/>
+          <lable>会员名字：</lable><input type="text" id="name"/>
+          <lable>家庭住址：</lable><input type="text" id="address"/>
         </p>
         <p>
           <button class="btn btn-primary btn-sm" id="search"><i class="icon-search align-top bigger-125"></i>查询</button>
@@ -25,7 +20,7 @@
           <div class="table-responsive"> 
            <div id="sample-table-2_wrapper" class="dataTables_wrapper" role="grid">
               <div class="row" >
-              <div class="col-sm-6"><div id="pager"  ><label >显示 <select size="1" onchange="javascript:gotoPage(1,'name=&beginTime=&endTime=')" id="p_pageSizeSelect">
+              <div class="col-sm-6"><div id="pager"  ><label >显示 <select size="1" onchange="javascript:gotoPage(1,'id=&name=&price=')" id="p_pageSizeSelect">
                 <option value="10" selected="selected" >10</option>
                 <option value="25" >25</option>
                 <option value="50" >50</option>
@@ -40,9 +35,13 @@
                 <tr role="row"> 
                  <th role="columnheader" rowspan="1" colspan="1" style="width: 57px;" aria-label=""> <label> <input type="checkbox" class="ace"  id="checkall"/> <span class="lbl"></span> </label> </th> 
                  <th  role="columnheader"  rowspan="1" colspan="1" style="width: 50px;" >序号</th>
-                 <th  role="columnheader"  rowspan="1" colspan="1" style="width: 153px;" >课室编号</th> 
-                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 133px;" >课室名称</th> 
-                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 130px;" > <i class="icon-time bigger-110 hidden-480"></i>状态</th> 
+                 <th  role="columnheader"  rowspan="1" colspan="1" style="width: 153px;" >会员编号</th> 
+                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 133px;" >会员帐号</th> 
+                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 130px;" >会员名字</th> 
+                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 130px;" >性别</th>
+                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 130px;" >身份证</th>
+                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 130px;" >手机号</th>
+                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 130px;" >家庭住址</th>
                  <th  role="columnheader" rowspan="1" colspan="1" style="width: 156px;" aria-label="">操作</th> 
                 </tr> 
                </thead> 
@@ -62,16 +61,17 @@
      <!-- /.page-content -->
     <script type="text/javascript">
 	jQuery(function($) {
+
 		//条件查询
 	    $("#search").click(function () {
 	           var id=$("#id").val();
 	           var name=$("#name").val();
-	           var state=$("#state").val();
-	           gotoPage(1,"id="+id+"&name="+name+"&state="+state);
+	           var address=$("#address").val();
+	           gotoPage(1,"id="+id+"&name="+name+"&address="+address);
 	    });
 	    
 		/* 获取数据 */
-		gotoPage(1,"id=&name=&state=");
+		gotoPage(1,"id=&name=&address=");
 		
 		/* 复选框操作 */
 		$('table th input:checkbox').on('click' , function(){
@@ -85,7 +85,7 @@
 
 		//跳转到新增页面
 		$('#add').click(function(){
-			window.location.href="jsp/classrooms/add.jsp";
+			countDown(2, "jsp/member/add.jsp");
 	 	});
 	
 	});
@@ -99,7 +99,7 @@
 		//TODO 测试用
 		//alert("page=" + pageIndex + "&size=" + pageSize+"&"+cond);
 		$.ajax({
-			url : "classrooms/list.html",
+			url : "member/list.html",
 			type : 'get',
 			data : "page=" + pageIndex + "&size=" + pageSize+"&"+cond,
 			aysnc : false,
@@ -115,15 +115,27 @@
 				}else{
 					$.each(msg.page.content, function(i, item) {
 			              $('#tb').append( "<tr>"
-			            		  +"<td><label> <input type='checkbox' class='ace' name='checkbox' value='"+item.classroomsId+"' /><span class='lbl'></span> </label></td>"
+			            		  +"<td><label> <input type='checkbox' class='ace' name='checkbox' value='"+item.memberId+"' /><span class='lbl'></span> </label></td>"
 			            		  +"<td >"+(++i)+"</td> "
-			            		  +"<td >"+item.classroomsId+"</td> "
-			            		  +"<td >"+item.classroomsName+"</td> "
-			            		  +"<td >"+showinfo(item.classroomsState)+"</td> "
+			            		  +"<td >"+item.memberId+"</td> "
+			            		  +"<td >"+item.memberUsername+"</td> "
+			            		  +"<td >"+item.memberName+"</td> "
+			            		  +"<td >"+showinfo(item.memberSex)+"</td> "
+			            		  +"<td >"+item.memberCard+"</td> "
+			            		  +"<td >"+item.memberPhone+"</td> "
+			            		  +"<td >"+item.memberAddress+"</td> "
 			            		  +"<td >"+"<div class='visible-md visible-lg hidden-sm hidden-xs action-buttons' id='buttontools'>"
-			            		  				+"<a class='blue' href='javascript:showProvider(\""+item.classroomsId+"\")'> <i class='icon-zoom-in bigger-130'></i>"
-			            		  				+"<a class='green' href='javascript:editProvider(\""+item.classroomsId+"\")' > <i class='icon-pencil bigger-130'></i> </a>"
-			            		  				+"<a class='red' href='javascript:deleteProvider(\""+item.classroomsId+"\")' > <i class='icon-trash bigger-130'></i> </a>"
+			            		  				+"<a class='green' href='member/showOne.html?id="+item.memberId+"' > <i class='icon-pencil bigger-130'></i> </a>"
+			            		  				+"<a class='red' href='member/delete?id="+
+			            		  											item.memberId+
+			            		  											"&username="+item.memberUsername+
+			            		  											"&price="+item.memberName+
+			            		  											"&date="+item.memberSex+
+			            		  											"&time1="+item.memberCard+
+			            		  											"&time2="+item.memberPhone+
+			            		  											"&time2="+item.memberAddress+
+			            		  											"&typeId="+item.tbMemberType.id+
+			            		  											"&type="+item.tbMemberType.type+"' > <i class='icon-trash bigger-130'></i> </a>"
 			            		  				+"</td> "+"</tr>");
 			            });
 						var begin = Math.max(1, msg.page.currentPage - pagerRange/2 );
@@ -152,7 +164,6 @@
 				$("#table-result").hideLoading();
 			},
 			complete:function(XMLHttpRequest,textStatus){
-				  //TODO 测试用
 	              // alert('远程调用成功，状态文本值：'+textStatus);
 				$("#table-result").hideLoading();
 	         },
@@ -164,9 +175,9 @@
 	}
 	function showinfo(flag){
 		if(flag == false){
-			return "空闲";
+			return "男";
 		}else{
-			return "占用";
+			return "女";
 		}
 	}
 </script>

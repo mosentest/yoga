@@ -7,7 +7,7 @@
             <column name="course_id" length="32" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="tbCourseType" class="com.yoga.entity.TbCourseType" fetch="select">
+        <many-to-one name="tbCourseType" class="com.yoga.entity.TbCourseType" fetch="select" lazy="false">
             <column name="coures_type_id">
                 <comment>课程类型编号</comment>
             </column>
@@ -37,19 +37,19 @@
                 <comment>课程价格</comment>
             </column>
         </property>
-        <set name="tbStaffCourseClassroomses" inverse="true">
-            <key>
-                <column name="course_id" length="32" />
-            </key>
-            <one-to-many class="com.yoga.entity.TbStaffCourseClassrooms" />
-        </set>
-        <set name="tbMemberCourseDetails" inverse="true">
-            <key>
-                <column name="course_id" length="32">
-                    <comment>课程编号</comment>
-                </column>
-            </key>
-            <one-to-many class="com.yoga.entity.TbMemberCourseDetail" />
-        </set>
+<!--         <set name="tbStaffCourseClassroomses" inverse="true"> -->
+<!--             <key> -->
+<!--                 <column name="course_id" length="32" /> -->
+<!--             </key> -->
+<!--             <one-to-many class="com.yoga.entity.TbStaffCourseClassrooms" /> -->
+<!--         </set> -->
+<!--         <set name="tbMemberCourseDetails" inverse="true"> -->
+<!--             <key> -->
+<!--                 <column name="course_id" length="32"> -->
+<!--                     <comment>课程编号</comment> -->
+<!--                 </column> -->
+<!--             </key> -->
+<!--             <one-to-many class="com.yoga.entity.TbMemberCourseDetail" /> -->
+<!--         </set> -->
     </class>
 </hibernate-mapping>

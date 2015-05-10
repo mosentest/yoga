@@ -3,6 +3,7 @@ package com.yoga.controller;
 import java.io.UnsupportedEncodingException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,7 @@ import com.yoga.util.Page;
 /**
  * action
  * 
- * @author hwb
+ * @author wwb
  * 
  */
 @Controller
@@ -168,7 +169,7 @@ public class TbCourseController  {
 	public ModelAndView showOne(@RequestParam final String id,ModelMap modelMap) {
 		TbCourse course = new TbCourse();
 		try {
-			course =dao.findById(id);
+			course = dao.findById(id);
 			modelMap.put("update", "update");
 			modelMap.put("course", course);
 		}catch(Exception exception){
@@ -199,6 +200,7 @@ public class TbCourseController  {
 			entity.setCourseId(newId);
 			entity.setCouresName(newname);
 			entity.setCoursePrice(newprice);
+			System.out.println(TbClassroomsController.class.getName()+"..debug->>" + newdate);
 			entity.setCourseDate(DateUtil.str2Date(newdate, "yyyy-MM-dd"));
 			entity.setCourseTime1(Time.valueOf(newtime1));
 			entity.setCourseTime2(Time.valueOf(newtime2));

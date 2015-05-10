@@ -11,5 +11,5 @@ import com.yoga.util.Page;
  * @param <T>
  */
 public interface BaseDao<T> {
-	public Page<T> findAll(int page, int size, String... param);
+	public Page<T> findAll(int page, int size, String... params);
 }

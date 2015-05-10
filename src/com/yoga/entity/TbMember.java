@@ -3,10 +3,6 @@ package com.yoga.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * TbMember entity. @author MyEclipse Persistence Tools
- */
-
 public class TbMember implements java.io.Serializable {
 
 	// Fields

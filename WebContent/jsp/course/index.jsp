@@ -87,7 +87,7 @@
 
 		//跳转到新增页面
 		$('#add').click(function(){
-			window.location.href="jsp/course/add.jsp";
+			countDown(2, "jsp/course/add.jsp");
 	 	});
 	
 	});

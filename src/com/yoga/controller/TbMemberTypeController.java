@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.yoga.dao.TbCourseTypeDAO;
-import com.yoga.entity.TbCourseType;
+import com.yoga.dao.TbMemberTypeDAO;
+import com.yoga.entity.TbMemberType;
 import com.yoga.util.Constants;
 import com.yoga.util.JsonResponse;
 
@@ -25,12 +25,12 @@ import com.yoga.util.JsonResponse;
  */
 @Controller
 @RequestMapping("/")
-public class TbCourseTypeController  {
+public class TbMemberTypeController  {
 
 	/**
 	 * 获取dao
 	 */
-	private TbCourseTypeDAO dao = new TbCourseTypeDAO();
+	private TbMemberTypeDAO dao = new TbMemberTypeDAO();
 
 	/**
 	 * 添加信息
@@ -39,19 +39,19 @@ public class TbCourseTypeController  {
 	 * @param price
 	 * @return
 	 */
-	@RequestMapping(value = "courseType/add", method = RequestMethod.GET)
+	@RequestMapping(value = "memberType/add", method = RequestMethod.GET)
 	@ResponseBody
-	public JsonResponse<TbCourseType> add(final int id, String type) {
-		JsonResponse<TbCourseType> jsonResponse = new JsonResponse<TbCourseType>();
+	public JsonResponse<TbMemberType> add(final int id, String type) {
+		JsonResponse<TbMemberType> jsonResponse = new JsonResponse<TbMemberType>();
 		try {
-			TbCourseType entity = getBean(id,type);
+			TbMemberType entity = getBean(id,type);
 			dao.save(entity);
-			jsonResponse.setMsg(Constants.getTip(Constants.ADD, Constants.COURSE, Constants.SUCCESS));
+			jsonResponse.setMsg(Constants.getTip(Constants.ADD, Constants.MEMBER, Constants.SUCCESS));
 			jsonResponse.setSuccess(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 			jsonResponse.setSuccess(false);
-			jsonResponse.setMsg(Constants.getTip(Constants.ADD, Constants.COURSE, Constants.FAILURE));
+			jsonResponse.setMsg(Constants.getTip(Constants.ADD, Constants.MEMBER, Constants.FAILURE));
 		}
 		return jsonResponse;
 	}
@@ -63,19 +63,19 @@ public class TbCourseTypeController  {
 	 * @param price
 	 * @return
 	 */
-	@RequestMapping(value = "courseType/edit", method = RequestMethod.GET)
+	@RequestMapping(value = "memberType/edit", method = RequestMethod.GET)
 	@ResponseBody
-	public JsonResponse<TbCourseType> edit(final int id, String type) {
-		JsonResponse<TbCourseType> jsonResponse = new JsonResponse<TbCourseType>();
+	public JsonResponse<TbMemberType> edit(final int id, String type) {
+		JsonResponse<TbMemberType> jsonResponse = new JsonResponse<TbMemberType>();
 		try {
-			TbCourseType entity = getBean(id, type);
-			dao.update(entity);
-			jsonResponse.setMsg(Constants.getTip(Constants.EDIT, Constants.COURSE, Constants.SUCCESS));
+			TbMemberType entity = getBean(id, type);
+//			dao.update(entity);
+			jsonResponse.setMsg(Constants.getTip(Constants.EDIT, Constants.MEMBER, Constants.SUCCESS));
 			jsonResponse.setSuccess(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 			jsonResponse.setSuccess(false);
-			jsonResponse.setMsg(Constants.getTip(Constants.EDIT, Constants.COURSE, Constants.FAILURE));
+			jsonResponse.setMsg(Constants.getTip(Constants.EDIT, Constants.MEMBER, Constants.FAILURE));
 		}
 		return jsonResponse;
 	}
@@ -87,16 +87,16 @@ public class TbCourseTypeController  {
 	 * @param price
 	 * @return
 	 */
-	@RequestMapping(value = "courseType/delete", method = RequestMethod.GET)
+	@RequestMapping(value = "memberType/delete", method = RequestMethod.GET)
 	public ModelAndView delete(final int id,String type) {
 		try {
-			TbCourseType entity = getBean(id,type);
-			dao.update(entity);
+			TbMemberType entity = getBean(id,type);
+//			dao.update(entity);
 			dao.delete(entity);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new ModelAndView("courseType/index");
+		return new ModelAndView("memberType/index");
 	}
 	
 	/**
@@ -108,21 +108,21 @@ public class TbCourseTypeController  {
 	 * @param price
 	 * @return
 	 */
-	@RequestMapping(value = "courseType/list.html", method = RequestMethod.GET)
+	@RequestMapping(value = "memberType/list.html", method = RequestMethod.GET)
 	@ResponseBody
-	public JsonResponse<TbCourseType> list() {
-		JsonResponse<TbCourseType> jsonResponse = new JsonResponse<TbCourseType>();
+	public JsonResponse<TbMemberType> list() {
+		JsonResponse<TbMemberType> jsonResponse = new JsonResponse<TbMemberType>();
 		try {
-			List<TbCourseType> findAll = dao.findAll();
-//			for(TbCourseType tb :findAll){
-//				tb.setTbCourses(null);
-//			}
+			List<TbMemberType> findAll = dao.findAll();
+			for(TbMemberType tb :findAll){
+				tb.setTbMembers(null);
+			}
 			jsonResponse.setSuccess(true);
-			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.COURSE, Constants.SUCCESS));
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.MEMBER, Constants.SUCCESS));
 			jsonResponse.setList(findAll);
 		} catch (Exception e) {
 			jsonResponse.setSuccess(false);
-			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.COURSE, Constants.FAILURE));
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.MEMBER, Constants.FAILURE));
 		}
 		return jsonResponse;
 	}
@@ -133,17 +133,17 @@ public class TbCourseTypeController  {
 	 * @param modelMap
 	 * @return
 	 */
-	@RequestMapping(value = "courseType/showOne.html", method = RequestMethod.GET)
+	@RequestMapping(value = "memberType/showOne.html", method = RequestMethod.GET)
 	public ModelAndView showOne(@RequestParam final int id,ModelMap modelMap) {
-		TbCourseType courseType = new TbCourseType();
+		TbMemberType memberType = new TbMemberType();
 		try {
-			courseType =dao.findById(id);
+			memberType =dao.findById(id);
 			modelMap.put("update", "update");
-			modelMap.put("courseType", courseType);
+			modelMap.put("memberType", memberType);
 		}catch(Exception exception){
 			exception.printStackTrace();
 		}
-		return new ModelAndView("course/add");
+		return new ModelAndView("member/add");
 	}
 	
 	/**
@@ -153,11 +153,11 @@ public class TbCourseTypeController  {
 	 * @param price
 	 * @return
 	 */
-	private TbCourseType getBean(int id, String type) {
-		TbCourseType entity = null;
+	private TbMemberType getBean(int id, String type) {
+		TbMemberType entity = null;
 		try {
 			String newtype = new String(type.getBytes("iso8859-1"), "UTF-8");
-			entity = new TbCourseType();
+			entity = new TbMemberType();
 			entity.setId(id);
 			entity.setType(newtype);
 		} catch (UnsupportedEncodingException e) {

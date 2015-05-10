@@ -22,7 +22,7 @@ import com.yoga.util.Page;
 /**
  * 课程action
  * 
- * @author hwb
+ * @author wwb
  * 
  */
 @Controller
