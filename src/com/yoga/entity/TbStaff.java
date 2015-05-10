@@ -18,9 +18,9 @@ public class TbStaff implements java.io.Serializable {
 	private String staffPost;
 	private String staffPhone;
 	// private Boolean idDelete;
-	private Set tbStaffDetails = new HashSet(0);
-	private Set tbUsers = new HashSet(0);
-	private Set tbStaffCourseClassroomses = new HashSet(0);
+//	private Set tbStaffDetails = new HashSet(0);
+//	private Set tbUsers = new HashSet(0);
+//	private Set tbStaffCourseClassroomses = new HashSet(0);
 
 	// Constructors
 
@@ -29,17 +29,17 @@ public class TbStaff implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TbStaff(String staffName, Boolean staffSex, Short staffAge, String staffPost, String staffPhone, Set tbStaffDetails, Set tbUsers,
-			Set tbStaffCourseClassroomses) {
+	public TbStaff(String staffName, Boolean staffSex, Short staffAge, String staffPost,
+			String staffPhone) {
 		this.staffName = staffName;
 		this.staffSex = staffSex;
 		this.staffAge = staffAge;
 		this.staffPost = staffPost;
 		this.staffPhone = staffPhone;
 		// this.idDelete = idDelete;
-		this.tbStaffDetails = tbStaffDetails;
-		this.tbUsers = tbUsers;
-		this.tbStaffCourseClassroomses = tbStaffCourseClassroomses;
+//		this.tbStaffDetails = tbStaffDetails;
+//		this.tbUsers = tbUsers;
+//		this.tbStaffCourseClassroomses = tbStaffCourseClassroomses;
 	}
 
 	// Property accessors
@@ -92,28 +92,28 @@ public class TbStaff implements java.io.Serializable {
 		this.staffPhone = staffPhone;
 	}
 
-	public Set getTbStaffDetails() {
-		return this.tbStaffDetails;
-	}
-
-	public void setTbStaffDetails(Set tbStaffDetails) {
-		this.tbStaffDetails = tbStaffDetails;
-	}
-
-	public Set getTbUsers() {
-		return this.tbUsers;
-	}
-
-	public void setTbUsers(Set tbUsers) {
-		this.tbUsers = tbUsers;
-	}
-
-	public Set getTbStaffCourseClassroomses() {
-		return this.tbStaffCourseClassroomses;
-	}
-
-	public void setTbStaffCourseClassroomses(Set tbStaffCourseClassroomses) {
-		this.tbStaffCourseClassroomses = tbStaffCourseClassroomses;
-	}
+//	public Set getTbStaffDetails() {
+//		return this.tbStaffDetails;
+//	}
+//
+//	public void setTbStaffDetails(Set tbStaffDetails) {
+//		this.tbStaffDetails = tbStaffDetails;
+//	}
+//
+//	public Set getTbUsers() {
+//		return this.tbUsers;
+//	}
+//
+//	public void setTbUsers(Set tbUsers) {
+//		this.tbUsers = tbUsers;
+//	}
+//
+//	public Set getTbStaffCourseClassroomses() {
+//		return this.tbStaffCourseClassroomses;
+//	}
+//
+//	public void setTbStaffCourseClassroomses(Set tbStaffCourseClassroomses) {
+//		this.tbStaffCourseClassroomses = tbStaffCourseClassroomses;
+//	}
 
 }

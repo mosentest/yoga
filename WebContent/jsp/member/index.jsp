@@ -129,11 +129,11 @@
 			            		  				+"<a class='red' href='member/delete?id="+
 			            		  											item.memberId+
 			            		  											"&username="+item.memberUsername+
-			            		  											"&price="+item.memberName+
-			            		  											"&date="+item.memberSex+
-			            		  											"&time1="+item.memberCard+
-			            		  											"&time2="+item.memberPhone+
-			            		  											"&time2="+item.memberAddress+
+			            		  											"&name="+item.memberName+
+			            		  											"&sex="+item.memberSex+
+			            		  											"&card="+item.memberCard+
+			            		  											"&phone="+item.memberPhone+
+			            		  											"&address="+item.memberAddress+
 			            		  											"&typeId="+item.tbMemberType.id+
 			            		  											"&type="+item.tbMemberType.type+"' > <i class='icon-trash bigger-130'></i> </a>"
 			            		  				+"</td> "+"</tr>");
