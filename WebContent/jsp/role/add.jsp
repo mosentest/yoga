@@ -22,13 +22,14 @@
       <div class="form-group">
         <label class="col-sm-3 control-label no-padding-right font" >分配权限： </label> 
         <div class="col-sm-9">
-          <ul id="role-limit">
+           <ul id="role-limit" class="spaced" style="list-style:none">
           </ul>
         </div> 
        </div>
        <!-- 警告框 -->
        <div id="warning-block"></div>
        <input type="hidden" id="update" value="${update }">
+       <input type="hidden" id="roleId" value="${role.id }">
       </form> 
      </div> 
      <div class="modal-footer"> 
@@ -45,34 +46,35 @@
     	var $update = $("#update").val();
     	//首次加载
      	$("#role-limit").empty();
-        var html = "";
+     	//这里是处理显示 权限列表
         if($update == "update"){
         	$.ajax({
-				type:"get",
-				url:"roleLimit/allList.html?roleId="+$("#id").val(),
-				cache:false,
-				success: function(data2) {
-					
-					$.each(data2.list, function(i2, item2) { //等于for语句
-						$.ajax({
-				            type: "get",
-				            url: "limit/alllist.html",
-				            cache:false,
-				            success: function(data) {
-				    	    	$.each(data.list, function(i, item) { //等于for语句
-									if(item2.tbLimit.name == item.name){
-										html+="<li><input type='checkbox' name='limit' value='&limit="+item.id+"@"+item.name+"' checked />"+item.name+"<li>";
-									}else{
-										html+="<li><input type='checkbox' name='limit' value='&limit="+item.id+"@"+item.name+"'/>"+item.name+"<li>";
-									}
-				    		    });
-				            }
-				        });
-					})
-					console.log(html);
-					$("#role-limit").append(html);
-				}
-			});
+	            type: "get",
+	            url: "limit/alllist.html",
+	            cache:false,
+	            success: function(data) {
+		            //在此请求数据
+	            	$.ajax({
+	    				type:"get",
+	    				url:"roleLimit/allList.html?roleId="+$("#id").val(),
+	    				cache:false,
+	    				success: function(data2) {
+		    				//动态显示出来
+							var j = 0;
+				            for(var i = 0; i < data.list.length; i++){
+					            if(j < data2.list.length && data.list[i].name == data2.list[j].tbLimit.name ){
+			    	    			var html="<li><i class='icon-bell bigger-110 purple'><input type='checkbox' name='limit' value='"+data.list[i].id+"' checked/>"+data.list[i].name+"<li>";
+						      	    $("#role-limit").append(html);
+						      	  	j++;
+						        }else{
+			    					var html="<li><i class='icon-bell bigger-110 purple'><input type='checkbox' name='limit' value='"+data.list[i].id+"'/>"+data.list[i].name+"<li>";
+						      	    $("#role-limit").append(html);
+							    }
+			    			}
+	    				}
+	    			});
+		        }
+	        });
         }else{
 	    	$.ajax({
 	            type: "get",
@@ -84,9 +86,9 @@
 							//新增
 							//获取勾选的id和name array数组
 							//删除当前所有关系，保存 关系表
-	    	    			html+="<li><input type='checkbox' name='limit' value='&limit="+item.id+"@"+item.name+"'/>"+item.name+"<li>";
+	    	    			html="<li><i class='icon-bell bigger-110 purple'><input type='checkbox' name='limit' value='"+item.id+"'/>"+item.name+"<li>";
+				      	    $("#role-limit").append(html);
 	    		    });
-	       	    	$("#role-limit").append(html);
 	            }
 	        });
         }
@@ -96,19 +98,31 @@
 				window.location.href="jsp/role/index.jsp";
 		 });
 
-
+		//这里是提交表单
 		if($update == "update"){
 			$url="role/edit";
 		}else{
 			$url="role/add";
 		}
 		$("#ok").on('click',function() { //提交事件
+			//获取用户勾选的权限
+			var selectedItems = new Array();
+			$("input[name='limit']:checked").each(function() {
+				selectedItems.push($(this).val());
+			});
+			if (selectedItems.length == 0) {
+				$("#warning-block").html('<div class="alert alert-block alert-danger">'+
+					'<button type="button" class="close" data-dismiss="alert" id="close"> <i class="icon-remove"></i> </button>'+
+					'<div class="danger bold-center">没勾选权限</div> </div>');
+				//结束
+				return;
+			}
 	        $.ajax({
 	            type: "get",
 	            url: $url,
-	            data: "id="+$("#id").val()+
-	            	  "&name="+$("#name").val()+
-	            	  "&href="+$("#href").val(),
+	            data: "id="+$("#roleId").val()+
+	                  "&name="+$("#name").val()+
+	            	  "&limitIds="+selectedItems.join(','),
 	            success: function(data) {
 	            	if(data.success == true){
 			            $("#warning-block").html('<div class="alert alert-block alert-success">'+

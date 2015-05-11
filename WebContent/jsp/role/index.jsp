@@ -111,8 +111,7 @@
 			            		  				+"<a class='green' href='role/showOne.html?id="+item.id+"' > <i class='icon-pencil bigger-130'></i> </a>"
 			            		  				+"<a class='red' href='role/delete?id="+
 			            		  											item.id+
-			            		  											"&name="+item.name+
-			            		  											"&href="+item.href+"' > <i class='icon-trash bigger-130'></i> </a>"
+			            		  											"&name="+item.name+"' > <i class='icon-trash bigger-130'></i> </a>"
 			            		  				+"</td> "+"</tr>");
 			            });
 						var begin = Math.max(1, msg.page.currentPage - pagerRange/2 );

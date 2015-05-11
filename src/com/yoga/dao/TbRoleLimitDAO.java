@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.hibernate.LockOptions;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,22 +19,52 @@ public class TbRoleLimitDAO extends BaseHibernateDAO {
 	// property constants
 
 	public void save(TbRoleLimit transientInstance) {
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
 		log.debug("saving TbRoleLimit instance");
 		try {
-			getSession().save(transientInstance);
+			session.save(transientInstance);
+			beginTransaction.commit();
 			log.debug("save successful");
 		} catch (RuntimeException re) {
+			beginTransaction.rollback();
 			log.error("save failed", re);
 			throw re;
 		}
 	}
 
-	public void delete(TbRoleLimit persistentInstance) {
+	/**
+	 * 根据角色编号删除对应信息
+	 * 
+	 * @param roleId
+	 */
+	public void delete(int roleId) {
 		log.debug("deleting TbRoleLimit instance");
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
 		try {
-			getSession().delete(persistentInstance);
+			//2015-5-11，写sql代码
+			SQLQuery createSQLQuery = session.createSQLQuery("DELETE * FROM tb_role_limit WHERE role_id=" + roleId);
+			createSQLQuery.executeUpdate();
+			beginTransaction.commit();
 			log.debug("delete successful");
 		} catch (RuntimeException re) {
+			beginTransaction.rollback();
+			log.error("delete failed", re);
+			throw re;
+		}
+	}
+	
+	public void delete(TbRoleLimit persistentInstance) {
+		log.debug("deleting TbRoleLimit instance");
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
+		try {
+			session.delete(persistentInstance);
+			beginTransaction.commit();
+			log.debug("delete successful");
+		} catch (RuntimeException re) {
+			beginTransaction.rollback();
 			log.error("delete failed", re);
 			throw re;
 		}

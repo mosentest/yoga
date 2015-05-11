@@ -17,7 +17,7 @@ public class TbRoleDAO extends BaseHibernateDAO implements BaseDao<TbRole> {
 	// property constants
 	public static final String TYPE = "type";
 
-	public void save(TbRole transientInstance) {
+	public int save(TbRole transientInstance) {
 		log.debug("saving TbRole instance");
 		Session session = getSession();
 		Transaction beginTransaction = session.beginTransaction();
@@ -25,6 +25,7 @@ public class TbRoleDAO extends BaseHibernateDAO implements BaseDao<TbRole> {
 			getSession().save(transientInstance);
 			beginTransaction.commit();
 			log.debug("save successful");
+			return transientInstance.getId();
 		} catch (RuntimeException re) {
 			beginTransaction.rollback();
 			log.error("save failed", re);

@@ -2,6 +2,8 @@ package com.yoga.controller;
 
 import java.io.UnsupportedEncodingException;
 
+import javax.management.relation.Role;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.yoga.dao.TbRoleDAO;
+import com.yoga.dao.TbRoleLimitDAO;
+import com.yoga.entity.TbLimit;
 import com.yoga.entity.TbRole;
+import com.yoga.entity.TbRoleLimit;
 import com.yoga.util.Constants;
 import com.yoga.util.JsonResponse;
 import com.yoga.util.Page;
@@ -30,6 +35,7 @@ public class TbRoleController {
 	 * 获取dao
 	 */
 	private TbRoleDAO dao = new TbRoleDAO();
+	private TbRoleLimitDAO roleLimitDAO = new TbRoleLimitDAO();
 
 	/**
 	 * 添加信息
@@ -41,11 +47,21 @@ public class TbRoleController {
 	 */
 	@RequestMapping(value = "role/add", method = RequestMethod.GET)
 	@ResponseBody
-	public JsonResponse<TbRole> add(final String id, final String name) {
+	public JsonResponse<TbRole> add(final String id, final String name,final String limitIds) {
 		JsonResponse<TbRole> jsonResponse = new JsonResponse<TbRole>();
 		try {
 			TbRole entity = getBean(id, name);
-			dao.save(entity);
+			int roleId = dao.save(entity);
+			String newlimitIds = new String(limitIds.getBytes("iso8859-1"), "UTF-8");
+			String[] limits = newlimitIds.split(",");
+			for(String limitId :limits){
+				TbRole tbRole = new TbRole();
+				tbRole.setId(roleId);
+				TbLimit tbLimit = new TbLimit();
+				tbLimit.setId(Integer.parseInt(limitId));
+				TbRoleLimit transientInstance = new TbRoleLimit(tbRole, tbLimit);
+				roleLimitDAO.save(transientInstance );
+			}
 			jsonResponse.setMsg(Constants.getTip(Constants.ADD, Constants.ROLE, Constants.SUCCESS));
 			jsonResponse.setSuccess(true);
 		} catch (Exception e) {
@@ -66,13 +82,23 @@ public class TbRoleController {
 	 */
 	@RequestMapping(value = "role/edit", method = RequestMethod.GET)
 	@ResponseBody
-	public JsonResponse<TbRole> edit(final String id, final String name) {
+	public JsonResponse<TbRole> edit(final String id, final String name,final String limitIds) {
 		JsonResponse<TbRole> jsonResponse = new JsonResponse<TbRole>();
 		try {
 			TbRole entity = getBean(id, name);
-			// 更新员工表
+			// 更新角色表
 			dao.update(entity);
-			// 更新员工详细表
+			roleLimitDAO.delete(entity.getId());
+			String newlimitIds = new String(limitIds.getBytes("iso8859-1"), "UTF-8");
+			String[] limits = newlimitIds.split(",");
+			for(String limitId :limits){
+				TbRole tbRole = new TbRole();
+				tbRole.setId(entity.getId());
+				TbLimit tbLimit = new TbLimit();
+				tbLimit.setId(Integer.parseInt(limitId));
+				TbRoleLimit transientInstance = new TbRoleLimit(tbRole, tbLimit);
+				roleLimitDAO.save(transientInstance);
+			}
 			jsonResponse.setMsg(Constants.getTip(Constants.EDIT, Constants.ROLE, Constants.SUCCESS));
 			jsonResponse.setSuccess(true);
 		} catch (Exception e) {
@@ -91,11 +117,11 @@ public class TbRoleController {
 	 * @param price
 	 * @return
 	 */
-	@RequestMapping(value = "role/delete&oper=false", method = RequestMethod.POST)
+	@RequestMapping(value = "role/delete", method = RequestMethod.GET)
 	public ModelAndView delete(final String id, final String name) {
 		try {
 			TbRole entity = getBean(id, name);
-			// 更新员工表
+			// 更新角色表
 			dao.update(entity);
 			dao.delete(entity);
 		} catch (Exception e) {
@@ -172,13 +198,18 @@ public class TbRoleController {
 	 * @param price
 	 * @return
 	 */
-	private TbRole getBean(final String id, final String name) {
+	private TbRole getBean(final String roleId, final String name) {
 		TbRole entity = null;
 		try {
-			String newId = new String(id.getBytes("iso8859-1"), "UTF-8");
+			String newroleId = null;
+			if (roleId != null && !"".equals(roleId)) {
+				newroleId = new String(roleId.getBytes("iso8859-1"), "UTF-8");
+			}
 			String newname = new String(name.getBytes("iso8859-1"), "UTF-8");
 			entity = new TbRole();
-			entity.setId(Integer.parseInt(newId));
+			if (newroleId != null) {
+				entity.setId(Integer.parseInt(newroleId));
+			}
 			entity.setType(newname);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
