@@ -8,19 +8,13 @@
        <div class="form-group">
         <label class="col-sm-3 control-label no-padding-right font " for="id"> 员工编号： </label> 
         <div class="col-sm-9">
-         <input type="text" id="id" class="col-xs-8" <c:if test="${!empty update }">readonly="readonly" value="${member.memberId }" </c:if>/><div id="id-tip"></div>
+         <input type="text" id="id" class="col-xs-8" <c:if test="${!empty update }">readonly="readonly" value="${tbStaffDetail.tbStaff.staffId }" </c:if>/><div id="id-tip"></div>
         </div> 
        </div> 
        <div class="form-group">
-        <label class="col-sm-3 control-label no-padding-right font" > 员工帐号： </label> 
-        <div class="col-sm-9"> 
-         <input type="text" id="username" class="col-xs-8" <c:if test="${!empty update }">value="${member.memberUsername }"</c:if>/><div id="name-tip"></div>
-        </div> 
-       </div>
-       <div class="form-group">
         <label class="col-sm-3 control-label no-padding-right font" > 员工名字： </label> 
         <div class="col-sm-9"> 
-         <input type="text" id="name" class="col-xs-8" <c:if test="${!empty update }">value="${member.memberName }"</c:if>/><div id="name-tip"></div>
+         <input type="text" id="name" class="col-xs-8" <c:if test="${!empty update }">value="${tbStaffDetail.tbStaff.staffName }"</c:if>/><div id="name-tip"></div>
         </div> 
        </div>
        <div class="form-group">
@@ -28,39 +22,56 @@
         <div class="col-sm-9">
           <select id="sex">
             <option value="-1">--请选择--</option>
-            <option value="0" <c:if test="${!empty update }"><c:if test="${classrooms.classroomsState == false }">selected="selected"</c:if></c:if>>男</option>
-            <option value="1" <c:if test="${!empty update }"><c:if test="${classrooms.classroomsState == true }">selected="selected"</c:if></c:if>>女</option>
+            <option value="0" <c:if test="${!empty update }"><c:if test="${tbStaffDetail.tbStaff.staffSex == false }">selected="selected"</c:if></c:if>>男</option>
+            <option value="1" <c:if test="${!empty update }"><c:if test="${tbStaffDetail.tbStaff.staffSex == true }">selected="selected"</c:if></c:if>>女</option>
           </select>
         </div> 
        </div>
        <div class="form-group">
-        <label class="col-sm-3 control-label no-padding-right font" > 员工身份证： </label> 
+        <label class="col-sm-3 control-label no-padding-right font" > 员工年龄： </label> 
         <div class="col-sm-9"> 
-         <input type="text" id="card" class="col-xs-8" <c:if test="${!empty update }">value="${member.memberCard }"</c:if>/><div id="name-tip"></div>
+         <input type="text" id="age" class="col-xs-8" <c:if test="${!empty update }">value="${tbStaffDetail.tbStaff.staffAge }"</c:if>/><div id="name-tip"></div>
+        </div> 
+       </div>
+       <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right font" > 员工职务： </label> 
+        <div class="col-sm-9"> 
+         <input type="text" id="post" class="col-xs-8" <c:if test="${!empty update }">value="${tbStaffDetail.tbStaff.staffPost }"</c:if>/><div id="name-tip"></div>
         </div> 
        </div>
        <div class="form-group">
         <label class="col-sm-3 control-label no-padding-right font" > 员工联系电话： </label> 
         <div class="col-sm-9"> 
-         <input type="text" id="phone" class="col-xs-8" <c:if test="${!empty update }">value="${member.memberPhone }"</c:if>/><div id="name-tip"></div>
+         <input type="text" id="phone" class="col-xs-8" <c:if test="${!empty update }">value="${tbStaffDetail.tbStaff.staffPhone }"</c:if>/><div id="name-tip"></div>
+        </div> 
+       </div>
+       <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right font" > 员工身份证： </label> 
+        <div class="col-sm-9"> 
+         <input type="text" id="card" class="col-xs-8" <c:if test="${!empty update }">value="${tbStaffDetail.staffCard }"</c:if>/><div id="name-tip"></div>
         </div> 
        </div>
        <div class="form-group">
         <label class="col-sm-3 control-label no-padding-right font" > 员工家庭住址： </label> 
         <div class="col-sm-9"> 
-         <input type="text" id="address" class="col-xs-8"  <c:if test="${!empty update }">value="${member.memberAddress }"</c:if>/><div id="name-tip"></div>
+         <input type="text" id="address" class="col-xs-8"  <c:if test="${!empty update }">value="${tbStaffDetail.staffAddress }"</c:if>/><div id="name-tip"></div>
         </div> 
        </div>
        <div class="form-group">
-        <label class="col-sm-3 control-label no-padding-right font" >员工类型： </label> 
-        <div class="col-sm-9">
-          <select id="type" class="chosen-select" data-placeholder="请选择">
-          </select>
+        <label class="col-sm-3 control-label no-padding-right font" > 员工邮件： </label> 
+        <div class="col-sm-9"> 
+         <input type="text" id="email" class="col-xs-8"  <c:if test="${!empty update }">value="${tbStaffDetail.staffEmail }"</c:if>/><div id="name-tip"></div>
         </div> 
-       </div> 
+       </div>
+       <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right font" > 员工入职时间： </label> 
+        <div class="col-sm-9"> 
+         <input type="text" id="time" class="col-xs-8 date-picker"   data-date-format="yyyy-mm-dd"  <c:if test="${!empty update }">value="${tbStaffDetail.staffTime }"</c:if>/><div id="name-tip"></div>
+        </div> 
+       </div>
        <!-- 警告框 -->
        <div id="warning-block"></div>
-       <input type="hidden" id="typeId" value="${member.tbMemberType.id }">
+       <input type="hidden" id="staffDetailId" value="${tbStaffDetail.id }">
       </form> 
      </div> 
      <div class="modal-footer"> 
@@ -78,7 +89,7 @@
     	$typeId=$("#typeId").val();
     	$.ajax({
             type: "get",
-            url: "memberType/list.html",
+            url: "staffType/list.html",
             cache:false,
             success: function(data) {
 		        var html = "";
@@ -101,7 +112,7 @@
     	$("#type").delay(1500).queue(function(){
     		$.ajax({
                 type: "get",
-                url: "memberType/list.html",
+                url: "staffType/list.html",
                 cache:false,
                 success: function(data) {
     		        var html = "";
@@ -119,44 +130,52 @@
             });
         });
         
+    	//日期选择器
+	    $('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){   
+	    });
+    	
 		//返回
 		$('#backid').click(function(){
-				window.location.href="jsp/member/index.jsp";
+				window.location.href="jsp/staff/index.jsp";
 		 });
 
 		 //访问的action
 		$url ="";
 		
 		if(${!empty update }){
-			$url="member/edit";
+			$url="staffDetail/edit";
 		}else{
-			$url="member/add";
+			$url="staffDetail/add";
 		}
 		$("#ok").on('click',function() { //提交事件
 	        $.ajax({
 	            type: "get",
 	            url: $url,
 	            data: "id="+$("#id").val()+
-	            	  "&username="+$("#username").val()+
 	            	  "&name="+$("#name").val()+
 	            	  "&sex="+$("#sex").val()+
+	            	  "&age="+$("#age").val()+
+	            	  "&post="+$("#post").val()+
+	            	  "&phone="+$("#phone").val()+
 	            	  "&card="+$("#card").val()+
 	            	  "&phone="+$("#phone").val()+
 	            	  "&address="+$("#address").val()+
-	            	  $("#type").val(),
+	            	  "&email="+$("#email").val()+
+	            	  "&time="+$("#time").val()+
+	            	  "&staffDetailId="+$("#staffDetailId").val(),
 	            success: function(data) {
 	            	if(data.success == true){
 			            $("#warning-block").html('<div class="alert alert-block alert-success">'+
 			                    '<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>'+
-			                    '<div class="success bold-center">添加成功,'+'<a href="jsp/member/index.jsp" class="green">'+
+			                    '<div class="success bold-center">'+data.msg+',<a href="jsp/staff/index.jsp" class="green">'+
 			                    '<span id="mysecond" class="green">'+5+
 			                    '</span>秒自动跳转</a><div></div>');
-		            	 countDown(5, "jsp/member/index.jsp");
+		            	 countDown(5, "jsp/staff/index.jsp");
 			        }
 			        else{
 					    $("#warning-block").html('<div class="alert alert-block alert-danger">'+
 			                    '<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>'+
-			                    '<div class="danger bold-center">操作失败</div></div>');
+			                    '<div class="danger bold-center">'+data.msg+'</div></div>');
 				    }
 	            },
 	            error: function(XMLHttpRequest, textStatus, errorThrown) {

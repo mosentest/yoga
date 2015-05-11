@@ -60,6 +60,7 @@
        </div> 
        <!-- 警告框 -->
        <div id="warning-block"></div>
+       <input type="hidden" id="typeId" value="${course.tbCourseType.id }">
       </form> 
      </div> 
      <div class="modal-footer"> 
@@ -74,6 +75,7 @@
     $(function () {
         //首次加载
     	$("#type").empty();
+    	$typeId=$("#typeId").val();
     	$.ajax({
             type: "get",
             url: "courseType/list.html",
@@ -81,7 +83,11 @@
             success: function(data) {
 		        var html = "";
     	    	$.each(data.list, function(i, item) {
-    	    		html +="<option value='&typeId="+item.id+"&type="+item.type+"'>&nbsp;&nbsp;&nbsp;&nbsp;"+item.type+"&nbsp;&nbsp;&nbsp;&nbsp;</option>";
+    	    		if($typeId == item.id){
+        	    		html +="<option value='&typeId="+item.id+"&type="+item.type+"' selected='selected'>&nbsp;&nbsp;&nbsp;&nbsp;"+item.type+"&nbsp;&nbsp;&nbsp;&nbsp;</option>";
+            	    }else{
+    	    			html +="<option value='&typeId="+item.id+"&type="+item.type+"'>&nbsp;&nbsp;&nbsp;&nbsp;"+item.type+"&nbsp;&nbsp;&nbsp;&nbsp;</option>";
+                	}
     		    });
     	    	$("#type").append(html);
     	    	$("#type").chosen();
@@ -100,8 +106,12 @@
                 success: function(data) {
     		        var html = "";
         	    	$.each(data.list, function(i, item) {
-        	    		html +="<option value='&typeId="+item.id+"&type="+item.type+"'>&nbsp;&nbsp;&nbsp;&nbsp;"+item.type+"&nbsp;&nbsp;&nbsp;&nbsp;</option>";
-        		    });
+        	    		if($typeId == item.id){
+            	    		html +="<option value='&typeId="+item.id+"&type="+item.type+"' selected='selected'>&nbsp;&nbsp;&nbsp;&nbsp;"+item.type+"&nbsp;&nbsp;&nbsp;&nbsp;</option>";
+                	    }else{
+        	    			html +="<option value='&typeId="+item.id+"&type="+item.type+"'>&nbsp;&nbsp;&nbsp;&nbsp;"+item.type+"&nbsp;&nbsp;&nbsp;&nbsp;</option>";
+                    	}
+       	    		});
         	    	$("#type").append(html);
         	    	$("#type").chosen();
         			$("#type").css("width","860px");
@@ -159,7 +169,7 @@
 	            	if(data.success == true){
 			            $("#warning-block").html('<div class="alert alert-block alert-success">'+
 			                    '<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>'+
-			                    '<div class="success bold-center">添加成功,'+'<a href="jsp/course/index.jsp" class="green">'+
+			                    '<div class="success bold-center">'+data.msg+',<a href="jsp/course/index.jsp" class="green">'+
 			                    '<span id="mysecond" class="green">'+5+
 			                    '</span>秒自动跳转</a><div></div>');
 		            	 countDown(5, "jsp/course/index.jsp");
@@ -167,7 +177,7 @@
 			        else{
 					    $("#warning-block").html('<div class="alert alert-block alert-danger">'+
 			                    '<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>'+
-			                    '<div class="danger bold-center">操作失败</div></div>');
+			                    '<div class="danger bold-center">'+data.msg+'</div></div>');
 				    }
 	            },
 	            error: function(XMLHttpRequest, textStatus, errorThrown) {

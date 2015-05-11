@@ -84,7 +84,7 @@
 
 		//跳转到新增页面
 		$('#add').click(function(){
-			countDown(2, "jsp/staffDetail/add.jsp");
+			countDown(2, "jsp/staff/add.jsp");
 	 	});
 	
 	});

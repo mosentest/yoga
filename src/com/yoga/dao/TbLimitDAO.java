@@ -152,7 +152,7 @@ public class TbLimitDAO extends BaseHibernateDAO  implements BaseDao<TbLimit> {
 		if (params != null && params.length > 0) {
 			buffer.append(" as tb where ");
 			if (params[0] != null && !"".equals(params[0].trim())) {
-				buffer.append(" tb.name=:name and ");
+				buffer.append(" tb.name like:name and ");
 			}
 			buffer.append(" 1=1 ");
 		}
@@ -160,7 +160,7 @@ public class TbLimitDAO extends BaseHibernateDAO  implements BaseDao<TbLimit> {
 		// 分页显示的操作
 		if (params != null && params.length > 0) {
 			if (params[0] != null && !"".equals(params[0].trim())) {
-				queryObject.setString("name", params[0]);
+				queryObject.setString("name", "%"+params[0]+ "%");
 			}
 		}
 		return queryObject;

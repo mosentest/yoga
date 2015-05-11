@@ -108,7 +108,7 @@ public class TbStaffController  {
 							  final String card,final String address, String email,
 							  final String time,final String staffDetailId) {
 		try {
-			TbStaffDetail entity = getBean(id, name, sex, age, post, phone, card, address, email, time,staffDetailId);
+			TbStaffDetail entity = getBean(id, name, sex, age, post, phone, card, address, email, null,staffDetailId);
 			//更新员工表
 			dao.update(entity.getTbStaff());
 			//更新员工详细表
@@ -175,7 +175,7 @@ public class TbStaffController  {
 		try {
 			tbStaffDetail = staffDetailDAO.findById(Integer.parseInt(id));
 			modelMap.put("update", "update");
-			modelMap.put("staff", tbStaffDetail);
+			modelMap.put("tbStaffDetail", tbStaffDetail);
 		}catch(Exception exception){
 			exception.printStackTrace();
 		}
@@ -205,7 +205,10 @@ public class TbStaffController  {
 			String newphone = new String(phone.getBytes("iso8859-1"), "UTF-8");
 			String newaddress = new String(address.getBytes("iso8859-1"), "UTF-8");
 			String newemail = new String(email.getBytes("iso8859-1"), "UTF-8");
-			String newtime = new String(time.getBytes("iso8859-1"), "UTF-8");
+			String newtime = null;
+			if(time != null){
+				newtime = new String(time.getBytes("iso8859-1"), "UTF-8");
+			}
 			detail = new TbStaffDetail();
 			entity = new TbStaff();
 			entity.setStaffId(newId);
@@ -215,13 +218,21 @@ public class TbStaffController  {
 			//预定0为男，1为女
 			entity.setStaffSex("1".equals(newsex) ? true : false);
 			entity.setStaffPhone(newphone);
-			detail.setId(Integer.parseInt(staffDetailId));
+			if("".equals(staffDetailId)){
+				detail.setId(null);
+			}else{
+				detail.setId(Integer.parseInt(staffDetailId));
+			}
 			detail.setStaffAddress(newaddress);
 			detail.setStaffCard(newcard);
 			detail.setStaffEmail(newemail);
-			//时间这里会异常
-			Date str2Date = DateUtil.str2Date(newtime, "yyyy-MM-dd");
-			detail.setStaffTime((Timestamp) str2Date);
+			System.out.println(newtime);
+			if(newtime != null){
+				//时间这里会异常
+//			Date str2Date = DateUtil.str2Date(newtime, "yyyy-MM-dd");
+				newtime+=" 00:00:00";
+				detail.setStaffTime(Timestamp.valueOf(newtime));
+			}
 			detail.setTbStaff(entity);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();

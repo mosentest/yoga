@@ -17,11 +17,11 @@
                 <comment>权限访问链接</comment>
             </column>
         </property>
-        <set name="tbRoleLimits" inverse="true">
-            <key>
-                <column name="limit_id" />
-            </key>
-            <one-to-many class="com.yoga.entity.TbRoleLimit" />
-        </set>
+<!--         <set name="tbRoleLimits" inverse="true"> -->
+<!--             <key> -->
+<!--                 <column name="limit_id" /> -->
+<!--             </key> -->
+<!--             <one-to-many class="com.yoga.entity.TbRoleLimit" /> -->
+<!--         </set> -->
     </class>
 </hibernate-mapping>

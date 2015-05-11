@@ -28,8 +28,8 @@
         <div class="col-sm-9">
           <select id="sex">
             <option value="-1">--请选择--</option>
-            <option value="0" <c:if test="${!empty update }"><c:if test="${classrooms.classroomsState == false }">selected="selected"</c:if></c:if>>男</option>
-            <option value="1" <c:if test="${!empty update }"><c:if test="${classrooms.classroomsState == true }">selected="selected"</c:if></c:if>>女</option>
+            <option value="0" <c:if test="${!empty update }"><c:if test="${member.memberSex == false }">selected="selected"</c:if></c:if>>男</option>
+            <option value="1" <c:if test="${!empty update }"><c:if test="${member.memberSex == true }">selected="selected"</c:if></c:if>>女</option>
           </select>
         </div> 
        </div>
@@ -148,7 +148,7 @@
 	            	if(data.success == true){
 			            $("#warning-block").html('<div class="alert alert-block alert-success">'+
 			                    '<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>'+
-			                    '<div class="success bold-center">添加成功,'+'<a href="jsp/member/index.jsp" class="green">'+
+			                    '<div class="success bold-center">'+data.msg+',<a href="jsp/member/index.jsp" class="green">'+
 			                    '<span id="mysecond" class="green">'+5+
 			                    '</span>秒自动跳转</a><div></div>');
 		            	 countDown(5, "jsp/member/index.jsp");
@@ -156,7 +156,7 @@
 			        else{
 					    $("#warning-block").html('<div class="alert alert-block alert-danger">'+
 			                    '<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>'+
-			                    '<div class="danger bold-center">操作失败</div></div>');
+			                    '<div class="danger bold-center">'+data.msg+'</div></div>');
 				    }
 	            },
 	            error: function(XMLHttpRequest, textStatus, errorThrown) {

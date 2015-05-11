@@ -12,17 +12,17 @@
                 <comment>角色类型</comment>
             </column>
         </property>
-        <set name="tbRoleLimits" inverse="true">
-            <key>
-                <column name="role_id" />
-            </key>
-            <one-to-many class="com.yoga.entity.TbRoleLimit" />
-        </set>
-        <set name="tbUserRoles" inverse="true">
-            <key>
-                <column name="role_id" />
-            </key>
-            <one-to-many class="com.yoga.entity.TbUserRole" />
-        </set>
+<!--         <set name="tbRoleLimits" inverse="true"> -->
+<!--             <key> -->
+<!--                 <column name="role_id" /> -->
+<!--             </key> -->
+<!--             <one-to-many class="com.yoga.entity.TbRoleLimit" /> -->
+<!--         </set> -->
+<!--         <set name="tbUserRoles" inverse="true"> -->
+<!--             <key> -->
+<!--                 <column name="role_id" /> -->
+<!--             </key> -->
+<!--             <one-to-many class="com.yoga.entity.TbUserRole" /> -->
+<!--         </set> -->
     </class>
 </hibernate-mapping>
