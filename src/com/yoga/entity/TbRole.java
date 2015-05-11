@@ -13,8 +13,8 @@ public class TbRole implements java.io.Serializable {
 
 	private Integer id;
 	private String type;
-	private Set tbRoleLimits = new HashSet(0);
-	private Set tbUserRoles = new HashSet(0);
+//	private Set tbRoleLimits = new HashSet(0);
+//	private Set tbUserRoles = new HashSet(0);
 
 	// Constructors
 
@@ -23,10 +23,10 @@ public class TbRole implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TbRole(String type, Set tbRoleLimits, Set tbUserRoles) {
+	public TbRole(String type/*, Set tbRoleLimits, Set tbUserRoles*/) {
 		this.type = type;
-		this.tbRoleLimits = tbRoleLimits;
-		this.tbUserRoles = tbUserRoles;
+//		this.tbRoleLimits = tbRoleLimits;
+//		this.tbUserRoles = tbUserRoles;
 	}
 
 	// Property accessors
@@ -46,21 +46,21 @@ public class TbRole implements java.io.Serializable {
 	public void setType(String type) {
 		this.type = type;
 	}
-
-	public Set getTbRoleLimits() {
-		return this.tbRoleLimits;
-	}
-
-	public void setTbRoleLimits(Set tbRoleLimits) {
-		this.tbRoleLimits = tbRoleLimits;
-	}
-
-	public Set getTbUserRoles() {
-		return this.tbUserRoles;
-	}
-
-	public void setTbUserRoles(Set tbUserRoles) {
-		this.tbUserRoles = tbUserRoles;
-	}
+//
+//	public Set getTbRoleLimits() {
+//		return this.tbRoleLimits;
+//	}
+//
+//	public void setTbRoleLimits(Set tbRoleLimits) {
+//		this.tbRoleLimits = tbRoleLimits;
+//	}
+//
+//	public Set getTbUserRoles() {
+//		return this.tbUserRoles;
+//	}
+//
+//	public void setTbUserRoles(Set tbUserRoles) {
+//		this.tbUserRoles = tbUserRoles;
+//	}
 
 }

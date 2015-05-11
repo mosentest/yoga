@@ -14,7 +14,7 @@ public class TbLimit implements java.io.Serializable {
 	private Integer id;
 	private String name;
 	private String href;
-	private Set tbRoleLimits = new HashSet(0);
+//	private Set tbRoleLimits = new HashSet(0);
 
 	// Constructors
 
@@ -23,9 +23,9 @@ public class TbLimit implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TbLimit(String name, Set tbRoleLimits) {
+	public TbLimit(String name/*, Set tbRoleLimits*/) {
 		this.name = name;
-		this.tbRoleLimits = tbRoleLimits;
+//		this.tbRoleLimits = tbRoleLimits;
 	}
 
 	// Property accessors
@@ -46,13 +46,13 @@ public class TbLimit implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public Set getTbRoleLimits() {
-		return this.tbRoleLimits;
-	}
-
-	public void setTbRoleLimits(Set tbRoleLimits) {
-		this.tbRoleLimits = tbRoleLimits;
-	}
+//	public Set getTbRoleLimits() {
+//		return this.tbRoleLimits;
+//	}
+//
+//	public void setTbRoleLimits(Set tbRoleLimits) {
+//		this.tbRoleLimits = tbRoleLimits;
+//	}
 
 	public String getHref() {
 		return href;

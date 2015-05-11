@@ -73,10 +73,10 @@ public class TbRoleLimitDAO extends BaseHibernateDAO {
 		}
 	}
 
-	public List findAll() {
+	public List findAll(int id) {
 		log.debug("finding all TbRoleLimit instances");
 		try {
-			String queryString = "from TbRoleLimit";
+			String queryString = "from TbRoleLimit where tbRole.id= " + id;
 			Query queryObject = getSession().createQuery(queryString);
 			return queryObject.list();
 		} catch (RuntimeException re) {

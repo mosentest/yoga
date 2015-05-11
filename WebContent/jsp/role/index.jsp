@@ -3,17 +3,10 @@
 <div class="page-content">
       <div class="page-header fixed-div">
         <p>
-          <lable>课室编号：</lable><input type="text" id="id"/>
-          <lable>课室名称：</lable><input type="text" id="name"/>
-          <lable>课室状态：</lable>
-          <select id="state">
-            <option value="-1">--请选择--</option>
-            <option value="0">空闲</option>
-            <option value="1">占用</option>
-          </select>
+          <lable>角色名称：</lable><input type="text" id="name"/>
+          <button class="btn btn-primary btn-sm" id="search"><i class="icon-search align-top bigger-125"></i>查询</button>
         </p>
         <p>
-          <button class="btn btn-primary btn-sm" id="search"><i class="icon-search align-top bigger-125"></i>查询</button>
           <button class="btn btn-success btn-sm" id="add"><i class="icon-plus-sign align-top bigger-125"></i>添加</button>
         </p>
       </div><!--page-header fixed-div  -->
@@ -25,7 +18,7 @@
           <div class="table-responsive"> 
            <div id="sample-table-2_wrapper" class="dataTables_wrapper" role="grid">
               <div class="row" >
-              <div class="col-sm-6"><div id="pager"  ><label >显示 <select size="1" onchange="javascript:gotoPage(1,'name=&beginTime=&endTime=')" id="p_pageSizeSelect">
+              <div class="col-sm-6"><div id="pager"  ><label >显示 <select size="1" onchange="javascript:gotoPage(1,'id=&name=&href=')" id="p_pageSizeSelect">
                 <option value="10" selected="selected" >10</option>
                 <option value="25" >25</option>
                 <option value="50" >50</option>
@@ -40,9 +33,7 @@
                 <tr role="row"> 
                  <th role="columnheader" rowspan="1" colspan="1" style="width: 57px;" aria-label=""> <label> <input type="checkbox" class="ace"  id="checkall"/> <span class="lbl"></span> </label> </th> 
                  <th  role="columnheader"  rowspan="1" colspan="1" style="width: 50px;" >序号</th>
-                 <th  role="columnheader"  rowspan="1" colspan="1" style="width: 153px;" >课室编号</th> 
-                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 133px;" >课室名称</th> 
-                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 130px;" > <i class="icon-time bigger-110 hidden-480"></i>状态</th> 
+                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 133px;" >角色名称</th> 
                  <th  role="columnheader" rowspan="1" colspan="1" style="width: 156px;" aria-label="">操作</th> 
                 </tr> 
                </thead> 
@@ -62,16 +53,15 @@
      <!-- /.page-content -->
     <script type="text/javascript">
 	jQuery(function($) {
+	    
 		//条件查询
 	    $("#search").click(function () {
-	           var id=$("#id").val();
 	           var name=$("#name").val();
-	           var state=$("#state").val();
-	           gotoPage(1,"id="+id+"&name="+name+"&state="+state);
+	           gotoPage(1,"name="+name);
 	    });
 	    
 		/* 获取数据 */
-		gotoPage(1,"id=&name=&state=");
+		gotoPage(1,"name=");
 		
 		/* 复选框操作 */
 		$('table th input:checkbox').on('click' , function(){
@@ -85,7 +75,7 @@
 
 		//跳转到新增页面
 		$('#add').click(function(){
-			window.location.href="jsp/classrooms/add.jsp";
+			countDown(2, "jsp/role/add.jsp");
 	 	});
 	
 	});
@@ -96,10 +86,9 @@
 		var pageSize =  $("#p_pageSizeSelect").val(); //获取每一页显示多少记录
 		var loc="<div class='col-sm-6'><div class='dataTables_paginate paging_bootstrap'><ul class='pagination'>";
 		$('#tb').html("");
-		//TODO 测试用
 		//alert("page=" + pageIndex + "&size=" + pageSize+"&"+cond);
 		$.ajax({
-			url : "classrooms/list.html",
+			url : "role/list.html",
 			type : 'get',
 			data : "page=" + pageIndex + "&size=" + pageSize+"&"+cond,
 			aysnc : false,
@@ -115,15 +104,15 @@
 				}else{
 					$.each(msg.page.content, function(i, item) {
 			              $('#tb').append( "<tr>"
-			            		  +"<td><label> <input type='checkbox' class='ace' name='checkbox' value='"+item.classroomsId+"' /><span class='lbl'></span> </label></td>"
+			            		  +"<td><label> <input type='checkbox' class='ace' name='checkbox' value='"+item.roleId+"' /><span class='lbl'></span> </label></td>"
 			            		  +"<td >"+(++i)+"</td> "
-			            		  +"<td >"+item.classroomsId+"</td> "
-			            		  +"<td >"+item.classroomsName+"</td> "
-			            		  +"<td >"+showinfo(item.classroomsState)+"</td> "
+			            		  +"<td >"+item.type+"</td> "
 			            		  +"<td >"+"<div class='visible-md visible-lg hidden-sm hidden-xs action-buttons' id='buttontools'>"
-			            		  				+"<a class='blue' href='javascript:showProvider(\""+item.classroomsId+"\")'> <i class='icon-zoom-in bigger-130'></i>"
-			            		  				+"<a class='green' href='javascript:editProvider(\""+item.classroomsId+"\")' > <i class='icon-pencil bigger-130'></i> </a>"
-			            		  				+"<a class='red' href='javascript:deleteProvider(\""+item.classroomsId+"\")' > <i class='icon-trash bigger-130'></i> </a>"
+			            		  				+"<a class='green' href='role/showOne.html?id="+item.id+"' > <i class='icon-pencil bigger-130'></i> </a>"
+			            		  				+"<a class='red' href='role/delete?id="+
+			            		  											item.id+
+			            		  											"&name="+item.name+
+			            		  											"&href="+item.href+"' > <i class='icon-trash bigger-130'></i> </a>"
 			            		  				+"</td> "+"</tr>");
 			            });
 						var begin = Math.max(1, msg.page.currentPage - pagerRange/2 );
@@ -161,13 +150,6 @@
 	              $("#table-result").hideLoading();
 	          }
 		});
-	}
-	function showinfo(flag){
-		if(flag == false){
-			return "空闲";
-		}else{
-			return "占用";
-		}
 	}
 </script>
 </body>

@@ -1,8 +1,7 @@
 package com.yoga.controller;
 
 import java.io.UnsupportedEncodingException;
-import java.sql.Timestamp;
-import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,9 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.yoga.dao.TbLimitDAO;
+import com.yoga.dao.TbRoleLimitDAO;
 import com.yoga.entity.TbLimit;
+import com.yoga.entity.TbRoleLimit;
 import com.yoga.util.Constants;
-import com.yoga.util.DateUtil;
 import com.yoga.util.JsonResponse;
 import com.yoga.util.Page;
 
@@ -48,12 +48,12 @@ public class TbLimitController  {
 		try {
 			TbLimit entity = getBean(id, name, href);
 			dao.save(entity);
-			jsonResponse.setMsg(Constants.getTip(Constants.ADD, Constants.STAFF, Constants.SUCCESS));
+			jsonResponse.setMsg(Constants.getTip(Constants.ADD, Constants.LIMIT, Constants.SUCCESS));
 			jsonResponse.setSuccess(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 			jsonResponse.setSuccess(false);
-			jsonResponse.setMsg(Constants.getTip(Constants.ADD, Constants.STAFF, Constants.FAILURE));
+			jsonResponse.setMsg(Constants.getTip(Constants.ADD, Constants.LIMIT, Constants.FAILURE));
 		}
 		return jsonResponse;
 	}
@@ -74,12 +74,12 @@ public class TbLimitController  {
 			//更新员工表
 			dao.update(entity);
 			//更新员工详细表
-			jsonResponse.setMsg(Constants.getTip(Constants.EDIT, Constants.STAFF, Constants.SUCCESS));
+			jsonResponse.setMsg(Constants.getTip(Constants.EDIT, Constants.LIMIT, Constants.SUCCESS));
 			jsonResponse.setSuccess(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 			jsonResponse.setSuccess(false);
-			jsonResponse.setMsg(Constants.getTip(Constants.EDIT, Constants.STAFF, Constants.FAILURE));
+			jsonResponse.setMsg(Constants.getTip(Constants.EDIT, Constants.LIMIT, Constants.FAILURE));
 		}
 		return jsonResponse;
 	}
@@ -101,7 +101,54 @@ public class TbLimitController  {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new ModelAndView("staff/index");
+		return new ModelAndView("limit/index");
+	}
+	
+	
+	/**
+	 * 获取所有角色-权限
+	 * @return
+	 */
+	@RequestMapping(value = "roleLimit/allList.html", method = RequestMethod.GET)
+	@ResponseBody
+	public JsonResponse<TbRoleLimit> allRoleList(final int roleId){
+		JsonResponse<TbRoleLimit> jsonResponse = new JsonResponse<TbRoleLimit>();
+		try {
+			//拿关系表的内容
+			TbRoleLimitDAO dao = new TbRoleLimitDAO();
+			//xml文件修改lazy=false
+			List<TbRoleLimit> findAll = dao.findAll(roleId);
+			jsonResponse.setSuccess(true);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.LIMIT, Constants.SUCCESS));
+			jsonResponse.setList(findAll);
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResponse.setSuccess(false);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.LIMIT, Constants.FAILURE));
+		}
+		return jsonResponse;
+	}
+	
+	/**
+	 * 获取所有权限
+	 * @return
+	 */
+	@RequestMapping(value = "limit/alllist.html", method = RequestMethod.GET)
+	@ResponseBody
+	public JsonResponse<TbLimit> allList(){
+		JsonResponse<TbLimit> jsonResponse = new JsonResponse<TbLimit>();
+		try {
+			//xml文件修改lazy=false
+			List<TbLimit> findAll = dao.findAll();
+			jsonResponse.setSuccess(true);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.LIMIT, Constants.SUCCESS));
+			jsonResponse.setList(findAll);
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResponse.setSuccess(false);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.LIMIT, Constants.FAILURE));
+		}
+		return jsonResponse;
 	}
 	
 	/**
@@ -134,12 +181,12 @@ public class TbLimitController  {
 			//xml文件修改lazy=false
 			Page<TbLimit> findAll = dao.findAll(page, size, params);
 			jsonResponse.setSuccess(true);
-			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.STAFF, Constants.SUCCESS));
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.LIMIT, Constants.SUCCESS));
 			jsonResponse.setPage(findAll);
 		} catch (Exception e) {
 			e.printStackTrace();
 			jsonResponse.setSuccess(false);
-			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.STAFF, Constants.FAILURE));
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.LIMIT, Constants.FAILURE));
 		}
 		return jsonResponse;
 	}

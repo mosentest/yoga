@@ -5,12 +5,14 @@
     <div class="modal-content"> 
      <div class="modal-body">
       <form id="add-form-dialog" class="form-horizontal" role="form">
+      <c:if test="${!empty update }">
        <div class="form-group">
         <label class="col-sm-3 control-label no-padding-right font " for="id"> 权限编号： </label> 
         <div class="col-sm-9">
          <input type="text" id="id" class="col-xs-8" <c:if test="${!empty update }">readonly="readonly" value="${limit.id }" </c:if>/><div id="id-tip"></div>
         </div> 
-       </div> 
+       </div>
+       </c:if>
        <div class="form-group">
         <label class="col-sm-3 control-label no-padding-right font" > 权限名称： </label> 
         <div class="col-sm-9"> 
