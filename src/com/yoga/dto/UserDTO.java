@@ -4,6 +4,12 @@ import java.io.Serializable;
 
 import com.yoga.entity.TbUser;
 
+/**
+ * 用户登录
+ * 
+ * @author wwb
+ *
+ */
 public class UserDTO implements Serializable {
 	private String username;
 	private String password;

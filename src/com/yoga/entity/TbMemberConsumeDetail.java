@@ -1,7 +1,7 @@
 package com.yoga.entity;
 
 /**
- * TbMemberConsumeDetail entity
+ * TbMemberConsumeDetail entity 消费订单详细表
  */
 
 public class TbMemberConsumeDetail implements java.io.Serializable {

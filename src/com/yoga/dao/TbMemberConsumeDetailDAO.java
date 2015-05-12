@@ -2,7 +2,6 @@ package com.yoga.dao;
 
 import java.util.List;
 
-import org.hibernate.LockOptions;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -104,10 +103,15 @@ public class TbMemberConsumeDetailDAO extends BaseHibernateDAO implements BaseDa
 		}
 	}
 
-	public List findAll(String...param) {
+	/**
+	 * 根据订单号查询详细的消费
+	 * @param consumeId
+	 * @return
+	 */
+	public List findAll(String memberConsumeId) {
 		log.debug("finding all TbMemberConsumeDetail instances");
 		try {
-			String queryString = "from TbMemberConsumeDetail";
+			String queryString = "from TbMemberConsumeDetail tb where tb.tbConsume.tbMemberConsume='" + memberConsumeId + "'";
 			Query queryObject = getSession().createQuery(queryString);
 			return queryObject.list();
 		} catch (RuntimeException re) {

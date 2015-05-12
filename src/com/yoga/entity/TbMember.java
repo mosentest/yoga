@@ -1,7 +1,5 @@
 package com.yoga.entity;
 
-import java.util.HashSet;
-import java.util.Set;
 
 public class TbMember implements java.io.Serializable {
 
@@ -15,8 +13,8 @@ public class TbMember implements java.io.Serializable {
 	private String memberCard;
 	private String memberPhone;
 	private String memberAddress;
-	private Set tbMemberCourses = new HashSet(0);
-	private Set tbMemberConsumes = new HashSet(0);
+//	private Set tbMemberCourses = new HashSet(0);
+//	private Set tbMemberConsumes = new HashSet(0);
 
 	// Constructors
 
@@ -27,8 +25,8 @@ public class TbMember implements java.io.Serializable {
 	/** full constructor */
 	public TbMember(TbMemberType tbMemberType, String memberUsername,
 			String memberName, Boolean memberSex, String memberCard,
-			String memberPhone, String memberAddress, Set tbMemberCourses,
-			Set tbMemberConsumes) {
+			String memberPhone, String memberAddress/*, Set tbMemberCourses,
+			Set tbMemberConsumes*/) {
 		this.tbMemberType = tbMemberType;
 		this.memberUsername = memberUsername;
 		this.memberName = memberName;
@@ -36,8 +34,8 @@ public class TbMember implements java.io.Serializable {
 		this.memberCard = memberCard;
 		this.memberPhone = memberPhone;
 		this.memberAddress = memberAddress;
-		this.tbMemberCourses = tbMemberCourses;
-		this.tbMemberConsumes = tbMemberConsumes;
+//		this.tbMemberCourses = tbMemberCourses;
+//		this.tbMemberConsumes = tbMemberConsumes;
 	}
 
 	// Property accessors
@@ -106,20 +104,20 @@ public class TbMember implements java.io.Serializable {
 		this.memberAddress = memberAddress;
 	}
 
-	public Set getTbMemberCourses() {
-		return this.tbMemberCourses;
-	}
-
-	public void setTbMemberCourses(Set tbMemberCourses) {
-		this.tbMemberCourses = tbMemberCourses;
-	}
-
-	public Set getTbMemberConsumes() {
-		return this.tbMemberConsumes;
-	}
-
-	public void setTbMemberConsumes(Set tbMemberConsumes) {
-		this.tbMemberConsumes = tbMemberConsumes;
-	}
+//	public Set getTbMemberCourses() {
+//		return this.tbMemberCourses;
+//	}
+//
+//	public void setTbMemberCourses(Set tbMemberCourses) {
+//		this.tbMemberCourses = tbMemberCourses;
+//	}
+//
+//	public Set getTbMemberConsumes() {
+//		return this.tbMemberConsumes;
+//	}
+//
+//	public void setTbMemberConsumes(Set tbMemberConsumes) {
+//		this.tbMemberConsumes = tbMemberConsumes;
+//	}
 
 }

@@ -114,9 +114,9 @@ public class TbMemberTypeController  {
 		JsonResponse<TbMemberType> jsonResponse = new JsonResponse<TbMemberType>();
 		try {
 			List<TbMemberType> findAll = dao.findAll();
-			for(TbMemberType tb :findAll){
-				tb.setTbMembers(null);
-			}
+//			for(TbMemberType tb :findAll){
+//				tb.setTbMembers(null);
+//			}
 			jsonResponse.setSuccess(true);
 			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.MEMBER, Constants.SUCCESS));
 			jsonResponse.setList(findAll);

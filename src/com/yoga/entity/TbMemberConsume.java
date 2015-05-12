@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * TbMemberConsume entity
+ * TbMemberConsume entity 消费订单
  */
 
 public class TbMemberConsume implements java.io.Serializable {
@@ -16,7 +16,7 @@ public class TbMemberConsume implements java.io.Serializable {
 	private TbMember tbMember;
 	private Timestamp createTime;
 	private String cost;
-	private Set tbMemberConsumeDetails = new HashSet(0);
+//	private Set tbMemberConsumeDetails = new HashSet(0);
 
 	// Constructors
 
@@ -25,12 +25,12 @@ public class TbMemberConsume implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TbMemberConsume(TbMember tbMember, Timestamp createTime,
-			String cost, Set tbMemberConsumeDetails) {
+	public TbMemberConsume(TbMember tbMember, Timestamp createTime/*,
+			String cost, Set tbMemberConsumeDetails*/) {
 		this.tbMember = tbMember;
 		this.createTime = createTime;
 		this.cost = cost;
-		this.tbMemberConsumeDetails = tbMemberConsumeDetails;
+//		this.tbMemberConsumeDetails = tbMemberConsumeDetails;
 	}
 
 	// Property accessors
@@ -66,13 +66,13 @@ public class TbMemberConsume implements java.io.Serializable {
 	public void setCost(String cost) {
 		this.cost = cost;
 	}
-
-	public Set getTbMemberConsumeDetails() {
-		return this.tbMemberConsumeDetails;
-	}
-
-	public void setTbMemberConsumeDetails(Set tbMemberConsumeDetails) {
-		this.tbMemberConsumeDetails = tbMemberConsumeDetails;
-	}
+//
+//	public Set getTbMemberConsumeDetails() {
+//		return this.tbMemberConsumeDetails;
+//	}
+//
+//	public void setTbMemberConsumeDetails(Set tbMemberConsumeDetails) {
+//		this.tbMemberConsumeDetails = tbMemberConsumeDetails;
+//	}
 
 }

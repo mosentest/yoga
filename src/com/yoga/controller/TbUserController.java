@@ -16,6 +16,7 @@ import com.yoga.entity.TbRole;
 import com.yoga.entity.TbStaff;
 import com.yoga.entity.TbUser;
 import com.yoga.entity.TbUserRole;
+import com.yoga.util.Base64Util;
 import com.yoga.util.Constants;
 import com.yoga.util.JsonResponse;
 import com.yoga.util.Page;
@@ -50,6 +51,8 @@ public class TbUserController {
 		JsonResponse<TbUser> jsonResponse = new JsonResponse<TbUser>();
 		try {
 			TbUser entity =getBean(id, username, password, staffId);
+			//解密
+			entity.setUserPassword(new String(Base64Util.decode(entity.getUserPassword())));
 			String userId = dao.save(entity);
 			String newroleIds = new String(roleIds.getBytes("iso8859-1"), "UTF-8");
 			String[] roles = newroleIds.split(",");

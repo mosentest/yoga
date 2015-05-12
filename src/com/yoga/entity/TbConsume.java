@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * TbConsume entity
+ * TbConsume entity 消费表
  */
 
 public class TbConsume implements java.io.Serializable {

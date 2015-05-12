@@ -17,7 +17,7 @@ public class TbMemberConsumeDAO extends BaseHibernateDAO implements BaseDao<TbMe
 	// property constants
 	public static final String COST = "cost";
 
-	public void save(TbMemberConsume transientInstance) {
+	public String save(TbMemberConsume transientInstance) {
 		log.debug("saving TbMemberConsume instance");
 		Session session = getSession();
 		Transaction beginTransaction = session.beginTransaction();
@@ -25,6 +25,7 @@ public class TbMemberConsumeDAO extends BaseHibernateDAO implements BaseDao<TbMe
 			getSession().save(transientInstance);
 			beginTransaction.commit();
 			log.debug("save successful");
+			return transientInstance.getMemberConsumeId();
 		} catch (RuntimeException re) {
 			beginTransaction.rollback();
 			log.error("save failed", re);
@@ -150,7 +151,7 @@ public class TbMemberConsumeDAO extends BaseHibernateDAO implements BaseDao<TbMe
 			if (params[0] != null && !"".equals(params[0].trim())) {
 				buffer.append(" tb.memberConsumeId=:id and ");
 			}
-			if (params[1] != null && !"".equals(params[2].trim())) {
+			if (params[1] != null && !"".equals(params[1].trim())) {
 				buffer.append(" tb.tbMember.memberUsername=:name and ");
 			}
 			buffer.append(" 1=1 ");
@@ -160,6 +161,9 @@ public class TbMemberConsumeDAO extends BaseHibernateDAO implements BaseDao<TbMe
 		if (params != null && params.length > 0) {
 			if (params[0] != null && !"".equals(params[0].trim())) {
 				queryObject.setString("id", params[0]);
+			}
+			if (params[1] != null && !"".equals(params[1].trim())) {
+				queryObject.setString("name",  "%"+params[0]+ "%");
 			}
 		}
 		return queryObject;
