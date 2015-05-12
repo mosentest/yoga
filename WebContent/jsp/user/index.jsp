@@ -3,14 +3,9 @@
 <div class="page-content">
       <div class="page-header fixed-div">
         <p>
-          <lable>课室编号：</lable><input type="text" id="id"/>
-          <lable>课室名称：</lable><input type="text" id="name"/>
-          <lable>课室状态：</lable>
-          <select id="state">
-            <option value="-1">--请选择--</option>
-            <option value="0">空闲</option>
-            <option value="1">占用</option>
-          </select>
+          <lable>用户编号：</lable><input type="text" id="id"/>
+          <lable>用户帐号：</lable><input type="text" id="username"/>
+          <lable>员工名字：</lable><input type="text" id="name"/>
         </p>
         <p>
           <button class="btn btn-primary btn-sm" id="search"><i class="icon-search align-top bigger-125"></i>查询</button>
@@ -23,9 +18,9 @@
          <div id="table-result">
           <div class="table-header btn-purple" >所有信息 </div> 
           <div class="table-responsive"> 
-           <div id="sample-table-2_wrapper" class="dataTables_wrapper" role="grid">
+           <div id="sample-table-2_wrapper" class="dataTables_wrapper" user="grid">
               <div class="row" >
-              <div class="col-sm-6"><div id="pager"  ><label >显示 <select size="1" onchange="javascript:gotoPage(1,'name=&beginTime=&endTime=')" id="p_pageSizeSelect">
+              <div class="col-sm-6"><div id="pager"  ><label >显示 <select size="1" onchange="javascript:gotoPage(1,'id=&name=&href=')" id="p_pageSizeSelect">
                 <option value="10" selected="selected" >10</option>
                 <option value="25" >25</option>
                 <option value="50" >50</option>
@@ -37,16 +32,16 @@
               <!-- 显示列表数据 -->
               <table id="table" class="table table-striped table-bordered table-hover dataTable" aria-describedby="sample-table-2_info"> 
                <thead> 
-                <tr role="row"> 
-                 <th role="columnheader" rowspan="1" colspan="1" style="width: 57px;" aria-label=""> <label> <input type="checkbox" class="ace"  id="checkall"/> <span class="lbl"></span> </label> </th> 
-                 <th  role="columnheader"  rowspan="1" colspan="1" style="width: 50px;" >序号</th>
-                 <th  role="columnheader"  rowspan="1" colspan="1" style="width: 153px;" >课室编号</th> 
-                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 133px;" >课室名称</th> 
-                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 130px;" > <i class="icon-time bigger-110 hidden-480"></i>状态</th> 
-                 <th  role="columnheader" rowspan="1" colspan="1" style="width: 156px;" aria-label="">操作</th> 
+                <tr user="row"> 
+                 <th user="columnheader" rowspan="1" colspan="1" style="width: 57px;" aria-label=""> <label> <input type="checkbox" class="ace"  id="checkall"/> <span class="lbl"></span> </label> </th> 
+                 <th  user="columnheader"  rowspan="1" colspan="1" style="width: 50px;" >序号</th>
+                 <th user="columnheader"  rowspan="1" colspan="1" style="width: 133px;" >用户编号</th> 
+                 <th user="columnheader"  rowspan="1" colspan="1" style="width: 133px;" >用户帐号</th> 
+                 <th user="columnheader"  rowspan="1" colspan="1" style="width: 133px;" >员工名字</th> 
+                 <th  user="columnheader" rowspan="1" colspan="1" style="width: 156px;" aria-label="">操作</th> 
                 </tr> 
                </thead> 
-               <tbody role="alert" aria-live="polite" aria-relevant="all"  id="tb">
+               <tbody user="alert" aria-live="polite" aria-relevant="all"  id="tb">
                </tbody> 
               </table>
              </form>
@@ -62,16 +57,17 @@
      <!-- /.page-content -->
     <script type="text/javascript">
 	jQuery(function($) {
+	    
 		//条件查询
 	    $("#search").click(function () {
 	           var id=$("#id").val();
+	           var username=$("#username").val();
 	           var name=$("#name").val();
-	           var state=$("#state").val();
-	           gotoPage(1,"id="+id+"&name="+name+"&state="+state);
+	           gotoPage(1,"id="+id+"&username="+username+"&name="+name);
 	    });
 	    
 		/* 获取数据 */
-		gotoPage(1,"id=&name=&state=");
+		gotoPage(1,"id=&username=&name=");
 		
 		/* 复选框操作 */
 		$('table th input:checkbox').on('click' , function(){
@@ -85,7 +81,7 @@
 
 		//跳转到新增页面
 		$('#add').click(function(){
-			window.location.href="jsp/classrooms/add.jsp";
+			countDown(2, "jsp/user/add.jsp");
 	 	});
 	
 	});
@@ -96,10 +92,9 @@
 		var pageSize =  $("#p_pageSizeSelect").val(); //获取每一页显示多少记录
 		var loc="<div class='col-sm-6'><div class='dataTables_paginate paging_bootstrap'><ul class='pagination'>";
 		$('#tb').html("");
-		//TODO 测试用
 		//alert("page=" + pageIndex + "&size=" + pageSize+"&"+cond);
 		$.ajax({
-			url : "classrooms/list.html",
+			url : "user/list.html",
 			type : 'get',
 			data : "page=" + pageIndex + "&size=" + pageSize+"&"+cond,
 			aysnc : false,
@@ -115,15 +110,19 @@
 				}else{
 					$.each(msg.page.content, function(i, item) {
 			              $('#tb').append( "<tr>"
-			            		  +"<td><label> <input type='checkbox' class='ace' name='checkbox' value='"+item.classroomsId+"' /><span class='lbl'></span> </label></td>"
+			            		  +"<td><label> <input type='checkbox' class='ace' name='checkbox' value='"+item.userId+"' /><span class='lbl'></span> </label></td>"
 			            		  +"<td >"+(++i)+"</td> "
-			            		  +"<td >"+item.classroomsId+"</td> "
-			            		  +"<td >"+item.classroomsName+"</td> "
-			            		  +"<td >"+showinfo(item.classroomsState)+"</td> "
+			            		  +"<td >"+item.userId+"</td> "
+			            		  +"<td >"+item.userUsername+"</td> "
+			            		  +"<td >"+item.tbStaff.staffName+"</td> "
 			            		  +"<td >"+"<div class='visible-md visible-lg hidden-sm hidden-xs action-buttons' id='buttontools'>"
-			            		  				+"<a class='blue' href='javascript:showProvider(\""+item.classroomsId+"\")'> <i class='icon-zoom-in bigger-130'></i>"
-			            		  				+"<a class='green' href='javascript:editProvider(\""+item.classroomsId+"\")' > <i class='icon-pencil bigger-130'></i> </a>"
-			            		  				+"<a class='red' href='javascript:deleteProvider(\""+item.classroomsId+"\")' > <i class='icon-trash bigger-130'></i> </a>"
+			            		  				+"<a class='green' href='user/showOne.html?id="+item.userId+"' > <i class='icon-pencil bigger-130'></i> </a>"
+			            		  				+"<a class='red' href='user/delete?id="+
+			            		  											item.userId+
+			            		  											"&username="+item.userUsername+
+			            		  											"&password="+encode64(item.userPassword)+
+			            		  											"&staffId="+item.tbStaff.staffId+
+			            		  											"' > <i class='icon-trash bigger-130'></i> </a>"
 			            		  				+"</td> "+"</tr>");
 			            });
 						var begin = Math.max(1, msg.page.currentPage - pagerRange/2 );
@@ -162,12 +161,37 @@
 	          }
 		});
 	}
-	function showinfo(flag){
-		if(flag == false){
-			return "空闲";
-		}else{
-			return "占用";
-		}
+	
+	// base64加密开始
+	var keyStr = "ABCDEFGHIJKLMNOP" + "QRSTUVWXYZabcdef" + "ghijklmnopqrstuv"
+			+ "wxyz0123456789+/" + "=";
+
+	function encode64(input) {
+
+		var output = "";
+		var chr1, chr2, chr3 = "";
+		var enc1, enc2, enc3, enc4 = "";
+		var i = 0;
+		do {
+			chr1 = input.charCodeAt(i++);
+			chr2 = input.charCodeAt(i++);
+			chr3 = input.charCodeAt(i++);
+			enc1 = chr1 >> 2;
+			enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+			enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+			enc4 = chr3 & 63;
+			if (isNaN(chr2)) {
+				enc3 = enc4 = 64;
+			} else if (isNaN(chr3)) {
+				enc4 = 64;
+			}
+			output = output + keyStr.charAt(enc1) + keyStr.charAt(enc2)
+					+ keyStr.charAt(enc3) + keyStr.charAt(enc4);
+			chr1 = chr2 = chr3 = "";
+			enc1 = enc2 = enc3 = enc4 = "";
+		} while (i < input.length);
+
+		return output;
 	}
 </script>
 </body>

@@ -19,7 +19,7 @@ public class TbUserDAO extends BaseHibernateDAO  implements BaseDao<TbUser>{
 	public static final String USER_USERNAME = "userUsername";
 	public static final String USER_PASSWORD = "userPassword";
 
-	public void save(TbUser transientInstance) {
+	public String save(TbUser transientInstance) {
 		Session session = getSession();
 		Transaction beginTransaction = session.beginTransaction();
 		log.debug("saving TbUser instance");
@@ -27,6 +27,7 @@ public class TbUserDAO extends BaseHibernateDAO  implements BaseDao<TbUser>{
 			session.save(transientInstance);
 			beginTransaction.commit();
 			log.debug("save successful");
+			return transientInstance.getUserId();
 		} catch (RuntimeException re) {
 			beginTransaction.rollback();
 			log.error("save failed", re);
@@ -36,7 +37,7 @@ public class TbUserDAO extends BaseHibernateDAO  implements BaseDao<TbUser>{
 		}
 	}
 
-	public void udpate(TbUser transientInstance) {
+	public void update(TbUser transientInstance) {
 		Session session = getSession();
 		Transaction beginTransaction = session.beginTransaction();
 		log.debug("saving TbUser instance");

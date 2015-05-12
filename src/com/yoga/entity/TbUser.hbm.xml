@@ -7,7 +7,7 @@
             <column name="user_id" length="32" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="tbStaff" class="com.yoga.entity.TbStaff" fetch="select">
+        <many-to-one name="tbStaff" class="com.yoga.entity.TbStaff" fetch="select" lazy="false">
             <column name="staff_id" length="32">
                 <comment>员工编号</comment>
             </column>

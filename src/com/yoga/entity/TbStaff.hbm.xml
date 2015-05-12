@@ -28,7 +28,7 @@
             </column>
         </property>
         <property name="staffPhone" type="java.lang.String">
-            <column name="staff_phone" length="11">
+            <column name="staff_phone" length="15">
                 <comment>员工联系方式</comment>
             </column>
         </property>

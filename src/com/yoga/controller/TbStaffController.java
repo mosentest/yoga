@@ -3,6 +3,7 @@ package com.yoga.controller;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.yoga.dao.TbStaffDAO;
 import com.yoga.dao.TbStaffDetailDAO;
+import com.yoga.entity.TbMember;
 import com.yoga.entity.TbStaff;
 import com.yoga.entity.TbStaffDetail;
 import com.yoga.util.Constants;
@@ -65,6 +67,25 @@ public class TbStaffController  {
 		return jsonResponse;
 	}
 
+	/**
+	 * 获取所有用户列表
+	 * @return
+	 */
+	@RequestMapping(value = "staff/alllist.html", method = RequestMethod.GET)
+	@ResponseBody
+	public JsonResponse<TbStaff> alllist() {
+		JsonResponse<TbStaff> jsonResponse = new JsonResponse<TbStaff>();
+		try {
+			List<TbStaff> findAll = dao.findAll();
+			jsonResponse.setSuccess(true);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.MEMBER, Constants.SUCCESS));
+			jsonResponse.setList(findAll);
+		} catch (Exception e) {
+			jsonResponse.setSuccess(false);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.MEMBER, Constants.FAILURE));
+		}
+		return jsonResponse;
+	}
 	/**
 	 * 编辑信息
 	 * @param id
@@ -228,10 +249,12 @@ public class TbStaffController  {
 			detail.setStaffEmail(newemail);
 			System.out.println(newtime);
 			if(newtime != null){
+				
 				//时间这里会异常
 //			Date str2Date = DateUtil.str2Date(newtime, "yyyy-MM-dd");
-				newtime+=" 00:00:00";
-				detail.setStaffTime(Timestamp.valueOf(newtime));
+				String[] split = newtime.split(" ");
+				split[0]+=" 00:00:00";
+				detail.setStaffTime(Timestamp.valueOf(split[0]));
 			}
 			detail.setTbStaff(entity);
 		} catch (UnsupportedEncodingException e) {

@@ -139,7 +139,9 @@ public class TbRoleController {
 	 * @param userId
 	 * @return
 	 */
-	public JsonResponse<TbUserRole> allUserRole(final int userId){
+	@RequestMapping(value = "userRole/alllist.html", method = RequestMethod.GET)
+	@ResponseBody
+	public JsonResponse<TbUserRole> allUserRole(final String userId){
 		JsonResponse<TbUserRole> jsonResponse = new JsonResponse<TbUserRole>();
 		try {
 			
@@ -153,10 +155,13 @@ public class TbRoleController {
 		}
 		return jsonResponse;
 	}
+	
 	/**
 	 * 获取所有角色列表
 	 * @return
 	 */
+	@RequestMapping(value = "role/alllist.html", method = RequestMethod.GET)
+	@ResponseBody
 	public JsonResponse<TbRole> alllist(){
 		JsonResponse<TbRole> jsonResponse = new JsonResponse<TbRole>();
 		try {

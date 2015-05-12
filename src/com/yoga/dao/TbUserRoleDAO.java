@@ -57,13 +57,13 @@ public class TbUserRoleDAO extends BaseHibernateDAO {
 	 * 
 	 * @param roleId
 	 */
-	public void delete(int userId) {
+	public void delete(String userId) {
 		log.debug("deleting TbRoleLimit instance");
 		Session session = getSession();
 		Transaction beginTransaction = session.beginTransaction();
 		try {
 			//2015-5-12，写sql代码
-			SQLQuery createSQLQuery = session.createSQLQuery("DELETE * FROM tb_user_role WHERE user_id = " + userId);
+			SQLQuery createSQLQuery = session.createSQLQuery("DELETE * FROM tb_user_role WHERE user_id = '" + userId+"' ");
 			createSQLQuery.executeUpdate();
 			beginTransaction.commit();
 			log.debug("delete successful");
@@ -112,10 +112,10 @@ public class TbUserRoleDAO extends BaseHibernateDAO {
 		}
 	}
 
-	public List findAll(int userId) {
+	public List findAll(String userId) {
 		log.debug("finding all TbUserRole instances");
 		try {
-			String queryString = "from TbUserRole where tbUser.id=" + userId;
+			String queryString = "from TbUserRole where tbUser.userId='" + userId+"'";
 			Query queryObject = getSession().createQuery(queryString);
 			return queryObject.list();
 		} catch (RuntimeException re) {

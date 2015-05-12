@@ -110,6 +110,26 @@ public class TbMemberController  {
 	}
 	
 	/**
+	 * 获取所有会员列表
+	 * @return
+	 */
+	@RequestMapping(value = "member/alllist.html", method = RequestMethod.GET)
+	@ResponseBody
+	public JsonResponse<TbMember> alllist() {
+		JsonResponse<TbMember> jsonResponse = new JsonResponse<TbMember>();
+		try {
+			List<TbMember> findAll = dao.findAll();
+			jsonResponse.setSuccess(true);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.MEMBER, Constants.SUCCESS));
+			jsonResponse.setList(findAll);
+		} catch (Exception e) {
+			jsonResponse.setSuccess(false);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.MEMBER, Constants.FAILURE));
+		}
+		return jsonResponse;
+	}
+	
+	/**
 	 * 获取列表
 	 * @param page
 	 * @param size
