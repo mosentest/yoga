@@ -12,9 +12,9 @@
                 <comment>用户课程订单编号</comment>
             </column>
         </many-to-one>
-        <many-to-one name="tbCourse" class="com.yoga.entity.TbCourse" fetch="select"  lazy="false">
-            <column name="course_id" length="32">
-                <comment>课程编号</comment>
+        <many-to-one name="tbCourse" class="com.yoga.entity.TbStaffCourseClassrooms" fetch="select"  lazy="false">
+            <column name="course_id" length="11">
+                <comment>任务编号</comment>
             </column>
         </many-to-one>
     </class>

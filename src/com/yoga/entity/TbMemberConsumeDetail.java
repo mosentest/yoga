@@ -11,6 +11,7 @@ public class TbMemberConsumeDetail implements java.io.Serializable {
 	private Integer id;
 	private TbConsume tbConsume;
 	private TbMemberConsume tbMemberConsume;
+	private Integer num;
 
 	// Constructors
 
@@ -49,6 +50,14 @@ public class TbMemberConsumeDetail implements java.io.Serializable {
 
 	public void setTbMemberConsume(TbMemberConsume tbMemberConsume) {
 		this.tbMemberConsume = tbMemberConsume;
+	}
+
+	public Integer getNum() {
+		return num;
+	}
+
+	public void setNum(Integer num) {
+		this.num = num;
 	}
 
 }

@@ -3,6 +3,7 @@ package com.yoga.dao;
 import java.util.List;
 
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
@@ -45,6 +46,25 @@ public class TbMemberConsumeDetailDAO extends BaseHibernateDAO implements BaseDa
 		} catch (RuntimeException re) {
 			beginTransaction.rollback();
 			log.error("update failed", re);
+			throw re;
+		}finally{
+			session.close();
+		}
+	}
+	
+
+	public void delete(String memberConsumeId) {
+		log.debug("deleting TbMemberConsumeDetail instance");
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
+		try {
+			SQLQuery createSQLQuery = session.createSQLQuery("DELETE * FROM tb_member_consume_detail WHERE member_consume_id = '" + memberConsumeId+"' ");
+			createSQLQuery.executeUpdate();
+			beginTransaction.commit();
+			log.debug("delete successful");
+		} catch (RuntimeException re) {
+			beginTransaction.rollback();
+			log.error("delete failed", re);
 			throw re;
 		}finally{
 			session.close();

@@ -65,11 +65,11 @@
 					items : [ {
 						id : '12',
 						text : '会员课程',
-						href : 'jsp/memberComsume/index.jsp'
+						href : 'jsp/memberCourse/index.jsp'
 					}, {
 						id : '13',
 						text : '会员消费',
-						href : 'jsp/memberCourse/index.jsp'
+						href : 'jsp/memberComsume/index.jsp'
 					}]
 				} ]
 			}, {

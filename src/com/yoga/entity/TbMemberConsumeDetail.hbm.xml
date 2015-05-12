@@ -17,5 +17,10 @@
                 <comment>用户消费订单编号</comment>
             </column>
         </many-to-one>
+        <property name="num" type="java.lang.Integer">
+         	<column name="num" length="11">
+         		<comment>数量</comment>
+         	</column>
+        </property>
     </class>
 </hibernate-mapping>

@@ -1,5 +1,7 @@
 package com.yoga.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,30 +40,29 @@ public class TbMemberConsumeDetailController  {
 
 	/**
 	 * 添加信息
-	 * @param id
-	 * @param name
-	 * @param price
 	 * @return
 	 */
 	@RequestMapping(value = "memberConsume/add", method = RequestMethod.GET)
 	@ResponseBody
-	public JsonResponse<TbMemberConsume> add(final String id, final String memberId, final String cost,String consumeIds) {
+	public JsonResponse<TbMemberConsume> add(final String id, final String memberId, final String cost, HttpSession session) {
 		JsonResponse<TbMemberConsume> jsonResponse = new JsonResponse<TbMemberConsume>();
 		try {
+			//TODO还有一个数量没考虑到
 			TbMemberConsume entity = getBean(id, memberId, cost);
 			String memberConsumeId = memberConsumeDAO.save(entity);
-			String newconsumeIds = new String(consumeIds.getBytes("iso8859-1"), "UTF-8");
-			String[] consumes = newconsumeIds.split(",");
-			for(String consumeId :consumes){
-				TbMemberConsumeDetail memberConsumeDetail = new TbMemberConsumeDetail();
-				TbConsume tbConsume = new TbConsume();
-				tbConsume.setConsumeId(consumeId);
-				TbMemberConsume tbMemberConsume = new TbMemberConsume();
-				tbMemberConsume.setMemberConsumeId(memberConsumeId);
-				memberConsumeDetail.setTbConsume(tbConsume );
-				memberConsumeDetail.setTbMemberConsume(tbMemberConsume);
-				memberConsumeDetailDAO.save(memberConsumeDetail);
-			}
+			session.getAttribute("");
+//			String newconsumeIds = new String(consumeIds.getBytes("iso8859-1"), "UTF-8");
+//			String[] consumes = newconsumeIds.split(",");
+//			for(String consumeId :consumes){
+//				TbMemberConsumeDetail memberConsumeDetail = new TbMemberConsumeDetail();
+//				TbConsume tbConsume = new TbConsume();
+//				tbConsume.setConsumeId(consumeId);
+//				TbMemberConsume tbMemberConsume = new TbMemberConsume();
+//				tbMemberConsume.setMemberConsumeId(memberConsumeId);
+//				memberConsumeDetail.setTbConsume(tbConsume);
+//				memberConsumeDetail.setTbMemberConsume(tbMemberConsume);
+//				memberConsumeDetailDAO.save(memberConsumeDetail);
+//			}
 			jsonResponse.setMsg(Constants.getTip(Constants.ADD, Constants.CONSUME, Constants.SUCCESS));
 			jsonResponse.setSuccess(true);
 		} catch (Exception e) {
@@ -81,11 +82,24 @@ public class TbMemberConsumeDetailController  {
 	 */
 	@RequestMapping(value = "memberConsume/edit", method = RequestMethod.GET)
 	@ResponseBody
-	public JsonResponse<TbMemberConsume> edit(final String id, final String memberId, final String cost,String consumeIds) {
+	public JsonResponse<TbMemberConsume> edit(final String id, final String memberId, final String cost, HttpSession session) {
 		JsonResponse<TbMemberConsume> jsonResponse = new JsonResponse<TbMemberConsume>();
 		try {
 			TbMemberConsume entity = getBean(id, memberId, cost);
 			memberConsumeDAO.update(entity);
+			memberConsumeDetailDAO.delete(entity.getMemberConsumeId());
+//			String newconsumeIds = new String(consumeIds.getBytes("iso8859-1"), "UTF-8");
+//			String[] consumes = newconsumeIds.split(",");
+//			for(String consumeId :consumes){
+//				TbMemberConsumeDetail memberConsumeDetail = new TbMemberConsumeDetail();
+//				TbConsume tbConsume = new TbConsume();
+//				tbConsume.setConsumeId(consumeId);
+//				TbMemberConsume tbMemberConsume = new TbMemberConsume();
+//				tbMemberConsume.setMemberConsumeId(entity.getMemberConsumeId());
+//				memberConsumeDetail.setTbConsume(tbConsume);
+//				memberConsumeDetail.setTbMemberConsume(tbMemberConsume);
+//				memberConsumeDetailDAO.update(memberConsumeDetail);
+//			}
 			jsonResponse.setMsg(Constants.getTip(Constants.EDIT, Constants.CONSUME, Constants.SUCCESS));
 			jsonResponse.setSuccess(true);
 		} catch (Exception e) {
@@ -104,11 +118,12 @@ public class TbMemberConsumeDetailController  {
 	 * @return
 	 */
 	@RequestMapping(value = "memberConsume/delete", method = RequestMethod.GET)
-	public ModelAndView delete(final String id, final String memberId, final String cost,String consumeIds) {
+	public ModelAndView delete(final String id, final String memberId, final String cost) {
 		try {
 			TbMemberConsume entity = getBean(id, memberId, cost);
 			memberConsumeDAO.update(entity);
 			memberConsumeDAO.delete(entity);
+			memberConsumeDetailDAO.delete(entity.getMemberConsumeId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

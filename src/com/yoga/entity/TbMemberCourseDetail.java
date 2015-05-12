@@ -10,7 +10,7 @@ public class TbMemberCourseDetail implements java.io.Serializable {
 
 	private Integer id;
 	private TbMemberCourse tbMemberCourse;
-	private TbCourse tbCourse;
+	private TbStaffCourseClassrooms tbCourse;
 
 	// Constructors
 
@@ -19,7 +19,7 @@ public class TbMemberCourseDetail implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TbMemberCourseDetail(TbMemberCourse tbMemberCourse, TbCourse tbCourse) {
+	public TbMemberCourseDetail(TbMemberCourse tbMemberCourse, TbStaffCourseClassrooms tbCourse) {
 		this.tbMemberCourse = tbMemberCourse;
 		this.tbCourse = tbCourse;
 	}
@@ -42,11 +42,11 @@ public class TbMemberCourseDetail implements java.io.Serializable {
 		this.tbMemberCourse = tbMemberCourse;
 	}
 
-	public TbCourse getTbCourse() {
+	public TbStaffCourseClassrooms getTbCourse() {
 		return this.tbCourse;
 	}
 
-	public void setTbCourse(TbCourse tbCourse) {
+	public void setTbCourse(TbStaffCourseClassrooms tbCourse) {
 		this.tbCourse = tbCourse;
 	}
 

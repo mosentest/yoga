@@ -16,7 +16,7 @@ public class TbMemberCourse implements java.io.Serializable {
 	private TbMember tbMember;
 	private Timestamp createTime;
 	private String cost;
-	private Set tbMemberCourseDetails = new HashSet(0);
+//	private Set tbMemberCourseDetails = new HashSet(0);
 
 	// Constructors
 
@@ -25,12 +25,12 @@ public class TbMemberCourse implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TbMemberCourse(TbMember tbMember, Timestamp createTime, String cost,
-			Set tbMemberCourseDetails) {
+	public TbMemberCourse(TbMember tbMember, Timestamp createTime, String cost/*,
+			Set tbMemberCourseDetails*/) {
 		this.tbMember = tbMember;
 		this.createTime = createTime;
 		this.cost = cost;
-		this.tbMemberCourseDetails = tbMemberCourseDetails;
+//		this.tbMemberCourseDetails = tbMemberCourseDetails;
 	}
 
 	// Property accessors
@@ -67,12 +67,12 @@ public class TbMemberCourse implements java.io.Serializable {
 		this.cost = cost;
 	}
 
-	public Set getTbMemberCourseDetails() {
-		return this.tbMemberCourseDetails;
-	}
-
-	public void setTbMemberCourseDetails(Set tbMemberCourseDetails) {
-		this.tbMemberCourseDetails = tbMemberCourseDetails;
-	}
+//	public Set getTbMemberCourseDetails() {
+//		return this.tbMemberCourseDetails;
+//	}
+//
+//	public void setTbMemberCourseDetails(Set tbMemberCourseDetails) {
+//		this.tbMemberCourseDetails = tbMemberCourseDetails;
+//	}
 
 }

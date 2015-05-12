@@ -1,6 +1,7 @@
 package com.yoga.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -98,6 +99,21 @@ public class TbConsumeController  {
 		return new ModelAndView("consume/index");
 	}
 	
+	@RequestMapping(value = "consume/alllist.html", method = RequestMethod.GET)
+	@ResponseBody
+	public JsonResponse<TbConsume> list() {
+		JsonResponse<TbConsume> jsonResponse = new JsonResponse<TbConsume>();
+		try {
+			List<TbConsume> findAll = dao.findAll();
+			jsonResponse.setSuccess(true);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.CONSUME, Constants.SUCCESS));
+			jsonResponse.setList(findAll);
+		} catch (Exception e) {
+			jsonResponse.setSuccess(false);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.CONSUME, Constants.FAILURE));
+		}
+		return jsonResponse;
+	}
 	/**
 	 * 获取列表
 	 * @param page

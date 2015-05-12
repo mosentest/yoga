@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50018
 File Encoding         : 65001
 
-Date: 2015-05-10 21:50:31
+Date: 2015-05-12 21:02:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -161,7 +161,7 @@ DROP TABLE IF EXISTS `tb_member_consume`;
 CREATE TABLE `tb_member_consume` (
   `member_consume_id` varchar(32) NOT NULL COMMENT '用户消费订单编号',
   `member_id` varchar(32) default NULL COMMENT '会员编号',
-  `create_time` datetime default NULL COMMENT '购买时间',
+  `create_time` timestamp NULL default NULL on update CURRENT_TIMESTAMP COMMENT '购买时间',
   `cost` varchar(10) default NULL COMMENT '花费',
   PRIMARY KEY  (`member_consume_id`),
   KEY `member_id` (`member_id`),
@@ -171,6 +171,8 @@ CREATE TABLE `tb_member_consume` (
 -- ----------------------------
 -- Records of tb_member_consume
 -- ----------------------------
+INSERT INTO `tb_member_consume` VALUES ('mc0001', 'm0001', '2015-05-12 20:46:59', '100');
+INSERT INTO `tb_member_consume` VALUES ('mc0002', 'm0001', '2015-05-12 20:48:23', '200');
 
 -- ----------------------------
 -- Table structure for tb_member_consume_detail
@@ -180,6 +182,7 @@ CREATE TABLE `tb_member_consume_detail` (
   `id` int(11) NOT NULL auto_increment,
   `member_consume_id` varchar(32) default NULL COMMENT '用户消费订单编号',
   `consume_id` varchar(32) default NULL COMMENT '消费编号',
+  `num` int(11) default NULL COMMENT '数量',
   PRIMARY KEY  (`id`),
   KEY `consume_id` (`consume_id`),
   KEY `member_consume_id` (`member_consume_id`),
@@ -190,6 +193,8 @@ CREATE TABLE `tb_member_consume_detail` (
 -- ----------------------------
 -- Records of tb_member_consume_detail
 -- ----------------------------
+INSERT INTO `tb_member_consume_detail` VALUES ('1', 'mc0001', 'cs0001', '10');
+INSERT INTO `tb_member_consume_detail` VALUES ('7', 'mc0002', 'cs0003', '10');
 
 -- ----------------------------
 -- Table structure for tb_member_course
@@ -198,7 +203,7 @@ DROP TABLE IF EXISTS `tb_member_course`;
 CREATE TABLE `tb_member_course` (
   `member_course_id` varchar(32) NOT NULL COMMENT '用户课程订单编号',
   `member_id` varchar(32) default NULL COMMENT '会员编号',
-  `create_time` datetime default NULL COMMENT '购买时间',
+  `create_time` timestamp NULL default NULL on update CURRENT_TIMESTAMP COMMENT '购买时间',
   `cost` varchar(10) default NULL COMMENT '花费',
   PRIMARY KEY  (`member_course_id`),
   KEY `member_id` (`member_id`),
@@ -208,6 +213,8 @@ CREATE TABLE `tb_member_course` (
 -- ----------------------------
 -- Records of tb_member_course
 -- ----------------------------
+INSERT INTO `tb_member_course` VALUES ('mc0001', 'm0001', '2015-05-12 20:56:40', '44');
+INSERT INTO `tb_member_course` VALUES ('mc0002', 'm0001', '2015-05-12 20:58:55', '100');
 
 -- ----------------------------
 -- Table structure for tb_member_course_detail
@@ -216,17 +223,19 @@ DROP TABLE IF EXISTS `tb_member_course_detail`;
 CREATE TABLE `tb_member_course_detail` (
   `id` int(11) NOT NULL auto_increment,
   `member_course_id` varchar(32) default NULL COMMENT '用户课程订单编号',
-  `course_id` varchar(32) default NULL COMMENT '课程编号',
+  `course_id` int(11) default NULL COMMENT '课程编号',
   PRIMARY KEY  (`id`),
   KEY `member_course_id` (`member_course_id`),
   KEY `course_id` (`course_id`),
-  CONSTRAINT `tb_member_course_detail_ibfk_1` FOREIGN KEY (`member_course_id`) REFERENCES `tb_member_course` (`member_course_id`) ON DELETE SET NULL ON UPDATE SET NULL,
-  CONSTRAINT `tb_member_course_detail_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `tb_course` (`course_id`) ON DELETE SET NULL ON UPDATE SET NULL
+  CONSTRAINT `tb_member_course_detail_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `tb_staff_course_classrooms` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
+  CONSTRAINT `tb_member_course_detail_ibfk_1` FOREIGN KEY (`member_course_id`) REFERENCES `tb_member_course` (`member_course_id`) ON DELETE SET NULL ON UPDATE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tb_member_course_detail
 -- ----------------------------
+INSERT INTO `tb_member_course_detail` VALUES ('1', 'mc0001', '1');
+INSERT INTO `tb_member_course_detail` VALUES ('2', 'mc0002', '2');
 
 -- ----------------------------
 -- Table structure for tb_member_type
@@ -261,6 +270,7 @@ CREATE TABLE `tb_role` (
 -- ----------------------------
 -- Records of tb_role
 -- ----------------------------
+INSERT INTO `tb_role` VALUES ('4', '土豪');
 INSERT INTO `tb_role` VALUES ('1', '普通管理员');
 INSERT INTO `tb_role` VALUES ('2', '超级管理员');
 
@@ -299,6 +309,9 @@ INSERT INTO `tb_role_limit` VALUES ('14', '2', '7');
 INSERT INTO `tb_role_limit` VALUES ('15', '2', '8');
 INSERT INTO `tb_role_limit` VALUES ('16', '2', '9');
 INSERT INTO `tb_role_limit` VALUES ('17', '2', '10');
+INSERT INTO `tb_role_limit` VALUES ('21', '4', '1');
+INSERT INTO `tb_role_limit` VALUES ('22', '4', '2');
+INSERT INTO `tb_role_limit` VALUES ('23', '4', '3');
 
 -- ----------------------------
 -- Table structure for tb_staff
@@ -310,7 +323,7 @@ CREATE TABLE `tb_staff` (
   `staff_sex` tinyint(1) default NULL COMMENT '性别。0为男，1为女',
   `staff_age` tinyint(3) default NULL COMMENT '员工年龄',
   `staff_post` varchar(20) default NULL COMMENT '员工职务',
-  `staff_phone` varchar(11) default NULL COMMENT '员工联系方式',
+  `staff_phone` varchar(15) default NULL COMMENT '员工联系方式',
   PRIMARY KEY  (`staff_id`),
   UNIQUE KEY `staff_name` (`staff_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -343,6 +356,8 @@ CREATE TABLE `tb_staff_course_classrooms` (
 -- ----------------------------
 -- Records of tb_staff_course_classrooms
 -- ----------------------------
+INSERT INTO `tb_staff_course_classrooms` VALUES ('1', 'st0001', 'ce0001', 'cr0001', '2015-05-12 20:59:57');
+INSERT INTO `tb_staff_course_classrooms` VALUES ('2', 'st0002', 'ce0002', 'cr0002', '2015-05-12 21:00:44');
 
 -- ----------------------------
 -- Table structure for tb_staff_detail
