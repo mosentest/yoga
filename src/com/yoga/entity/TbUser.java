@@ -1,10 +1,8 @@
 package com.yoga.entity;
 
-import java.util.HashSet;
-import java.util.Set;
 
 /**
- * TbUser entity. @author MyEclipse Persistence Tools
+ * TbUser entity
  */
 
 public class TbUser implements java.io.Serializable {
@@ -15,7 +13,7 @@ public class TbUser implements java.io.Serializable {
 	private TbStaff tbStaff;
 	private String userUsername;
 	private String userPassword;
-	private Set tbUserRoles = new HashSet(0);
+//	private Set tbUserRoles = new HashSet(0);
 
 	// Constructors
 
@@ -24,12 +22,12 @@ public class TbUser implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TbUser(TbStaff tbStaff, String userUsername, String userPassword,
-			Set tbUserRoles) {
+	public TbUser(TbStaff tbStaff, String userUsername, String userPassword/*,
+			Set tbUserRoles*/) {
 		this.tbStaff = tbStaff;
 		this.userUsername = userUsername;
 		this.userPassword = userPassword;
-		this.tbUserRoles = tbUserRoles;
+	/*	this.tbUserRoles = tbUserRoles;*/
 	}
 
 	// Property accessors
@@ -66,12 +64,12 @@ public class TbUser implements java.io.Serializable {
 		this.userPassword = userPassword;
 	}
 
-	public Set getTbUserRoles() {
+/*	public Set getTbUserRoles() {
 		return this.tbUserRoles;
 	}
 
 	public void setTbUserRoles(Set tbUserRoles) {
 		this.tbUserRoles = tbUserRoles;
-	}
+	}*/
 
 }

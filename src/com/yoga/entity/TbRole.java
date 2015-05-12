@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * TbRole entity. @author MyEclipse Persistence Tools
+ * TbRole entity
  */
 
 public class TbRole implements java.io.Serializable {

@@ -1,41 +1,72 @@
 package com.yoga.dao;
 
 import java.util.List;
-import java.util.Set;
 
-import org.hibernate.LockOptions;
 import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.yoga.entity.TbStaff;
 import com.yoga.entity.TbUser;
+import com.yoga.util.Page;
 
-public class TbUserDAO extends BaseHibernateDAO {
+public class TbUserDAO extends BaseHibernateDAO  implements BaseDao<TbUser>{
 	private static final Logger log = LoggerFactory.getLogger(TbUserDAO.class);
 	// property constants
 	public static final String USER_USERNAME = "userUsername";
 	public static final String USER_PASSWORD = "userPassword";
 
 	public void save(TbUser transientInstance) {
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
 		log.debug("saving TbUser instance");
 		try {
-			getSession().save(transientInstance);
+			session.save(transientInstance);
+			beginTransaction.commit();
 			log.debug("save successful");
 		} catch (RuntimeException re) {
+			beginTransaction.rollback();
 			log.error("save failed", re);
 			throw re;
+		} finally {
+			session.close();
 		}
 	}
 
+	public void udpate(TbUser transientInstance) {
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
+		log.debug("saving TbUser instance");
+		try {
+			session.merge(transientInstance);
+			beginTransaction.commit();
+			log.debug("save successful");
+		} catch (RuntimeException re) {
+			beginTransaction.rollback();
+			log.error("save failed", re);
+			throw re;
+		} finally {
+			session.close();
+		}
+	}
+	
 	public void delete(TbUser persistentInstance) {
 		log.debug("deleting TbUser instance");
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
 		try {
-			getSession().delete(persistentInstance);
+			session.delete(persistentInstance);
+			beginTransaction.commit();
 			log.debug("delete successful");
 		} catch (RuntimeException re) {
+			beginTransaction.rollback();
 			log.error("delete failed", re);
 			throw re;
+		} finally {
+			session.close();
 		}
 	}
 
@@ -83,11 +114,10 @@ public class TbUserDAO extends BaseHibernateDAO {
 		return findByProperty(USER_PASSWORD, userPassword);
 	}
 
-	public List findAll() {
+	public List findAll(String... params) {
 		log.debug("finding all TbUser instances");
 		try {
-			String queryString = "from TbUser";
-			Query queryObject = getSession().createQuery(queryString);
+			Query queryObject = repeatCode(params);
 			return queryObject.list();
 		} catch (RuntimeException re) {
 			log.error("find all failed", re);
@@ -95,37 +125,60 @@ public class TbUserDAO extends BaseHibernateDAO {
 		}
 	}
 
-	public TbUser merge(TbUser detachedInstance) {
-		log.debug("merging TbUser instance");
+	/**
+	 * userid，username，name
+	 */
+	@Override
+	public Page<TbUser> findAll(int page, int size, String... params) {
+		Page<TbUser> pageList = new Page<TbUser>();
+		pageList.setPageSize(size);
+		pageList.setCurrentPage(page);
+		log.debug("finding all TbUser instances");
 		try {
-			TbUser result = (TbUser) getSession().merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
+			Query queryObject = repeatCode(params);
+			queryObject.setFirstResult((page - 1) * size);// 显示第几页，当前页
+			queryObject.setMaxResults(size);// 每页做多显示的记录数
+			List list = queryObject.list();
+			pageList.setTotalElement(findAll(params).size(), size);
+			pageList.setContent(list);
+			return pageList;
 		} catch (RuntimeException re) {
-			log.error("merge failed", re);
+			log.error("find all failed", re);
 			throw re;
 		}
+	}
+	
+	private Query repeatCode(String[] params) {
+		String queryString = "from TbUser";
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(queryString);
+		if (params != null && params.length > 0) {
+			buffer.append(" as tb where ");
+			if (params[0] != null && !"".equals(params[0].trim())) {
+				buffer.append(" tb.userId like:cid and ");
+			}
+			if (params[1] != null && !"".equals(params[1].trim())) {
+				buffer.append(" tb.userUsername like:cname and ");
+			}
+			if (params[2] != null && !"".equals(params[2].trim())) {
+				buffer.append(" tb.tbStaff.staffName like:ctime and ");
+			}
+			buffer.append(" 1=1 ");
+		}
+		Query queryObject = getSession().createQuery(buffer.toString());
+		// 分页显示的操作
+		if (params != null && params.length > 0) {
+			if (params[0] != null && !"".equals(params[0].trim())) {
+				queryObject.setString("cid", "%" + params[0] + "%");
+			}
+			if (params[1] != null && !"".equals(params[1].trim())) {
+				queryObject.setString("cname", "%" + params[1] + "%");
+			}
+			if (params[2] != null && !"".equals(params[2].trim())) {
+				queryObject.setString("ctime", "%" + params[2] + "%");
+			}
+		}
+		return queryObject;
 	}
 
-	public void attachDirty(TbUser instance) {
-		log.debug("attaching dirty TbUser instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(TbUser instance) {
-		log.debug("attaching clean TbUser instance");
-		try {
-			getSession().buildLockRequest(LockOptions.NONE).lock(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
 }

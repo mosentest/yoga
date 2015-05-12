@@ -22,11 +22,11 @@
                 <comment>密码</comment>
             </column>
         </property>
-        <set name="tbUserRoles" inverse="true">
-            <key>
-                <column name="user_id" length="32" />
-            </key>
-            <one-to-many class="com.yoga.entity.TbUserRole" />
-        </set>
+<!--         <set name="tbUserRoles" inverse="true"> -->
+<!--             <key> -->
+<!--                 <column name="user_id" length="32" /> -->
+<!--             </key> -->
+<!--             <one-to-many class="com.yoga.entity.TbUserRole" /> -->
+<!--         </set> -->
     </class>
 </hibernate-mapping>

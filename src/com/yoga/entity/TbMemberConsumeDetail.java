@@ -1,7 +1,7 @@
 package com.yoga.entity;
 
 /**
- * TbMemberConsumeDetail entity. @author MyEclipse Persistence Tools
+ * TbMemberConsumeDetail entity
  */
 
 public class TbMemberConsumeDetail implements java.io.Serializable {

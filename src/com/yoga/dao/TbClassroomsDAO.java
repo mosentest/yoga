@@ -24,7 +24,7 @@ public class TbClassroomsDAO extends BaseHibernateDAO implements BaseDao<TbClass
 		Transaction beginTransaction = session.beginTransaction();
 		try {
 //			beginTransaction.begin();
-			getSession().save(transientInstance);
+			session.save(transientInstance);
 			beginTransaction.commit();
 			log.debug("save successful");
 		} catch (RuntimeException re) {
@@ -63,7 +63,7 @@ public class TbClassroomsDAO extends BaseHibernateDAO implements BaseDao<TbClass
 		Transaction beginTransaction = session.beginTransaction();
 		try {
 //			beginTransaction.begin();
-			getSession().delete(persistentInstance);
+			session.delete(persistentInstance);
 			beginTransaction.commit();
 			log.debug("delete successful");
 		} catch (RuntimeException re) {
@@ -71,7 +71,7 @@ public class TbClassroomsDAO extends BaseHibernateDAO implements BaseDao<TbClass
 			log.error("delete failed", re);
 			throw re;
 		}finally{
-			getSession().close();
+			session.close();
 		}
 	}
 

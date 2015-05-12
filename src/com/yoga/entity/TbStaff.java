@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * TbStaff entity. @author MyEclipse Persistence Tools
+ * TbStaff entity
  */
 
 public class TbStaff implements java.io.Serializable {

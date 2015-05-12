@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * TbClassrooms entity. @author MyEclipse Persistence Tools
+ * TbClassrooms entity
  */
 
 public class TbClassrooms implements java.io.Serializable {

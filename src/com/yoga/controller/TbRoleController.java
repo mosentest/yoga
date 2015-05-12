@@ -1,6 +1,7 @@
 package com.yoga.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import javax.management.relation.Role;
 
@@ -14,9 +15,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.yoga.dao.TbRoleDAO;
 import com.yoga.dao.TbRoleLimitDAO;
+import com.yoga.dao.TbUserRoleDAO;
 import com.yoga.entity.TbLimit;
 import com.yoga.entity.TbRole;
 import com.yoga.entity.TbRoleLimit;
+import com.yoga.entity.TbUserRole;
 import com.yoga.util.Constants;
 import com.yoga.util.JsonResponse;
 import com.yoga.util.Page;
@@ -36,6 +39,7 @@ public class TbRoleController {
 	 */
 	private TbRoleDAO dao = new TbRoleDAO();
 	private TbRoleLimitDAO roleLimitDAO = new TbRoleLimitDAO();
+	private TbUserRoleDAO userRoleDAO = new TbUserRoleDAO();
 
 	/**
 	 * 添加信息
@@ -130,6 +134,42 @@ public class TbRoleController {
 		return new ModelAndView("role/index");
 	}
 
+	/**
+	 * 获取用户-角色列表
+	 * @param userId
+	 * @return
+	 */
+	public JsonResponse<TbUserRole> allUserRole(final int userId){
+		JsonResponse<TbUserRole> jsonResponse = new JsonResponse<TbUserRole>();
+		try {
+			
+			List<TbUserRole> findAll = userRoleDAO.findAll(userId);
+			jsonResponse.setSuccess(true);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.ROLE, Constants.SUCCESS));
+			jsonResponse.setList(findAll);
+		} catch (Exception e) {
+			jsonResponse.setSuccess(false);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.ROLE, Constants.FAILURE));
+		}
+		return jsonResponse;
+	}
+	/**
+	 * 获取所有角色列表
+	 * @return
+	 */
+	public JsonResponse<TbRole> alllist(){
+		JsonResponse<TbRole> jsonResponse = new JsonResponse<TbRole>();
+		try {
+			List<TbRole> findAll = dao.findAll();
+			jsonResponse.setSuccess(true);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.ROLE, Constants.SUCCESS));
+			jsonResponse.setList(findAll);
+		} catch (Exception e) {
+			jsonResponse.setSuccess(false);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.ROLE, Constants.FAILURE));
+		}
+		return jsonResponse;
+	}
 	/**
 	 * 获取列表
 	 * 

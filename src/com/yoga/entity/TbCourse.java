@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * TbCourse entity. @author MyEclipse Persistence Tools
+ * TbCourse entity
  */
 
 public class TbCourse implements java.io.Serializable {

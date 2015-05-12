@@ -42,7 +42,7 @@ public class TbCourseDAO extends BaseHibernateDAO implements BaseDao<TbCourse> {
 		Transaction beginTransaction = session.beginTransaction();
 		try {
 			// http://www.blogjava.net/hrcdg/articles/157724.html
-			getSession().merge(transientInstance);
+			session.merge(transientInstance);
 			beginTransaction.commit();
 			log.debug("update successful");
 		} catch (RuntimeException re) {
@@ -51,7 +51,7 @@ public class TbCourseDAO extends BaseHibernateDAO implements BaseDao<TbCourse> {
 			log.error("update failed", re);
 			throw re;
 		} finally {
-			getSession().close();
+			session.close();
 		}
 	}
 	
@@ -60,7 +60,7 @@ public class TbCourseDAO extends BaseHibernateDAO implements BaseDao<TbCourse> {
 		Session session = getSession();
 		Transaction beginTransaction = session.beginTransaction();
 		try {
-			getSession().delete(persistentInstance);
+			session.delete(persistentInstance);
 			beginTransaction.commit();
 			log.debug("delete successful");
 		} catch (RuntimeException re) {
@@ -68,7 +68,7 @@ public class TbCourseDAO extends BaseHibernateDAO implements BaseDao<TbCourse> {
 			log.error("delete failed", re);
 			throw re;
 		}finally {
-			getSession().close();
+			session.close();
 		}
 	}
 

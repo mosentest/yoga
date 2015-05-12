@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * TbConsume entity. @author MyEclipse Persistence Tools
+ * TbConsume entity
  */
 
 public class TbConsume implements java.io.Serializable {

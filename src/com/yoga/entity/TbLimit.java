@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * TbLimit entity. @author MyEclipse Persistence Tools
+ * TbLimit entity
  */
 
 public class TbLimit implements java.io.Serializable {

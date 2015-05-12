@@ -26,7 +26,7 @@ public class TbStaffDetailDAO extends BaseHibernateDAO implements BaseDao<TbStaf
 		Session session = getSession();
 		Transaction beginTransaction = session.beginTransaction();
 		try {
-			getSession().save(transientInstance);
+			session.save(transientInstance);
 			beginTransaction.commit();
 			log.debug("save successful");
 		} catch (RuntimeException re) {
@@ -34,7 +34,7 @@ public class TbStaffDetailDAO extends BaseHibernateDAO implements BaseDao<TbStaf
 			log.error("save failed", re);
 			throw re;
 		} finally {
-			getSession().close();
+			session.close();
 		}
 	}
 	
@@ -43,7 +43,7 @@ public class TbStaffDetailDAO extends BaseHibernateDAO implements BaseDao<TbStaf
 		Session session = getSession();
 		Transaction beginTransaction = session.beginTransaction();
 		try {
-			getSession().merge(transientInstance);
+			session.merge(transientInstance);
 			beginTransaction.commit();
 			log.debug("update successful");
 		} catch (RuntimeException re) {
@@ -51,7 +51,7 @@ public class TbStaffDetailDAO extends BaseHibernateDAO implements BaseDao<TbStaf
 			log.error("update failed", re);
 			throw re;
 		} finally {
-			getSession().close();
+			session.close();
 		}
 	}
 
@@ -60,7 +60,7 @@ public class TbStaffDetailDAO extends BaseHibernateDAO implements BaseDao<TbStaf
 		Session session = getSession();
 		Transaction beginTransaction = session.beginTransaction();
 		try {
-			getSession().delete(persistentInstance);
+			session.delete(persistentInstance);
 			beginTransaction.commit();
 			log.debug("delete successful");
 		} catch (RuntimeException re) {
@@ -68,7 +68,7 @@ public class TbStaffDetailDAO extends BaseHibernateDAO implements BaseDao<TbStaf
 			log.error("delete failed", re);
 			throw re;
 		} finally {
-			getSession().close();
+			session.close();
 		}
 	}
 

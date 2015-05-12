@@ -23,7 +23,7 @@ public class TbConsumeDAO extends BaseHibernateDAO implements BaseDao<TbConsume>
 		Session session = getSession();
 		Transaction beginTransaction = session.beginTransaction();
 		try {
-			getSession().save(transientInstance);
+			session.save(transientInstance);
 			beginTransaction.commit();
 			log.debug("save successful");
 		} catch (RuntimeException re) {
@@ -31,7 +31,7 @@ public class TbConsumeDAO extends BaseHibernateDAO implements BaseDao<TbConsume>
 			log.error("save failed", re);
 			throw re;
 		} finally {
-			getSession().close();
+			session.close();
 		}
 	}
 
@@ -41,7 +41,7 @@ public class TbConsumeDAO extends BaseHibernateDAO implements BaseDao<TbConsume>
 		Transaction beginTransaction = session.beginTransaction();
 		try {
 			// http://www.blogjava.net/hrcdg/articles/157724.html
-			getSession().merge(transientInstance);
+			session.merge(transientInstance);
 			beginTransaction.commit();
 			log.debug("update successful");
 		} catch (RuntimeException re) {
@@ -50,7 +50,7 @@ public class TbConsumeDAO extends BaseHibernateDAO implements BaseDao<TbConsume>
 			log.error("update failed", re);
 			throw re;
 		} finally {
-			getSession().close();
+			session.close();
 		}
 	}
 

@@ -52,6 +52,8 @@ public class TbRoleLimitDAO extends BaseHibernateDAO {
 			beginTransaction.rollback();
 			log.error("delete failed", re);
 			throw re;
+		}finally{
+			session.close();
 		}
 	}
 	

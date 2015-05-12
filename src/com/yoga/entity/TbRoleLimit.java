@@ -1,7 +1,7 @@
 package com.yoga.entity;
 
 /**
- * TbRoleLimit entity. @author MyEclipse Persistence Tools
+ * TbRoleLimit entity
  */
 
 public class TbRoleLimit implements java.io.Serializable {

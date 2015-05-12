@@ -30,7 +30,7 @@ public class TbMemberDAO extends BaseHibernateDAO implements BaseDao<TbMember> {
 		Session session = getSession();
 		Transaction beginTransaction = session.beginTransaction();
 		try {
-			getSession().save(transientInstance);
+			session.save(transientInstance);
 			beginTransaction.commit();
 			log.debug("save successful");
 		} catch (RuntimeException re) {
@@ -38,7 +38,7 @@ public class TbMemberDAO extends BaseHibernateDAO implements BaseDao<TbMember> {
 			log.error("save failed", re);
 			throw re;
 		} finally {
-			getSession().close();
+			session.close();
 		}
 	}
 
@@ -48,7 +48,7 @@ public class TbMemberDAO extends BaseHibernateDAO implements BaseDao<TbMember> {
 		Transaction beginTransaction = session.beginTransaction();
 		try {
 			// http://www.blogjava.net/hrcdg/articles/157724.html
-			getSession().merge(transientInstance);
+			session.merge(transientInstance);
 			beginTransaction.commit();
 			log.debug("update successful");
 		} catch (RuntimeException re) {
@@ -57,7 +57,7 @@ public class TbMemberDAO extends BaseHibernateDAO implements BaseDao<TbMember> {
 			log.error("update failed", re);
 			throw re;
 		} finally {
-			getSession().close();
+			session.close();
 		}
 	}
 
@@ -66,7 +66,7 @@ public class TbMemberDAO extends BaseHibernateDAO implements BaseDao<TbMember> {
 		Session session = getSession();
 		Transaction beginTransaction = session.beginTransaction();
 		try {
-			getSession().delete(persistentInstance);
+			session.delete(persistentInstance);
 			beginTransaction.commit();
 			log.debug("delete successful");
 		} catch (RuntimeException re) {
@@ -74,7 +74,7 @@ public class TbMemberDAO extends BaseHibernateDAO implements BaseDao<TbMember> {
 			log.error("delete failed", re);
 			throw re;
 		} finally {
-			getSession().close();
+			session.close();
 		}
 	}
 

@@ -22,7 +22,7 @@ public class TbRoleDAO extends BaseHibernateDAO implements BaseDao<TbRole> {
 		Session session = getSession();
 		Transaction beginTransaction = session.beginTransaction();
 		try {
-			getSession().save(transientInstance);
+			session.save(transientInstance);
 			beginTransaction.commit();
 			log.debug("save successful");
 			return transientInstance.getId();
@@ -30,6 +30,8 @@ public class TbRoleDAO extends BaseHibernateDAO implements BaseDao<TbRole> {
 			beginTransaction.rollback();
 			log.error("save failed", re);
 			throw re;
+		}finally{
+			session.close();
 		}
 	}
 
@@ -39,7 +41,7 @@ public class TbRoleDAO extends BaseHibernateDAO implements BaseDao<TbRole> {
 		Transaction beginTransaction = session.beginTransaction();
 		try {
 			// http://www.blogjava.net/hrcdg/articles/157724.html
-			getSession().merge(transientInstance);
+			session.merge(transientInstance);
 			beginTransaction.commit();
 			log.debug("update successful");
 		} catch (RuntimeException re) {
@@ -48,7 +50,7 @@ public class TbRoleDAO extends BaseHibernateDAO implements BaseDao<TbRole> {
 			log.error("update failed", re);
 			throw re;
 		} finally {
-			getSession().close();
+			session.close();
 		}
 	}
 
@@ -57,13 +59,15 @@ public class TbRoleDAO extends BaseHibernateDAO implements BaseDao<TbRole> {
 		Session session = getSession();
 		Transaction beginTransaction = session.beginTransaction();
 		try {
-			getSession().delete(persistentInstance);
+			session.delete(persistentInstance);
 			beginTransaction.commit();
 			log.debug("delete successful");
 		} catch (RuntimeException re) {
 			beginTransaction.rollback();
 			log.error("delete failed", re);
 			throw re;
+		} finally {
+			session.close();
 		}
 	}
 

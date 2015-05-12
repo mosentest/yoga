@@ -3,7 +3,7 @@ package com.yoga.entity;
 import java.sql.Timestamp;
 
 /**
- * TbStaffDetail entity. @author MyEclipse Persistence Tools
+ * TbStaffDetail entity
  */
 
 public class TbStaffDetail implements java.io.Serializable {

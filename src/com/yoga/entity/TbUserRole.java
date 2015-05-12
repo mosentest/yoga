@@ -1,7 +1,7 @@
 package com.yoga.entity;
 
 /**
- * TbUserRole entity. @author MyEclipse Persistence Tools
+ * TbUserRole entity
  */
 
 public class TbUserRole implements java.io.Serializable {
