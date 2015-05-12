@@ -7,7 +7,7 @@
             <column name="member_consume_id" length="32" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="tbMember" class="com.yoga.entity.TbMember" fetch="select">
+        <many-to-one name="tbMember" class="com.yoga.entity.TbMember" fetch="select" lazy="false">
             <column name="member_id" length="32">
                 <comment>会员编号</comment>
             </column>
@@ -22,13 +22,13 @@
                 <comment>花费</comment>
             </column>
         </property>
-        <set name="tbMemberConsumeDetails" inverse="true">
-            <key>
-                <column name="member_consume_id" length="32">
-                    <comment>用户消费订单编号</comment>
-                </column>
-            </key>
-            <one-to-many class="com.yoga.entity.TbMemberConsumeDetail" />
-        </set>
+<!--         <set name="tbMemberConsumeDetails" inverse="true"> -->
+<!--             <key> -->
+<!--                 <column name="member_consume_id" length="32"> -->
+<!--                     <comment>用户消费订单编号</comment> -->
+<!--                 </column> -->
+<!--             </key> -->
+<!--             <one-to-many class="com.yoga.entity.TbMemberConsumeDetail" /> -->
+<!--         </set> -->
     </class>
 </hibernate-mapping>

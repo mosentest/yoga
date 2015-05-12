@@ -1,7 +1,5 @@
 package com.yoga.entity;
 
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * TbClassrooms entity
@@ -14,7 +12,7 @@ public class TbClassrooms implements java.io.Serializable {
 	private String classroomsId;
 	private String classroomsName;
 	private Boolean classroomsState;
-	private Set tbStaffCourseClassroomses = new HashSet(0);
+//	private Set tbStaffCourseClassroomses = new HashSet(0);
 
 	// Constructors
 
@@ -23,11 +21,11 @@ public class TbClassrooms implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TbClassrooms(String classroomsName, Boolean classroomsState,
-			Set tbStaffCourseClassroomses) {
+	public TbClassrooms(String classroomsName, Boolean classroomsState/*,
+			Set tbStaffCourseClassroomses*/) {
 		this.classroomsName = classroomsName;
 		this.classroomsState = classroomsState;
-		this.tbStaffCourseClassroomses = tbStaffCourseClassroomses;
+//		this.tbStaffCourseClassroomses = tbStaffCourseClassroomses;
 	}
 
 	// Property accessors
@@ -56,12 +54,12 @@ public class TbClassrooms implements java.io.Serializable {
 		this.classroomsState = classroomsState;
 	}
 
-	public Set getTbStaffCourseClassroomses() {
-		return this.tbStaffCourseClassroomses;
-	}
-
-	public void setTbStaffCourseClassroomses(Set tbStaffCourseClassroomses) {
-		this.tbStaffCourseClassroomses = tbStaffCourseClassroomses;
-	}
+//	public Set getTbStaffCourseClassroomses() {
+//		return this.tbStaffCourseClassroomses;
+//	}
+//
+//	public void setTbStaffCourseClassroomses(Set tbStaffCourseClassroomses) {
+//		this.tbStaffCourseClassroomses = tbStaffCourseClassroomses;
+//	}
 
 }

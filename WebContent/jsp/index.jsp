@@ -100,6 +100,10 @@
 						id : '32',
 						text : '课室管理',
 						href : 'jsp/classrooms/index.jsp'
+					}, {
+						id : '33',
+						text : '任务管理',
+						href : 'jsp/staffCourseClassrooms/index.jsp'
 					} ]
 				} ]
 			}, {

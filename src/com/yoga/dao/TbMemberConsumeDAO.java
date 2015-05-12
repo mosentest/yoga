@@ -58,7 +58,7 @@ public class TbMemberConsumeDAO extends BaseHibernateDAO implements BaseDao<TbMe
 		Session session = getSession();
 		Transaction beginTransaction = session.beginTransaction();
 		try {
-			getSession().delete(persistentInstance);
+			session.delete(persistentInstance);
 			beginTransaction.commit();
 			log.debug("delete successful");
 		} catch (RuntimeException re) {
@@ -66,7 +66,7 @@ public class TbMemberConsumeDAO extends BaseHibernateDAO implements BaseDao<TbMe
 			log.error("delete failed", re);
 			throw re;
 		}finally {
-			getSession().close();
+			session.close();
 		}
 	}
 

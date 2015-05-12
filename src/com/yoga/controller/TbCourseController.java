@@ -107,6 +107,23 @@ public class TbCourseController  {
 		return new ModelAndView("course/index");
 	}
 	
+	
+	@RequestMapping(value = "course/alllist.html", method = RequestMethod.GET)
+	@ResponseBody
+	public JsonResponse<TbCourse> list() {
+		JsonResponse<TbCourse> jsonResponse = new JsonResponse<TbCourse>();
+		try {
+			List<TbCourse> findAll = dao.findAll();
+			jsonResponse.setSuccess(true);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.COURSE, Constants.SUCCESS));
+			jsonResponse.setList(findAll);
+		} catch (Exception e) {
+			jsonResponse.setSuccess(false);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.COURSE, Constants.FAILURE));
+		}
+		return jsonResponse;
+	}
+	
 	/**
 	 * 获取列表
 	 * @param page
@@ -138,17 +155,17 @@ public class TbCourseController  {
 				}
 			}
 			Page<TbCourse> findAll = dao.findAll(page, size, params);
-			List<TbCourse> temp = new ArrayList<TbCourse>();
-			for(TbCourse tb :findAll.getContent()){
-				tb.setTbMemberCourseDetails(null);
-				tb.setTbStaffCourseClassroomses(null);
-				TbCourseType tbCourseType = tb.getTbCourseType();
-				TbCourseType tempType = new TbCourseType();
-				tempType.setType(tbCourseType.getType());
-				tempType.setId(tbCourseType.getId());
-				tb.setTbCourseType(tempType);
-				temp.add(tb);
-			}
+//			List<TbCourse> temp = new ArrayList<TbCourse>();
+//			for(TbCourse tb :findAll.getContent()){
+//				tb.setTbMemberCourseDetails(null);
+//				tb.setTbStaffCourseClassroomses(null);
+//				TbCourseType tbCourseType = tb.getTbCourseType();
+//				TbCourseType tempType = new TbCourseType();
+//				tempType.setType(tbCourseType.getType());
+//				tempType.setId(tbCourseType.getId());
+//				tb.setTbCourseType(tempType);
+//				temp.add(tb);
+//			}
 			jsonResponse.setSuccess(true);
 			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.COURSE, Constants.SUCCESS));
 			jsonResponse.setPage(findAll);

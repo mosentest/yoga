@@ -107,8 +107,9 @@
 	              $("#table-result").showLoading();
 	         },
 			success : function(msg) {
-				if(msg.totalElement == 0){
-					$('#tb').append("<tr><td colspan=7><div class='alert alert-block alert-danger'><div class='danger bold-center'>没结果</div><div></td></tr>");
+				var cells = $("#table").rows.item(0).cells.length;
+				if(msg.page.totalElement == 0){
+					$('#tb').append("<tr><td colspan="+cells+"><div class='alert alert-block alert-danger'><div class='danger bold-center'>没结果</div><div></td></tr>");
 					$('#pages').html("");
 					$("#other").html("");
 				}else{

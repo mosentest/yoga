@@ -26,6 +26,7 @@ public class Constants {
 	public final static String USER = "用户";
 	public final static String DETAIL = "详细";
 	public final static String MESSAGE = "信息";
+	public final static String TASK="任务";
 
 	public static String getTip(String... msg) {
 		StringBuffer buffer = new StringBuffer();

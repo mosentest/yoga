@@ -1,6 +1,7 @@
 package com.yoga.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -95,6 +96,25 @@ public class TbClassroomsController  {
 		return new ModelAndView("classrooms/index");
 	}
 	
+	
+	@RequestMapping(value = "classrooms/alllist.html", method = RequestMethod.GET)
+	@ResponseBody
+	public JsonResponse<TbClassrooms> list(String state) {
+		JsonResponse<TbClassrooms> jsonResponse = new JsonResponse<TbClassrooms>();
+		try {
+			//查询房间是否空闲
+			String[] params = new String[]{"","",state};
+			List<TbClassrooms> findAll = dao.findAll(params);
+			jsonResponse.setSuccess(true);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.CLASSROOM, Constants.SUCCESS));
+			jsonResponse.setList(findAll);
+		} catch (Exception e) {
+			jsonResponse.setSuccess(false);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.CLASSROOM, Constants.FAILURE));
+		}
+		return jsonResponse;
+	}
+	
 	/**
 	 * 获取列表
 	 * @param page
@@ -125,9 +145,9 @@ public class TbClassroomsController  {
 				}
 			}
 			Page<TbClassrooms> findAll = dao.findAll(page, size, params);
-			for(TbClassrooms tb :findAll.getContent()){
-				tb.setTbStaffCourseClassroomses(null);
-			}
+//			for(TbClassrooms tb :findAll.getContent()){
+//				tb.setTbStaffCourseClassroomses(null);
+//			}
 			jsonResponse.setSuccess(true);
 			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.CLASSROOM, Constants.SUCCESS));
 			jsonResponse.setPage(findAll);

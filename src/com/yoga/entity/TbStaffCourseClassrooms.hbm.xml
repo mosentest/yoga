@@ -7,13 +7,13 @@
             <column name="id" />
             <generator class="native" />
         </id>
-        <many-to-one name="tbStaff" class="com.yoga.entity.TbStaff" fetch="select">
+        <many-to-one name="tbStaff" class="com.yoga.entity.TbStaff" fetch="select"  lazy="false">
             <column name="staff_id" length="32" />
         </many-to-one>
-        <many-to-one name="tbCourse" class="com.yoga.entity.TbCourse" fetch="select">
+        <many-to-one name="tbCourse" class="com.yoga.entity.TbCourse" fetch="select"  lazy="false">
             <column name="course_id" length="32" />
         </many-to-one>
-        <many-to-one name="tbClassrooms" class="com.yoga.entity.TbClassrooms" fetch="select">
+        <many-to-one name="tbClassrooms" class="com.yoga.entity.TbClassrooms" fetch="select"  lazy="false">
             <column name="classrooms_id" length="32" />
         </many-to-one>
         <property name="createTime" type="java.sql.Timestamp">

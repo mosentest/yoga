@@ -3,9 +3,9 @@
 <div class="page-content">
       <div class="page-header fixed-div">
         <p>
-          <lable>消费品编号：</lable><input type="text" id="id"/>
-          <lable>消费品名称：</lable><input type="text" id="name"/>
-          <lable>消费品价格：</lable><input type="text" id="price"/>
+          <lable>员工名字：</lable><input type="text" id="staffName"/>
+          <lable>课程名称：</lable><input type="text" id="courseName"/>
+          <lable>课室名称：</lable><input type="text" id="classroomsName"/>
         </p>
         <p>
           <button class="btn btn-primary btn-sm" id="search"><i class="icon-search align-top bigger-125"></i>查询</button>
@@ -35,9 +35,12 @@
                 <tr role="row"> 
                  <th role="columnheader" rowspan="1" colspan="1" style="width: 57px;" aria-label=""> <label> <input type="checkbox" class="ace"  id="checkall"/> <span class="lbl"></span> </label> </th> 
                  <th  role="columnheader"  rowspan="1" colspan="1" style="width: 50px;" >序号</th>
-                 <th  role="columnheader"  rowspan="1" colspan="1" style="width: 153px;" >消费品编号</th> 
-                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 133px;" >消费品名称</th> 
-                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 130px;" >消费品价格</th> 
+                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 133px;" >员工名字</th> 
+                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 130px;" >课程名称</th>
+                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 130px;" >课程类型</th>
+                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 130px;" >课程开课日期</th>
+                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 130px;" >课程开课时间</th>
+                 <th role="columnheader"  rowspan="1" colspan="1" style="width: 130px;" >课室名称</th>
                  <th  role="columnheader" rowspan="1" colspan="1" style="width: 156px;" aria-label="">操作</th> 
                 </tr> 
                </thead> 
@@ -57,16 +60,20 @@
      <!-- /.page-content -->
     <script type="text/javascript">
 	jQuery(function($) {
+
+//         <lable>员工名字：</lable><input type="text" id="staffName"/>
+//         <lable>课程名称：</lable><input type="text" id="courseName"/>
+//         <lable>课室名称：</lable><input type="text" id="classroomsName"/>
 		//条件查询
 	    $("#search").click(function () {
-	           var id=$("#id").val();
-	           var name=$("#name").val();
-	           var state=$("#price").val();
-	           gotoPage(1,"id="+id+"&name="+name+"&price="+state);
+	           var staffName=$("#staffName").val();
+	           var courseName=$("#courseName").val();
+	           var classroomsName=$("#classroomsName").val();
+	           gotoPage(1,"staffName="+staffName+"&courseName="+courseName+"&classroomsName="+classroomsName);
 	    });
 	    
 		/* 获取数据 */
-		gotoPage(1,"id=&name=&price=");
+		gotoPage(1,"staffName=&courseName=&classroomsName=");
 		
 		/* 复选框操作 */
 		$('table th input:checkbox').on('click' , function(){
@@ -80,7 +87,7 @@
 
 		//跳转到新增页面
 		$('#add').click(function(){
-			window.location.href="jsp/consume/add.jsp";
+			countDown(2, "jsp/staffCourseClassrooms/add.jsp");
 	 	});
 	
 	});
@@ -91,10 +98,9 @@
 		var pageSize =  $("#p_pageSizeSelect").val(); //获取每一页显示多少记录
 		var loc="<div class='col-sm-6'><div class='dataTables_paginate paging_bootstrap'><ul class='pagination'>";
 		$('#tb').html("");
-		//TODO 测试用
 		//alert("page=" + pageIndex + "&size=" + pageSize+"&"+cond);
 		$.ajax({
-			url : "consume/list.html",
+			url : "staffCourseClassrooms/list.html",
 			type : 'get',
 			data : "page=" + pageIndex + "&size=" + pageSize+"&"+cond,
 			aysnc : false,
@@ -111,14 +117,22 @@
 				}else{
 					$.each(msg.page.content, function(i, item) {
 			              $('#tb').append( "<tr>"
-			            		  +"<td><label> <input type='checkbox' class='ace' name='checkbox' value='"+item.consumeId+"' /><span class='lbl'></span> </label></td>"
+			            		  +"<td><label> <input type='checkbox' class='ace' name='checkbox' value='"+item.id+"' /><span class='lbl'></span> </label></td>"
 			            		  +"<td >"+(++i)+"</td> "
-			            		  +"<td >"+item.consumeId+"</td> "
-			            		  +"<td >"+item.consumeName+"</td> "
-			            		  +"<td >"+item.consumePrice+"元</td> "
+			            		  +"<td >"+item.tbStaff.staffName+"</td> "
+			            		  +"<td >"+item.tbCourse.couresName+"</td> "
+			            		  +"<td >"+item.tbCourse.tbCourseType.type+"</td> "
+			            		  +"<td >"+getSmpFormatDateByLong(item.tbCourse.courseDate,false)+"</td> "
+			            		  +"<td >"+item.tbCourse.courseTime1+"-"+item.tbCourse.courseTime2+"</td> "
+			            		  +"<td >"+item.tbClassrooms.classroomsName+"</td> "
 			            		  +"<td >"+"<div class='visible-md visible-lg hidden-sm hidden-xs action-buttons' id='buttontools'>"
-			            		  				+"<a class='green' href='consume/showOne.html?id="+item.consumeId+"' > <i class='icon-pencil bigger-130'></i> </a>"
-			            		  				+"<a class='red' href='consume/delete?id="+item.consumeId+"&name="+item.consumeName+"&price="+item.consumePrice+"' > <i class='icon-trash bigger-130'></i> </a>"
+// 			            		  				+"<a class='green' href='staffCourseClassrooms/showOne.html?id="+item.id+"' > <i class='icon-pencil bigger-130'></i> </a>"
+			            		  				+"<a class='red' href='staffCourseClassrooms/delete?id="+
+			            		  											item.id+
+			            		  											"&staffId="+item.tbStaff.staffId+
+			            		  											"&courseId="+item.tbCourse.courseId+
+			            		  											"&classroomsId="+item.tbClassrooms.classroomsId+
+			            		  											"' > <i class='icon-trash bigger-130'></i> </a>"
 			            		  				+"</td> "+"</tr>");
 			            });
 						var begin = Math.max(1, msg.page.currentPage - pagerRange/2 );
@@ -147,7 +161,6 @@
 				$("#table-result").hideLoading();
 			},
 			complete:function(XMLHttpRequest,textStatus){
-				  //TODO 测试用
 	              // alert('远程调用成功，状态文本值：'+textStatus);
 				$("#table-result").hideLoading();
 	         },

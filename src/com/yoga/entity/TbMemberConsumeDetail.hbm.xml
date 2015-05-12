@@ -7,12 +7,12 @@
             <column name="id" />
             <generator class="native" />
         </id>
-        <many-to-one name="tbConsume" class="com.yoga.entity.TbConsume" fetch="select">
+        <many-to-one name="tbConsume" class="com.yoga.entity.TbConsume" fetch="select"  lazy="false">
             <column name="consume_id" length="32">
                 <comment>消费编号</comment>
             </column>
         </many-to-one>
-        <many-to-one name="tbMemberConsume" class="com.yoga.entity.TbMemberConsume" fetch="select">
+        <many-to-one name="tbMemberConsume" class="com.yoga.entity.TbMemberConsume" fetch="select"  lazy="false">
             <column name="member_consume_id" length="32">
                 <comment>用户消费订单编号</comment>
             </column>

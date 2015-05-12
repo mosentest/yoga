@@ -7,12 +7,12 @@
             <column name="id" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="tbMemberCourse" class="com.yoga.entity.TbMemberCourse" fetch="select">
+        <many-to-one name="tbMemberCourse" class="com.yoga.entity.TbMemberCourse" fetch="select"  lazy="false">
             <column name="member_course_id" length="32">
                 <comment>用户课程订单编号</comment>
             </column>
         </many-to-one>
-        <many-to-one name="tbCourse" class="com.yoga.entity.TbCourse" fetch="select">
+        <many-to-one name="tbCourse" class="com.yoga.entity.TbCourse" fetch="select"  lazy="false">
             <column name="course_id" length="32">
                 <comment>课程编号</comment>
             </column>

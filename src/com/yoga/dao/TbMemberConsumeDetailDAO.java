@@ -4,36 +4,67 @@ import java.util.List;
 
 import org.hibernate.LockOptions;
 import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.yoga.entity.TbMemberConsumeDetail;
+import com.yoga.util.Page;
 
-public class TbMemberConsumeDetailDAO extends BaseHibernateDAO {
+public class TbMemberConsumeDetailDAO extends BaseHibernateDAO implements BaseDao<TbMemberConsumeDetail> {
 	private static final Logger log = LoggerFactory.getLogger(TbMemberConsumeDetailDAO.class);
 
 	// property constants
 
 	public void save(TbMemberConsumeDetail transientInstance) {
 		log.debug("saving TbMemberConsumeDetail instance");
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
 		try {
-			getSession().save(transientInstance);
+			session.save(transientInstance);
+			beginTransaction.commit();
 			log.debug("save successful");
 		} catch (RuntimeException re) {
+			beginTransaction.rollback();
 			log.error("save failed", re);
 			throw re;
+		}finally{
+			session.close();
 		}
 	}
 
+	public void update(TbMemberConsumeDetail transientInstance) {
+		log.debug("update TbMemberConsumeDetail instance");
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
+		try {
+			session.merge(transientInstance);
+			beginTransaction.commit();
+			log.debug("update successful");
+		} catch (RuntimeException re) {
+			beginTransaction.rollback();
+			log.error("update failed", re);
+			throw re;
+		}finally{
+			session.close();
+		}
+	}
 	public void delete(TbMemberConsumeDetail persistentInstance) {
 		log.debug("deleting TbMemberConsumeDetail instance");
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
 		try {
-			getSession().delete(persistentInstance);
+			session.delete(persistentInstance);
+			beginTransaction.commit();
 			log.debug("delete successful");
 		} catch (RuntimeException re) {
+			beginTransaction.rollback();
 			log.error("delete failed", re);
 			throw re;
+		}finally{
+			session.close();
 		}
 	}
 
@@ -73,7 +104,7 @@ public class TbMemberConsumeDetailDAO extends BaseHibernateDAO {
 		}
 	}
 
-	public List findAll() {
+	public List findAll(String...param) {
 		log.debug("finding all TbMemberConsumeDetail instances");
 		try {
 			String queryString = "from TbMemberConsumeDetail";
@@ -85,37 +116,8 @@ public class TbMemberConsumeDetailDAO extends BaseHibernateDAO {
 		}
 	}
 
-	public TbMemberConsumeDetail merge(TbMemberConsumeDetail detachedInstance) {
-		log.debug("merging TbMemberConsumeDetail instance");
-		try {
-			TbMemberConsumeDetail result = (TbMemberConsumeDetail) getSession().merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(TbMemberConsumeDetail instance) {
-		log.debug("attaching dirty TbMemberConsumeDetail instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(TbMemberConsumeDetail instance) {
-		log.debug("attaching clean TbMemberConsumeDetail instance");
-		try {
-			getSession().buildLockRequest(LockOptions.NONE).lock(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
+	@Override
+	public Page<TbMemberConsumeDetail> findAll(int page, int size, String... params) {
+		return null;
 	}
 }
