@@ -1,9 +1,9 @@
 package com.yoga.controller;
 
-import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.yoga.dao.TbConsumeDAO;
 import com.yoga.dao.TbMemberConsumeDAO;
 import com.yoga.dao.TbMemberConsumeDetailDAO;
+import com.yoga.dto.MemberConsumeDetailDTO;
 import com.yoga.entity.TbConsume;
 import com.yoga.entity.TbMember;
 import com.yoga.entity.TbMemberConsume;
@@ -42,27 +43,34 @@ public class TbMemberConsumeDetailController  {
 	 * 添加信息
 	 * @return
 	 */
-	@RequestMapping(value = "memberConsume/add", method = RequestMethod.GET)
+	@RequestMapping(value = "memberConsume/add", method = RequestMethod.POST, consumes="application/json")
 	@ResponseBody
-	public JsonResponse<TbMemberConsume> add(final String id, final String memberId, final String cost, HttpSession session) {
+	public JsonResponse<TbMemberConsume> add(@RequestBody final MemberConsumeDetailDTO[] memberConsumeDetailDTOs) {
 		JsonResponse<TbMemberConsume> jsonResponse = new JsonResponse<TbMemberConsume>();
 		try {
 			//TODO还有一个数量没考虑到
-			TbMemberConsume entity = getBean(id, memberId, cost);
-			String memberConsumeId = memberConsumeDAO.save(entity);
-			session.getAttribute("");
-//			String newconsumeIds = new String(consumeIds.getBytes("iso8859-1"), "UTF-8");
-//			String[] consumes = newconsumeIds.split(",");
-//			for(String consumeId :consumes){
-//				TbMemberConsumeDetail memberConsumeDetail = new TbMemberConsumeDetail();
-//				TbConsume tbConsume = new TbConsume();
-//				tbConsume.setConsumeId(consumeId);
-//				TbMemberConsume tbMemberConsume = new TbMemberConsume();
-//				tbMemberConsume.setMemberConsumeId(memberConsumeId);
-//				memberConsumeDetail.setTbConsume(tbConsume);
-//				memberConsumeDetail.setTbMemberConsume(tbMemberConsume);
-//				memberConsumeDetailDAO.save(memberConsumeDetail);
-//			}
+			double cost=0.0;
+			for(MemberConsumeDetailDTO memberConsumeDetailDTO : memberConsumeDetailDTOs){
+				String consumeId = memberConsumeDetailDTO.getConsumeId();
+				TbConsume findById = dao.findById(consumeId);
+				String consumePrice = findById.getConsumePrice();
+				cost += (Double.parseDouble(memberConsumeDetailDTO.getConsumeNum()) * Double.parseDouble(consumePrice));
+			}
+			//用会员的编号+时间,作为消费的编号
+			//TODO 修改数据库的字段长度
+			String memberConsumeId= memberConsumeDetailDTOs[0].getMemberId()+System.currentTimeMillis();
+			TbMemberConsume entity = getBean(memberConsumeId, memberConsumeDetailDTOs[0].getMemberId(), cost+"");
+			memberConsumeDAO.save(entity);
+			for(MemberConsumeDetailDTO memberConsumeDetailDTO : memberConsumeDetailDTOs){
+				TbMemberConsumeDetail memberConsumeDetail = new TbMemberConsumeDetail();
+				TbConsume tbConsume = new TbConsume();
+				tbConsume.setConsumeId(memberConsumeDetailDTO.getConsumeId());
+				TbMemberConsume tbMemberConsume = new TbMemberConsume();
+				tbMemberConsume.setMemberConsumeId(memberConsumeId);
+				memberConsumeDetail.setTbConsume(tbConsume);
+				memberConsumeDetail.setTbMemberConsume(tbMemberConsume);
+				memberConsumeDetailDAO.save(memberConsumeDetail);
+			}
 			jsonResponse.setMsg(Constants.getTip(Constants.ADD, Constants.CONSUME, Constants.SUCCESS));
 			jsonResponse.setSuccess(true);
 		} catch (Exception e) {
@@ -73,42 +81,6 @@ public class TbMemberConsumeDetailController  {
 		return jsonResponse;
 	}
 
-	/**
-	 * 编辑信息
-	 * @param id
-	 * @param name
-	 * @param price
-	 * @return
-	 */
-	@RequestMapping(value = "memberConsume/edit", method = RequestMethod.GET)
-	@ResponseBody
-	public JsonResponse<TbMemberConsume> edit(final String id, final String memberId, final String cost, HttpSession session) {
-		JsonResponse<TbMemberConsume> jsonResponse = new JsonResponse<TbMemberConsume>();
-		try {
-			TbMemberConsume entity = getBean(id, memberId, cost);
-			memberConsumeDAO.update(entity);
-			memberConsumeDetailDAO.delete(entity.getMemberConsumeId());
-//			String newconsumeIds = new String(consumeIds.getBytes("iso8859-1"), "UTF-8");
-//			String[] consumes = newconsumeIds.split(",");
-//			for(String consumeId :consumes){
-//				TbMemberConsumeDetail memberConsumeDetail = new TbMemberConsumeDetail();
-//				TbConsume tbConsume = new TbConsume();
-//				tbConsume.setConsumeId(consumeId);
-//				TbMemberConsume tbMemberConsume = new TbMemberConsume();
-//				tbMemberConsume.setMemberConsumeId(entity.getMemberConsumeId());
-//				memberConsumeDetail.setTbConsume(tbConsume);
-//				memberConsumeDetail.setTbMemberConsume(tbMemberConsume);
-//				memberConsumeDetailDAO.update(memberConsumeDetail);
-//			}
-			jsonResponse.setMsg(Constants.getTip(Constants.EDIT, Constants.CONSUME, Constants.SUCCESS));
-			jsonResponse.setSuccess(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-			jsonResponse.setSuccess(false);
-			jsonResponse.setMsg(Constants.getTip(Constants.EDIT, Constants.CONSUME, Constants.FAILURE));
-		}
-		return jsonResponse;
-	}
 	
 	/**
 	 * 删除信息
@@ -170,25 +142,6 @@ public class TbMemberConsumeDetailController  {
 	}
 	
 	/**
-	 * 获取其中一个信息，并跳转页面
-	 * @param id
-	 * @param modelMap
-	 * @return
-	 */
-	@RequestMapping(value = "memberConsume/showOne.html", method = RequestMethod.GET)
-	public ModelAndView showOne(@RequestParam final String id,ModelMap modelMap) {
-		TbMemberConsume memberConsume = new TbMemberConsume();
-		try {
-			memberConsume =memberConsumeDAO.findById(id);
-			modelMap.put("update", "update");
-			modelMap.put("memberConsume", memberConsume);
-		}catch(Exception exception){
-			exception.printStackTrace();
-		}
-		return new ModelAndView("memberConsume/add");
-	}
-	
-	/**
 	 * 重构代码
 	 * 
 	 * @param id订单号
@@ -199,9 +152,11 @@ public class TbMemberConsumeDetailController  {
 	private TbMemberConsume getBean(final String id, final String memberId, final String cost) {
 		TbMemberConsume entity =null;
 		try {
+			entity = new TbMemberConsume();
 			entity.setMemberConsumeId(id);
 			TbMember tbMember = new TbMember();
 			tbMember.setMemberId(memberId);
+			entity.setCreateTime(new Timestamp(System.currentTimeMillis()));
 			entity.setTbMember(tbMember );
 			entity.setCost(cost);
 		} catch (Exception e) {

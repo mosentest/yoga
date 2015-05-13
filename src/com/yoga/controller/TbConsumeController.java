@@ -157,6 +157,19 @@ public class TbConsumeController  {
 		return jsonResponse;
 	}
 	
+	
+	@RequestMapping(value = "consume/show2One", method = RequestMethod.GET)
+	@ResponseBody
+	public TbConsume showOne(@RequestParam final String id) {
+		TbConsume consume = new TbConsume();
+		try {
+			consume =dao.findById(id);
+		}catch(Exception exception){
+			exception.printStackTrace();
+		}
+		return consume;
+	}
+	
 	/**
 	 * 获取其中一个信息，并跳转页面
 	 * @param id

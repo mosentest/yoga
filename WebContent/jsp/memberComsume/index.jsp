@@ -3,7 +3,7 @@
 <div class="page-content">
       <div class="page-header fixed-div">
         <p>
-          <lable>消费编号：</lable><input type="text" id="id"/>
+          <lable>消费单编号：</lable><input type="text" id="id"/>
           <lable>会员帐号：</lable><input type="text" id="name"/>
         </p>
         <p>
@@ -19,7 +19,7 @@
           <div class="table-responsive"> 
            <div id="sample-table-2_wrapper" class="dataTables_wrapper" role="grid">
               <div class="row" >
-              <div class="col-sm-6"><div id="pager"  ><label >显示 <select size="1" onchange="javascript:gotoPage(1,'id=&name=&price=')" id="p_pageSizeSelect">
+              <div class="col-sm-6"><div id="pager"  ><label >显示 <select size="1" onchange="javascript:gotoPage(1,'id=&name=')" id="p_pageSizeSelect">
                 <option value="10" selected="selected" >10</option>
                 <option value="25" >25</option>
                 <option value="50" >50</option>
@@ -82,7 +82,7 @@
 
 		//跳转到新增页面
 		$('#add').click(function(){
-			countDown(2, "jsp/memberConsume/add.jsp");
+			countDown(2, "jsp/memberComsume/add.jsp");
 	 	});
 	
 	});
@@ -121,7 +121,7 @@
 			            		  +"<td >"+getSmpFormatDateByLong(item.createTime)+"</td> "
 			            		  +"<td >"+item.cost+"</td> "
 			            		  +"<td >"+"<div class='visible-md visible-lg hidden-sm hidden-xs action-buttons' id='buttontools'>"
-			            		  				+"<a class='green' href='memberConsume/showOne.html?id="+item.memberConsumeId+"' > <i class='icon-pencil bigger-130'></i> </a>"
+// 			            		  				+"<a class='green' href='memberConsume/showOne.html?id="+item.memberConsumeId+"' > <i class='icon-pencil bigger-130'></i> </a>"
 			            		  				+"<a class='red' href='memberConsume/delete?id="+
 			            		  											item.memberConsumeId+
 			            		  											"&memberId="+item.memberId+

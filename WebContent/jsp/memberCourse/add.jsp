@@ -34,25 +34,24 @@
              </div><!--.col-sm-6  -->
              <div class="col-sm-6">
                <div class="row">
-                 <div class="col-xs-11 label label-lg label-success arrowed-in arrowed-right"><b>消费品信息</b></div>
+                 <div class="col-xs-11 label label-lg label-success arrowed-in arrowed-right"><b>课程信息</b></div>
                </div><!--.row  -->
                <div class="row">
                  <ul class="list-unstyled spaced">
                    <li>
                      <i class="icon-caret-right green"></i>
-                     <label name="goodName">消费品名称：</label>
-                     <select id="consumeName" class="chosen-select" data-placeholder="请选择一个商品"></select>
+                     <label name="goodName">课程名称：</label>
+                     <select id="courseName" class="chosen-select" data-placeholder="请选择一个商品"></select>
                    </li>
                    <li>
                      <i class="icon-caret-right green"></i>
                      <label name="origin">价格：</label>
-                     <span name="origin" id="consumePrice">0</span>元
+                     <span name="origin" id="coursePrice">0</span>元
                    </li>
                    <li>
                      <i class="icon-caret-right green"></i>
-                     <label name="pack">数量：</label>
-                     <input id="consumeNum" type="text" onkeyup="checkNum(this)"/>
-<!--                      <span name="pack" id="consumeNum"></span> -->
+                     <label name="pack">授课老师：</label>
+                      <span name="pack" id="staffName"></span> 
                    </li>
                  </ul>
                </div><!--.row  -->
@@ -66,11 +65,9 @@
                     <th class="center">&nbsp;</th>
                     <th class="center">会员编号</th>
                     <th class="center">会员姓名</th>
-                    <th class="center">消费品编号</th>
-                    <th class="center">消费品名称</th>
+                    <th class="center">课程编号</th>
+                    <th class="center">课程名称</th>
                     <th class="center">价格(元)</th>
-                    <th class="center">数量</th>
-                    <th class="center">总价(元)</th>
                   </tr>
                 </thead>
               </table>
@@ -86,9 +83,10 @@
                  <form class="form-inline">
                   <input type="hidden" id="form-member-id">
                   <input type="hidden" id="form-member-name">
-                  <input type="hidden" id="form-consume-id">
-                  <input type="hidden" id="form-consume-name">
-                  <input type="hidden" id="form-consume-price">
+                  <input type="hidden" id="form-course-id">
+                  <input type="hidden" id="form-course-name">
+                  <input type="hidden" id="form-course-price">
+                  <input type="hidden" id="form-staffName">
                   <div class="space-6"></div>
                   <div class="hr hr8 hr-double hr-dotted"></div>
                   <div id="alert-tip"></div>
@@ -121,14 +119,14 @@
 			$("#memberName_chosen").css("width","130px");
 	    });
 
-		$.get("consume/alllist.html", function(data){
+		$.get("staffCourseClassrooms/alllist.html", function(data){
 			var result="<option value='-1' select >--请选择--</option>";
 			for(var i = 0; i < data.list.length;i++){
-				result+="<option value=\""+data.list[i].consumeId+"\">"+data.list[i].consumeName+"</option>";
+				result+="<option value=\""+data.list[i].id+"\">"+data.list[i].tbCourse.couresName+"</option>";
 			}
-			$("#consumeName").html(result);
-			$("#consumeName").chosen();
-			$("#consumeName_chosen").css("width","130px");
+			$("#courseName").html(result);
+			$("#courseName").chosen();
+			$("#courseName_chosen").css("width","130px");
 	    });
 	    
 		//selcet事件
@@ -147,18 +145,20 @@
 		});
 
 		//selcet事件
-	    $("#consumeName").change(function(){
-		    $.get("consume/show2One",{id:$("#consumeName").val()},function(data){
-			    $("#consumePrice").html(data.consumePrice);
-			    $("#form-consume-id").attr("value",data.consumeId);
-			    $("#form-consume-name").attr("value",data.consumeName);
-			    $("#form-consume-price").attr("value",data.consumePrice);
+	    $("#courseName").change(function(){
+		    $.get("staffCourseClassrooms/show2One",{id:$("#courseName").val()},function(data){
+			    $("#coursePrice").html(data.tbCourse.coursePrice);
+			    $("#staffName").html(data.tbStaff.staffName);
+			    $("#form-course-id").attr("value",data.id);
+			    $("#form-course-name").attr("value",data.tbCourse.couresName);
+			    $("#form-course-price").attr("value",data.tbCourse.coursePrice);
+			    $("#form-staffName").attr("value",data.tbStaff.staffName);
 			});
 		});
 		
 		//返回
 		$('#backid').click(function(){
-				window.location.href="jsp/memberComsume/index.jsp";
+				window.location.href="jsp/memberCourse/index.jsp";
 		 });
 
 	    //访问的action
@@ -167,7 +167,7 @@
 			var saveJson = tableToJSONString();
 			if(saveJson != null && saveJson != "[]"){
 				$.ajax({
-		            url: "memberConsume/add",
+		            url: "memberCourse/add",
 					 headers : {
 			                'Accept' : 'application/json',
 			                'Content-Type' : 'application/json;charset=utf-8'
@@ -181,7 +181,7 @@
 				                    '<div class="success bold-center">'+data.msg+',<a href="jsp/member/index.jsp" class="green">'+
 				                    '<span id="mysecond" class="green">'+5+
 				                    '</span>秒自动跳转</a><div></div>');
-			            	 countDown(5, "jsp/memberComsume/index.jsp");
+			            	 countDown(5, "jsp/memberCourse/index.jsp");
 				        }
 				        else{
 						    $("#alert-tip").html('<div class="alert alert-block alert-danger">'+
@@ -207,9 +207,9 @@
 		var jsonT = "[";
 		for(var i = 1; i < tabLen.rows.length; i++){
 			if(i == 1 ){
-				jsonT+="{\"memberId\":\""+tabLen.rows[i].cells[1].innerHTML+"\",\"consumeId\":\""+tabLen.rows[i].cells[3].innerHTML+"\",\"consumeNum\":\""+tabLen.rows[i].cells[6].innerHTML+"\"}";
+				jsonT+="{\"memberId\":\""+tabLen.rows[i].cells[1].innerHTML+"\",\"courseId\":\""+tabLen.rows[i].cells[3].innerHTML+"\"}";
 			}else{
-				jsonT+=",{\"memberId\":\""+tabLen.rows[i].cells[1].innerHTML+"\",\"consumeId\":\""+tabLen.rows[i].cells[3].innerHTML+"\",\"consumeNum\":\""+tabLen.rows[i].cells[6].innerHTML+"\"}";
+				jsonT+=",{\"memberId\":\""+tabLen.rows[i].cells[1].innerHTML+"\",\"courseId\":\""+tabLen.rows[i].cells[3].innerHTML+"\"}";
 			}
 		}
 		jsonT+="]";
@@ -223,33 +223,31 @@
 		//获取上面的信息
 		var memberid = $("#form-member-id").val();
 		var membername = $("#form-member-name").val();
-		var consumeid = $("#form-consume-id").val();
-		var consumename = $("#form-consume-name").val();
-		var consumeprice = $("#form-consume-price").val();
+		var courseid = $("#form-course-id").val();
+		var coursename = $("#form-course-name").val();
+		var courseprice = $("#form-course-price").val();
 		
-		if(memberid == null || memberid == "" || consumeid == "" || consumeid == null){
+		if(memberid == null || memberid == "" || courseid == "" || courseid == null){
             $("#alert-tip").html('<div class="alert alert-block alert-danger">'+
                     '<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>'+
-                    '<div class="danger bold-center">请选择会员和消费品再添加</div></div>');
+                    '<div class="danger bold-center">请选择会员和课程再添加</div></div>');
 		}else{
 			$("#alert-tip").html();
-			//获取消费品的数量
-			var consumeNum =$("#consumeNum").val();
-			if(consumeNum == ""){
-	            $("#alert-tip").html('<div class="alert alert-block alert-danger">'+
-	                    '<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>'+
-	                    '<div class="danger bold-center">请输入消费品的数量</div></div>');
-			}else{
+			//获取课程的数量
+			var courseNum =$("#courseNum").val();
+// 			if(false){
+// 	            $("#alert-tip").html('<div class="alert alert-block alert-danger">'+
+// 	                    '<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>'+
+// 	                    '<div class="danger bold-center">请输入课程的数量</div></div>');
+// 			}else{
 				$("#stack-table");
 				var str="<tr>"+
 				        "<td class='center' ><input type='checkbox' id='ckb'/></td>"+
 				        "<td class='center' >"+memberid+"</td>"+
 				        "<td class='center' >"+membername+"</td>"+
-				        "<td class='center' >"+consumeid+"</td>"+
-				        "<td class='center' >"+consumename+"</td>"+
-				        "<td class='center' >"+consumeprice+"</td>"+
-				        "<td class='center' >"+consumeNum+"</td>"+
-				        "<td class='center' >"+changeTwoDecimal_f(consumeprice * consumeNum)+"</td>"+
+				        "<td class='center' >"+courseid+"</td>"+
+				        "<td class='center' >"+coursename+"</td>"+
+				        "<td class='center' >"+courseprice+"</td>"+
 				        "</tr>";
 				if($("#stack-table").find("tr").length >= 5){
 		            $("#alert-tip").html('<div class="alert alert-block alert-danger">'+
@@ -258,10 +256,10 @@
 				}else{
 					$("#alert-tip").html("");
 					addTr("stack-table", -1, str);
-					sum+=parseFloat(changeTwoDecimal_f(consumeprice * consumeNum));
+					sum+=parseFloat(changeTwoDecimal_f(courseprice));
 					$("#all-sum").html("总计:<span class='red'>"+changeTwoDecimal_f(sum)+"</span>元");
 				}
-			}
+// 			}
 		}
 	}
 	

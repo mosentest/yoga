@@ -176,6 +176,25 @@ public class TbMemberController  {
 		return jsonResponse;
 	}
 	
+	
+	/**
+	 * 获取其中一个信息，并跳转页面
+	 * @param id
+	 * @param modelMap
+	 * @return
+	 */
+	@RequestMapping(value = "member/show2One", method = RequestMethod.GET)
+	@ResponseBody
+	public TbMember showOne(@RequestParam final String id) {
+		TbMember member = new TbMember();
+		try {
+			member =dao.findById(id);
+		}catch(Exception exception){
+			exception.printStackTrace();
+		}
+		return member;
+	}
+	
 	/**
 	 * 获取其中一个信息，并跳转页面
 	 * @param id

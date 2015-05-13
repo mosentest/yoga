@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.hibernate.LockOptions;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,15 +20,38 @@ public class TbMemberCourseDetailDAO extends BaseHibernateDAO {
 
 	public void save(TbMemberCourseDetail transientInstance) {
 		log.debug("saving TbMemberCourseDetail instance");
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
 		try {
-			getSession().save(transientInstance);
+			session.save(transientInstance);
+			beginTransaction.commit();
 			log.debug("save successful");
 		} catch (RuntimeException re) {
+			beginTransaction.rollback();
 			log.error("save failed", re);
 			throw re;
+		}finally{
+			session.close();
 		}
 	}
 
+	public void delete(String memberCourseId) {
+		log.debug("deleting TbMemberCourseDetail instance");
+		Session session = getSession();
+		Transaction beginTransaction = session.beginTransaction();
+		try {
+			SQLQuery createSQLQuery = session.createSQLQuery("DELETE * FROM tb_member_course_detail WHERE member_course_id = '" + memberCourseId+"' ");
+			createSQLQuery.executeUpdate();
+			beginTransaction.commit();
+			log.debug("delete successful");
+		} catch (RuntimeException re) {
+			beginTransaction.rollback();
+			log.error("delete failed", re);
+			throw re;
+		}finally{
+			session.close();
+		}
+	}
 	public void delete(TbMemberCourseDetail persistentInstance) {
 		log.debug("deleting TbMemberCourseDetail instance");
 		try {
@@ -36,6 +62,8 @@ public class TbMemberCourseDetailDAO extends BaseHibernateDAO {
 			throw re;
 		}
 	}
+	
+	
 
 	public TbMemberCourseDetail findById(java.lang.Integer id) {
 		log.debug("getting TbMemberCourseDetail instance with id: " + id);

@@ -1,5 +1,7 @@
 package com.yoga.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -110,6 +112,23 @@ public class TbStaffCourseClassroomsController  {
 		return new ModelAndView("staffCourseClassrooms/index");
 	}
 	
+	
+	@RequestMapping(value = "staffCourseClassrooms/alllist.html", method = RequestMethod.GET)
+	@ResponseBody
+	public JsonResponse<TbStaffCourseClassrooms> list() {
+		JsonResponse<TbStaffCourseClassrooms> jsonResponse = new JsonResponse<TbStaffCourseClassrooms>();
+		//获取对应的参数
+		try {
+			List<TbStaffCourseClassrooms> findAll = dao.findAll();
+			jsonResponse.setSuccess(true);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.TASK, Constants.SUCCESS));
+			jsonResponse.setList(findAll);
+		} catch (Exception e) {
+			jsonResponse.setSuccess(false);
+			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.TASK, Constants.FAILURE));
+		}
+		return jsonResponse;
+	}
 	/**
 	 * 获取列表
 	 * @param page
@@ -148,6 +167,19 @@ public class TbStaffCourseClassroomsController  {
 			jsonResponse.setMsg(Constants.getTip(Constants.GET, Constants.TASK, Constants.FAILURE));
 		}
 		return jsonResponse;
+	}
+	
+	
+	@RequestMapping(value = "staffCourseClassrooms/show2One", method = RequestMethod.GET)
+	@ResponseBody
+	public TbStaffCourseClassrooms showOne(@RequestParam final int id) {
+		TbStaffCourseClassrooms staffCourseClassrooms = new TbStaffCourseClassrooms();
+		try {
+			staffCourseClassrooms = dao.findById(id);
+		}catch(Exception exception){
+			exception.printStackTrace();
+		}
+		return staffCourseClassrooms;
 	}
 	
 	/**

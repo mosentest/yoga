@@ -5,7 +5,7 @@
     <class name="com.yoga.entity.TbMemberCourseDetail" table="tb_member_course_detail" catalog="db_yoga">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
-            <generator class="assigned" />
+            <generator class="native" />
         </id>
         <many-to-one name="tbMemberCourse" class="com.yoga.entity.TbMemberCourse" fetch="select"  lazy="false">
             <column name="member_course_id" length="32">

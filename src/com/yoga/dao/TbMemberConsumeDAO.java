@@ -152,7 +152,7 @@ public class TbMemberConsumeDAO extends BaseHibernateDAO implements BaseDao<TbMe
 				buffer.append(" tb.memberConsumeId=:id and ");
 			}
 			if (params[1] != null && !"".equals(params[1].trim())) {
-				buffer.append(" tb.tbMember.memberUsername=:name and ");
+				buffer.append(" tb.tbMember.memberName=:name and ");
 			}
 			buffer.append(" 1=1 ");
 		}

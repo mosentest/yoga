@@ -176,6 +176,24 @@ public class TbCourseController  {
 		return jsonResponse;
 	}
 	
+	
+	/**
+	 * @param id
+	 * @param modelMap
+	 * @return
+	 */
+	@RequestMapping(value = "course/show2One", method = RequestMethod.GET)
+	@ResponseBody
+	public TbCourse showOne(@RequestParam final String id) {
+		TbCourse course = new TbCourse();
+		try {
+			course = dao.findById(id);
+		}catch(Exception exception){
+			exception.printStackTrace();
+		}
+		return course;
+	}
+	
 	/**
 	 * 获取其中一个信息，并跳转页面
 	 * @param id
