@@ -69,6 +69,7 @@ public class TbMemberConsumeDetailController  {
 				tbMemberConsume.setMemberConsumeId(memberConsumeId);
 				memberConsumeDetail.setTbConsume(tbConsume);
 				memberConsumeDetail.setTbMemberConsume(tbMemberConsume);
+				memberConsumeDetail.setNum(Integer.parseInt(memberConsumeDetailDTO.getConsumeNum()));
 				memberConsumeDetailDAO.save(memberConsumeDetail);
 			}
 			jsonResponse.setMsg(Constants.getTip(Constants.ADD, Constants.CONSUME, Constants.SUCCESS));

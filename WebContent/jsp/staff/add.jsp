@@ -158,7 +158,6 @@
 	            	  "&post="+$("#post").val()+
 	            	  "&phone="+$("#phone").val()+
 	            	  "&card="+$("#card").val()+
-	            	  "&phone="+$("#phone").val()+
 	            	  "&address="+$("#address").val()+
 	            	  "&email="+$("#email").val()+
 	            	  "&time="+$("#time").val()+

@@ -4,7 +4,7 @@
       <div class="page-header fixed-div">
         <p>
           <lable>消费单编号：</lable><input type="text" id="id"/>
-          <lable>会员帐号：</lable><input type="text" id="name"/>
+          <lable>会员名字：</lable><input type="text" id="name"/>
         </p>
         <p>
           <button class="btn btn-primary btn-sm" id="search"><i class="icon-search align-top bigger-125"></i>查询</button>
