@@ -147,10 +147,10 @@ public class TbMemberCourseDAO extends BaseHibernateDAO implements BaseDao<TbMem
 		if (params != null && params.length > 0) {
 			buffer.append(" as tb where ");
 			if (params[0] != null && !"".equals(params[0].trim())) {
-				buffer.append(" tb.memberCourseId=:id and ");
+				buffer.append(" tb.memberCourseId like:id and ");
 			}
 			if (params[1] != null && !"".equals(params[1].trim())) {
-				buffer.append(" tb.tbMember.memberName=:name and ");
+				buffer.append(" tb.tbMember.memberName like:name and ");
 			}
 			buffer.append(" 1=1 ");
 		}
@@ -161,7 +161,7 @@ public class TbMemberCourseDAO extends BaseHibernateDAO implements BaseDao<TbMem
 				queryObject.setString("id", params[0]);
 			}
 			if (params[1] != null && !"".equals(params[1].trim())) {
-				queryObject.setString("name",  "%"+params[0]+ "%");
+				queryObject.setString("name",  "%"+params[1]+ "%");
 			}
 		}
 		return queryObject;
